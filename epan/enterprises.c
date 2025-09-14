@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2025-09-05) */
+/* (last updated 2025-09-11) */
 
 #include "config.h"
 
@@ -33108,7 +33108,7 @@ static const char * const table[] =
     "ims Info Management System AG",                                                      // 33086
     "International School of Stuttgart e. V.",                                            // 33087
     "Versatile Knowledge System",                                                         // 33088
-    "Fachhochschule für öffentliche Verwaltung NRW",                                      // 33089
+    "Hochschule für Polizei und öffentliche Verwaltung Nordrhein-Westfalen",              // 33089
     "xxlboy",                                                                             // 33090
     "TCRP",                                                                               // 33091
     "Opsource",                                                                           // 33092
@@ -43239,7 +43239,7 @@ static const char * const table[] =
     "Ultimate Europe Transportation Equipment GmbH",                                      // 43217
     "tecalor",                                                                            // 43218
     "Sallie Mae",                                                                         // 43219
-    "DB Netz AG",                                                                         // 43220
+    "DB InfraGO AG",                                                                      // 43220
     "Bemobi Midia e Entretenimento LTDA.",                                                // 43221
     "Oxfam",                                                                              // 43222
     "Wireless Telecom Group, Inc",                                                        // 43223
@@ -45098,7 +45098,7 @@ static const char * const table[] =
     "HamLogin.com",                                                                       // 45076
     "Sestek Ses ve Iletisim Bilgisayar Teknolojileri San. ve Tic. A.S.",                  // 45077
     "QoS Solutions",                                                                      // 45078
-    "i4p informatikai kft.",                                                              // 45079
+    "i4p informatics ltd.",                                                               // 45079
     "Kerio Technologies, Inc.",                                                           // 45080
     "Increase Qingdao Information Technology Co., Ltd.",                                  // 45081
     "PT. Tekno Inovasi Asia",                                                             // 45082
@@ -57452,7 +57452,7 @@ static const char * const table[] =
     "Fuzhou Dockeer Technology Co., Ltd.",                                                // 57430
     "Curtiss-Wright 901D",                                                                // 57431
     "Christopher Ahrens",                                                                 // 57432
-    "CHHOLAK eTrust Muhar",                                                               // 57433
+    "CHHOLAK Enterprise",                                                                 // 57433
     "Winchester Foot & Ankle Associates PLLC",                                            // 57434
     "Platbox",                                                                            // 57435
     "UDAP.org",                                                                           // 57436
@@ -58201,7 +58201,7 @@ static const char * const table[] =
     "SJ – Die Falken LV Niedersachsen",                                                   // 58179
     "DUOMED S.A.",                                                                        // 58180
     "Jasper T Trading Inc.",                                                              // 58181
-    "THREATINT (CYPRUS) LTD",                                                             // 58182
+    "FSTPN Cyprus Limited",                                                               // 58182
     "The Mx Group",                                                                       // 58183
     "First Western Bank and Trust",                                                       // 58184
     "GOVCERT.LU",                                                                         // 58185
@@ -63571,7 +63571,7 @@ static const char * const table[] =
     "SELTAR",                                                                             // 63549
     "MAEM Sp. z o.o",                                                                     // 63550
     "Zhonglian Huanuo (Beijing) Technology Co., Ltd.",                                    // 63551
-    "mitocode.eu",                                                                        // 63552
+    "Matteo Kutufa",                                                                      // 63552
     "City of Laurel",                                                                     // 63553
     "Movyon S.p.A.",                                                                      // 63554
     "Belden Inc.",                                                                        // 63555
@@ -64212,7 +64212,49 @@ static const char * const table[] =
     "Solar Manager AG",                                                                   // 64190
     "Norrtälje Energi Försäljnings AB",                                                   // 64191
     "INESO Europe",                                                                       // 64192
-    "LuxChip Systems Ltd"                                                                 // 64193
+    "LuxChip Systems Ltd",                                                                // 64193
+    "Gigs",                                                                               // 64194
+    "Atita Homrakphong",                                                                  // 64195
+    "ATWAB Inc.",                                                                         // 64196
+    "Shenzhen Hohunet Technology Co.,LD",                                                 // 64197
+    "Chaos Computer Club Aachen e.V.",                                                    // 64198
+    "ARVIND LIMITED",                                                                     // 64199
+    "Opella",                                                                             // 64200
+    "GID GmbH",                                                                           // 64201
+    "Actere GmbH",                                                                        // 64202
+    "Nexstem India Private Limited",                                                      // 64203
+    "chippen",                                                                            // 64204
+    "Neogen Corporation",                                                                 // 64205
+    "Atlific Hotels",                                                                     // 64206
+    "窦韫 (Yun Dou)",                                                                       // 64207
+    "Omroep Flevoland",                                                                   // 64208
+    "Michal Hanula",                                                                      // 64209
+    "Swedish Embedded AB",                                                                // 64210
+    "Norsh",                                                                              // 64211
+    "ERIK BRASIL MENDES",                                                                 // 64212
+    "Glo.bu.s. Srl",                                                                      // 64213
+    "Guangdong Lewei Software Co., Ltd.",                                                 // 64214
+    "ChaoyueTechnology Co., LTD",                                                         // 64215
+    "KnectIQ, Inc.",                                                                      // 64216
+    "Curleys Quality Foods Ltd",                                                          // 64217
+    "Ineo Solutions",                                                                     // 64218
+    "L2L7",                                                                               // 64219
+    "Skogssällskapet Finland Oy Ab",                                                      // 64220
+    "Mäkilän Saha Avoin Yhtiö",                                                           // 64221
+    "bdtronic GmbH",                                                                      // 64222
+    "LARUM SRL",                                                                          // 64223
+    "Cty TF llc",                                                                         // 64224
+    "Silicondust USA, Inc.",                                                              // 64225
+    "Dynacolor, Inc.",                                                                    // 64226
+    "Xpera Risk Mitigation & Investigation LP",                                           // 64227
+    "Panasonic Automotive Systems",                                                       // 64228
+    "Kyle Smith",                                                                         // 64229
+    "Minalex Corporation",                                                                // 64230
+    "Timsfors Bil och Traktortjänst AB",                                                  // 64231
+    "Kunsthochschule Bayern",                                                             // 64232
+    "Royal Surrey County Hospital(RSCH NHS)",                                             // 64233
+    "Simon Hegele GmbH",                                                                  // 64234
+    "St. Galler Kantonalbank AG"                                                          // 64235
 };
 
 const char* global_enterprises_lookup(uint32_t value)
