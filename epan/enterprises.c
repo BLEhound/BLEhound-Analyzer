@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2025-09-11) */
+/* (last updated 2025-09-19) */
 
 #include "config.h"
 
@@ -39694,7 +39694,7 @@ static const char * const table[] =
     "Elite Automação Comércio e Serviços Ltda ME",                                        // 39672
     "Talon Storage Solutions",                                                            // 39673
     "OctoGate GmbH",                                                                      // 39674
-    "Vast Array Corporation",                                                             // 39675
+    "BFB.ME LLC",                                                                         // 39675
     "Pason Systems Corp.",                                                                // 39676
     "Archdata SPRL",                                                                      // 39677
     "American Domain Names LLC",                                                          // 39678
@@ -64247,14 +64247,66 @@ static const char * const table[] =
     "Silicondust USA, Inc.",                                                              // 64225
     "Dynacolor, Inc.",                                                                    // 64226
     "Xpera Risk Mitigation & Investigation LP",                                           // 64227
-    "Panasonic Automotive Systems",                                                       // 64228
+    "Panasonic Automotive Systems America, LLC",                                          // 64228
     "Kyle Smith",                                                                         // 64229
     "Minalex Corporation",                                                                // 64230
     "Timsfors Bil och Traktortjänst AB",                                                  // 64231
     "Kunsthochschule Bayern",                                                             // 64232
     "Royal Surrey County Hospital(RSCH NHS)",                                             // 64233
     "Simon Hegele GmbH",                                                                  // 64234
-    "St. Galler Kantonalbank AG"                                                          // 64235
+    "St. Galler Kantonalbank AG",                                                         // 64235
+    "Freshwater Fish Marketing Corp",                                                     // 64236
+    "Shenzhen Infypower Co.,Ltd (深圳英飞源技术有限公司)",                                           // 64237
+    "Innovatrix Wireless Pvt. Ltd",                                                       // 64238
+    "Benniu Information Technologies Co., Ltd.",                                          // 64239
+    "Changzhou Asia Networks Information Technology Co., Ltd.",                           // 64240
+    "Dirk Doesburg",                                                                      // 64241
+    "TRICO Limited",                                                                      // 64242
+    "j. Schneider Elektrotechnik GmbH Offenburg",                                         // 64243
+    "Yuderunx Technology CO., Ltd.",                                                      // 64244
+    "Lopen Rakennuspuu Oy",                                                               // 64245
+    "Informaticon AG",                                                                    // 64246
+    "Tecnovideo S.r.l.",                                                                  // 64247
+    "ForensisNG",                                                                         // 64248
+    "Huizhou RoyPow Technology Co., Ltd.",                                                // 64249
+    "张峰 (Zhang Feng)",                                                                    // 64250
+    "WutupFu, Inc.",                                                                      // 64251
+    "Secmia",                                                                             // 64252
+    "AuthBite",                                                                           // 64253
+    "SECURE DOMAINS MANAGED CYBER SECURITY SERVICES PROVIDER L.L.C",                      // 64254
+    "Österbymo Hardwood AB",                                                              // 64255
+    "Tibber AS",                                                                          // 64256
+    "Shenzhen COMNECT Technology Co., Ltd.",                                              // 64257
+    "Netcontrol Oy",                                                                      // 64258
+    "WEIN & CO Handelsgesellschaft m.b.H.",                                               // 64259
+    "COLSA - BH",                                                                         // 64260
+    "AVS Electronics SpA",                                                                // 64261
+    "Polycomp Technologies (PTY) Ltd.",                                                   // 64262
+    "Networkers Rocks",                                                                   // 64263
+    "LIMITED LIABILITY COMPANY ""DYNASWITCH PRO""",                                       // 64264
+    "Tecweigh",                                                                           // 64265
+    "Corista LLC",                                                                        // 64266
+    "NOAA/CSL",                                                                           // 64267
+    "Dominik Robotka",                                                                    // 64268
+    "eeas gmbh",                                                                          // 64269
+    "Krankenfürsorgeanstalt der Bediensteten der Stadt Wien",                             // 64270
+    "FMC Trading & Logistics Co. Ltd.",                                                   // 64271
+    "Sansec Technology Co., Ltd. (三未信安科技股份有限公司)",                                         // 64272
+    "pocketOne OÜ",                                                                       // 64273
+    "BXC",                                                                                // 64274
+    "NANCO",                                                                              // 64275
+    "iTest Technologies",                                                                 // 64276
+    "ARTEAR",                                                                             // 64277
+    "UNIVERSIDAD NACIONAL ABIERTA Y A DISTANCIA UNAD",                                    // 64278
+    "PKI Consortium",                                                                     // 64279
+    "IBM Digital Talent for Business",                                                    // 64280
+    "Navirum energi AB",                                                                  // 64281
+    "NeoX-IT",                                                                            // 64282
+    "LinOTP Project (netgo software GmbH)",                                               // 64283
+    "Guangzhou JN Union Technology Co.,Ltd （广州江南科友科技股份有限公司）",                             // 64284
+    "sener - scaterzs",                                                                   // 64285
+    "Amt für Informationstechnik (AIT)",                                                  // 64286
+    "Woodbury Corporation"                                                                // 64287
 };
 
 const char* global_enterprises_lookup(uint32_t value)
