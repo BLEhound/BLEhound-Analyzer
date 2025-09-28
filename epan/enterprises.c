@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2025-09-19) */
+/* (last updated 2025-09-26) */
 
 #include "config.h"
 
@@ -8450,7 +8450,7 @@ static const char * const table[] =
     "Turtle Entertainment GmbH",                                                          // 8428
     "2NETFX (Media Now, Inc.DBA 2NETFX)",                                                 // 8429
     "TranSwitch Corporation",                                                             // 8430
-    "Broadcasting Interest Enterprise, Inc.Christopher",                                  // 8431
+    "CHAAS, LLC",                                                                         // 8431
     "TeraGlobal Communications",                                                          // 8432
     "3e Technologies International Inc.",                                                 // 8433
     "Fox Chase Cancer Center",                                                            // 8434
@@ -30313,7 +30313,7 @@ static const char * const table[] =
     "Sujansky & Associates, LLC",                                                         // 30291
     "Monit24.pl",                                                                         // 30292
     "Collège Dunoyer de Segonzac",                                                        // 30293
-    "InnoTrans Communications Inc.",                                                      // 30294
+    "ATX Networks Corp.",                                                                 // 30294
     "I2Net Christian Nordmann",                                                           // 30295
     "Innovation & Support Centre",                                                        // 30296
     "The Clockwork Lab",                                                                  // 30297
@@ -36997,7 +36997,7 @@ static const char * const table[] =
     "UrgentCare Works, LLC",                                                              // 36975
     "Critter bvba",                                                                       // 36976
     "Eloqua Corporation",                                                                 // 36977
-    "Pico Digital Inc",                                                                   // 36978
+    "ATX Networks Corp.",                                                                 // 36978
     "accumio GmbH",                                                                       // 36979
     "Steinle Solution-Factory GmbH",                                                      // 36980
     "Kindersprachscreening",                                                              // 36981
@@ -48335,7 +48335,7 @@ static const char * const table[] =
     "Not for Radio, LLC",                                                                 // 48313
     "ESA Elektroschaltanlagen Grimma GmbH",                                               // 48314
     "Documenta S.A.",                                                                     // 48315
-    "Berliner Verkehrsbetriebe",                                                          // 48316
+    "Berliner Verkehrsbetriebe (BVG)",                                                    // 48316
     "PedFast Technologies",                                                               // 48317
     "Beijing NationSky Network Technology Co., Ltd",                                      // 48318
     "911 Datamaster, Inc.",                                                               // 48319
@@ -59038,7 +59038,7 @@ static const char * const table[] =
     "JusonTech",                                                                          // 59016
     "Beyondbell",                                                                         // 59017
     NULL,                                                                                 // 59018
-    "ISSM Consulting SRL",                                                                // 59019
+    "QSIGN SRL",                                                                          // 59019
     "Yashiro Laboratory",                                                                 // 59020
     "Miln",                                                                               // 59021
     "Echostreams Innovative Solutions LLC",                                               // 59022
@@ -62120,7 +62120,7 @@ static const char * const table[] =
     "SATEL ltd",                                                                          // 62098
     "Dayou Plus Co Ltd",                                                                  // 62099
     "ITLook",                                                                             // 62100
-    "Siscom Communication Limited Company",                                               // 62101
+    "Induscom Technology Co., Ltd",                                                       // 62101
     "Tkl Logistics LLC",                                                                  // 62102
     "Cordova Courier",                                                                    // 62103
     "James W Pyle III",                                                                   // 62104
@@ -64256,7 +64256,7 @@ static const char * const table[] =
     "Simon Hegele GmbH",                                                                  // 64234
     "St. Galler Kantonalbank AG",                                                         // 64235
     "Freshwater Fish Marketing Corp",                                                     // 64236
-    "Shenzhen Infypower Co.,Ltd (深圳英飞源技术有限公司)",                                           // 64237
+    "Shenzhen Infypower Co.,Ltd.",                                                        // 64237
     "Innovatrix Wireless Pvt. Ltd",                                                       // 64238
     "Benniu Information Technologies Co., Ltd.",                                          // 64239
     "Changzhou Asia Networks Information Technology Co., Ltd.",                           // 64240
@@ -64306,7 +64306,42 @@ static const char * const table[] =
     "Guangzhou JN Union Technology Co.,Ltd （广州江南科友科技股份有限公司）",                             // 64284
     "sener - scaterzs",                                                                   // 64285
     "Amt für Informationstechnik (AIT)",                                                  // 64286
-    "Woodbury Corporation"                                                                // 64287
+    "Woodbury Corporation",                                                               // 64287
+    "Nikan Andishan Nujan",                                                               // 64288
+    "Vemetris",                                                                           // 64289
+    "Ooredoo Palestine",                                                                  // 64290
+    "FOUNTLAB SOLUTIONS PRIVATE LIMITED",                                                 // 64291
+    "STRABAG Infrastructure and Safety Solutions",                                        // 64292
+    "Bangla Phone Secure CA",                                                             // 64293
+    "International Organization for Identity Documents",                                  // 64294
+    "China Broadcasting Network Chongqing Co., Ltd.",                                     // 64295
+    "Banco de Credito de Bolivia",                                                        // 64296
+    "Dom Kirby Creative",                                                                 // 64297
+    "zylinktech LLC",                                                                     // 64298
+    "Vlaams Parlement",                                                                   // 64299
+    "Family Timber Finland Oy",                                                           // 64300
+    "GTS TELECOM SERVICES I PRIVATE LIMITED",                                             // 64301
+    "Tritan Internet",                                                                    // 64302
+    "VB Spine",                                                                           // 64303
+    "Synchrotechnik",                                                                     // 64304
+    "HyperLXC Medical",                                                                   // 64305
+    "innovotech",                                                                         // 64306
+    "Shenzhen Infypower Co.,Ltd 深圳英飞源技术有限公司",                                             // 64307
+    "Airline Pilots Association",                                                         // 64308
+    "Teragrep",                                                                           // 64309
+    "woqutech",                                                                           // 64310
+    "Firezone, Inc.",                                                                     // 64311
+    "Zeetim",                                                                             // 64312
+    "H. u. J. Steiner GmbH",                                                              // 64313
+    "Stadtwerke Riesa GmbH",                                                              // 64314
+    "CONNECTIVE 3 CIA. LTDA.",                                                            // 64315
+    "Adia Health Inc.",                                                                   // 64316
+    "SANSEC",                                                                             // 64317
+    "GEOMAR - Helmholtz-Zentrum für Ozeanforschung Kiel",                                 // 64318
+    "IMA-Systems Information-Technology, ZNL der NEXTCLINICS Austria GmbH",               // 64319
+    "Landsbankinn hf.",                                                                   // 64320
+    "Deep Systems",                                                                       // 64321
+    "Sjögårdens Energiflis AB"                                                            // 64322
 };
 
 const char* global_enterprises_lookup(uint32_t value)
