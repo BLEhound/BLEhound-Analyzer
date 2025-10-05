@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2025-09-26) */
+/* (last updated 2025-10-03) */
 
 #include "config.h"
 
@@ -5676,7 +5676,7 @@ static const char * const table[] =
     "Ando Electric Corporation",                                                          // 5654
     "P-Cube Ltd.",                                                                        // 5655
     "Monmouth University",                                                                // 5656
-    "Universidad de La Coruna",                                                           // 5657
+    "Universidade da Coruña",                                                             // 5657
     "ISL, Institute of Shipping Economics and Logistics",                                 // 5658
     "CoProSys Inc.",                                                                      // 5659
     "XI'AN DATANG TELEPHONE Corp.",                                                       // 5660
@@ -25128,7 +25128,7 @@ static const char * const table[] =
     "CSE Sh.p..k.",                                                                       // 25106
     "Stan Winston Studio",                                                                // 25107
     "iRadeon, Inc.",                                                                      // 25108
-    "Wireless Edge Canada Inc.",                                                          // 25109
+    "Wedge Networks Inc.",                                                                // 25109
     "Vanguard Technology Corp.",                                                          // 25110
     "VODCA",                                                                              // 25111
     "Top Gun Drywall Supply",                                                             // 25112
@@ -64337,11 +64337,46 @@ static const char * const table[] =
     "CONNECTIVE 3 CIA. LTDA.",                                                            // 64315
     "Adia Health Inc.",                                                                   // 64316
     "SANSEC",                                                                             // 64317
-    "GEOMAR - Helmholtz-Zentrum für Ozeanforschung Kiel",                                 // 64318
+    "Helmholtz-Zentrum für Ozeanforschung Kiel (GEOMAR)",                                 // 64318
     "IMA-Systems Information-Technology, ZNL der NEXTCLINICS Austria GmbH",               // 64319
     "Landsbankinn hf.",                                                                   // 64320
     "Deep Systems",                                                                       // 64321
-    "Sjögårdens Energiflis AB"                                                            // 64322
+    "Sjögårdens Energiflis AB",                                                           // 64322
+    "GUANGZHOU HANGXIN AVIATION EQUIPMENT CO.,LTD",                                       // 64323
+    "Arthur Michas",                                                                      // 64324
+    "Heiko Schuetz",                                                                      // 64325
+    "Sandwych Inc",                                                                       // 64326
+    "Boris Vasilyev",                                                                     // 64327
+    "GrailPay",                                                                           // 64328
+    "Balangan Surf Academy",                                                              // 64329
+    "Jämtskogsägare i samverkan AB",                                                      // 64330
+    "9livesdata",                                                                         // 64331
+    "Lombard Insurance Company Limited",                                                  // 64332
+    "Niko NV, Division Wygwam",                                                           // 64333
+    "Meu Lar Smart",                                                                      // 64334
+    "Maarten Houthuijzen",                                                                // 64335
+    "GVOZDEN",                                                                            // 64336
+    "Kasper Kjeld Pedersen",                                                              // 64337
+    "B4CKSP4CE Hackerspace",                                                              // 64338
+    "Media College Denmark",                                                              // 64339
+    "I Reparto Mobile della Polizia di Stato di Roma",                                    // 64340
+    "ix.Cloud",                                                                           // 64341
+    "Data Warehouse",                                                                     // 64342
+    "UNION Technologies",                                                                 // 64343
+    "IDEMIA",                                                                             // 64344
+    "Swan Foresight Pty Ltd.",                                                            // 64345
+    "AERL",                                                                               // 64346
+    "LLC «ARGO TECHNOLOGY EAST»",                                                         // 64347
+    "Nimbus Technologieberatung GmbH",                                                    // 64348
+    "Aqa Technologies, Inc.",                                                             // 64349
+    "Pragmatec",                                                                          // 64350
+    "KESSLER & CO AG",                                                                    // 64351
+    "Yodamiitti Oy",                                                                      // 64352
+    "Capstone Investment Advisors",                                                       // 64353
+    "webbedjoes",                                                                         // 64354
+    "CGI Australia",                                                                      // 64355
+    "Meusburger Georg GmbH & Co. KG",                                                     // 64356
+    "InCharge Energy"                                                                     // 64357
 };
 
 const char* global_enterprises_lookup(uint32_t value)
