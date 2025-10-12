@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2025-10-03) */
+/* (last updated 2025-10-10) */
 
 #include "config.h"
 
@@ -31027,7 +31027,7 @@ static const char * const table[] =
     "ODS-Medical GmbH",                                                                   // 31005
     "EnergoData",                                                                         // 31006
     "Ikse.net",                                                                           // 31007
-    "Business & Decision",                                                                // 31008
+    NULL,                                                                                 // 31008
     "PRECISION ELECTRONICS LTD.",                                                         // 31009
     "Cymphonix Corp",                                                                     // 31010
     "Enterprise Management Consulting Ltd.",                                              // 31011
@@ -64376,7 +64376,37 @@ static const char * const table[] =
     "webbedjoes",                                                                         // 64354
     "CGI Australia",                                                                      // 64355
     "Meusburger Georg GmbH & Co. KG",                                                     // 64356
-    "InCharge Energy"                                                                     // 64357
+    "InCharge Energy",                                                                    // 64357
+    "Uplink Labs Inc.",                                                                   // 64358
+    "Norlys",                                                                             // 64359
+    "River Information Services Authority",                                               // 64360
+    "KEYTECH ELEKTRONIC COMPANY",                                                         // 64361
+    "Abdelkhaleq  karmi",                                                                 // 64362
+    "ALCOMA LLC",                                                                         // 64363
+    "INDUSTRIAL SECURITY PROVIDE Ltd.",                                                   // 64364
+    "Neo-Retro Group",                                                                    // 64365
+    "Cato Networks Ltd.",                                                                 // 64366
+    "Älmeboda skogstjänst",                                                               // 64367
+    "SUPIN s.r.o.",                                                                       // 64368
+    "Dexmate",                                                                            // 64369
+    "Imaginalis",                                                                         // 64370
+    "Sona Network B.V.",                                                                  // 64371
+    "Sezoo",                                                                              // 64372
+    "杭州芯博士网络科技有限公司 (Hangzhou Xinboshi Network Technology Co., Ltd.)",                     // 64373
+    "CYE Sec",                                                                            // 64374
+    "Realsoft",                                                                           // 64375
+    "C.D. Wälzholz GmbH & Co. KG",                                                        // 64376
+    "Sona Business B.V.",                                                                 // 64377
+    "PSEG",                                                                               // 64378
+    "Instituto Nicaraguense de Seguridad Social",                                         // 64379
+    "Swoboda Embedded Engineering GmbH",                                                  // 64380
+    "KEEQuant GmbH",                                                                      // 64381
+    "Philip G Bove",                                                                      // 64382
+    "Kreis Unna",                                                                         // 64383
+    "Kyi Soe Thin",                                                                       // 64384
+    "NSE AG",                                                                             // 64385
+    "Rozetta Systems",                                                                    // 64386
+    "Flipturn, Inc."                                                                      // 64387
 };
 
 const char* global_enterprises_lookup(uint32_t value)
