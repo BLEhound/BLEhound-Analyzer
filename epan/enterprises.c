@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2025-10-10) */
+/* (last updated 2025-10-17) */
 
 #include "config.h"
 
@@ -61822,7 +61822,7 @@ static const char * const table[] =
     "Vikor Scientific",                                                                   // 61800
     "Nova Software SRL",                                                                  // 61801
     "Alta Labs",                                                                          // 61802
-    "Fox Crypto B.V.",                                                                    // 61803
+    "Sentyron B.V.",                                                                      // 61803
     "XobeBook",                                                                           // 61804
     "NEXION Corporation",                                                                 // 61805
     "VOLARIS Marcin Ziemiański",                                                          // 61806
@@ -64406,7 +64406,47 @@ static const char * const table[] =
     "Kyi Soe Thin",                                                                       // 64384
     "NSE AG",                                                                             // 64385
     "Rozetta Systems",                                                                    // 64386
-    "Flipturn, Inc."                                                                      // 64387
+    "Flipturn, Inc.",                                                                     // 64387
+    "INTELUX ELECTRONICS",                                                                // 64388
+    "Lebent Noel Melendres Hernandez",                                                    // 64389
+    "PenSam",                                                                             // 64390
+    "ACMH",                                                                               // 64391
+    "Naturskog AB",                                                                       // 64392
+    "Naturskog Biofuel AB",                                                               // 64393
+    "Sellplus TECH LLC",                                                                  // 64394
+    "com.ksbarnt",                                                                        // 64395
+    "SAVA Cybersecurity",                                                                 // 64396
+    "Matthias Valvekens",                                                                 // 64397
+    "Alambec Inc",                                                                        // 64398
+    "OMV AG",                                                                             // 64399
+    "Bath Riding Club",                                                                   // 64400
+    "HMI Technologies",                                                                   // 64401
+    "Origin Energy Eraring OT",                                                           // 64402
+    "Arak University of Medical Sciences",                                                // 64403
+    "Foreshow Information Co., Ltd",                                                      // 64404
+    "Montsecure",                                                                         // 64405
+    "UltraGreen AI Private Limited",                                                      // 64406
+    "Good Consulting Ltd.",                                                               // 64407
+    "Tautech (Pty) Ltd",                                                                  // 64408
+    "EPPO - European Public Prosecutors Office",                                          // 64409
+    "TTControl GmbH",                                                                     // 64410
+    "Tarsus Universitesi",                                                                // 64411
+    "Ampcontrol Technologies Inc.",                                                       // 64412
+    "East Central Minnesota Educational Cable Cooperative",                               // 64413
+    "Latvijas Loto VAS",                                                                  // 64414
+    "Northeast Agri Systems",                                                             // 64415
+    "Esprit Electronics Limited",                                                         // 64416
+    "HAIP GmbH",                                                                          // 64417
+    "ELTEL KATOWICE SP. Z O. O.",                                                         // 64418
+    "Brian Lycett",                                                                       // 64419
+    "Network Down IT",                                                                    // 64420
+    "Bumblebee Technologies Bangladesh Limited",                                          // 64421
+    "BarmeniaGothaer",                                                                    // 64422
+    "冷春阳 (Leng Chunyang)",                                                                // 64423
+    "OpenNFC",                                                                            // 64424
+    "LIS LLC",                                                                            // 64425
+    "PRIM Management Consult GmbH",                                                       // 64426
+    "Pendulum Instruments"                                                                // 64427
 };
 
 const char* global_enterprises_lookup(uint32_t value)
