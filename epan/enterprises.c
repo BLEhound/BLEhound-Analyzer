@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2025-10-31) */
+/* (last updated 2025-11-07) */
 
 #include "config.h"
 
@@ -7614,7 +7614,7 @@ static const char * const table[] =
     "Swedish Institute of Space Physics",                                                 // 7592
     "University of Cambridge, Clinical and Biomedical Computing Unit",                    // 7593
     "Citadel LLC",                                                                        // 7594
-    "RATIO Entwicklungen GmbH",                                                           // 7595
+    "GW Engineering",                                                                     // 7595
     "Trellis Photonics",                                                                  // 7596
     "NOVA LJUBLJANSKA BANKA",                                                             // 7597
     "KTSI",                                                                               // 7598
@@ -43090,7 +43090,7 @@ static const char * const table[] =
     "AVG Technologies",                                                                   // 43068
     "Markus Ruecker (mr-consult.net)",                                                    // 43069
     "Hrvatska narodna banka",                                                             // 43070
-    "NABB Gaming Community",                                                              // 43071
+    "Kronus Network",                                                                     // 43071
     "Privlo, Inc.",                                                                       // 43072
     "roskakori.fi",                                                                       // 43073
     "WRH Inc",                                                                            // 43074
@@ -48098,7 +48098,7 @@ static const char * const table[] =
     "NexGen Inc",                                                                         // 48076
     "State University of Feira de Santana",                                               // 48077
     "Ventura County Hematology Oncology Specialists",                                     // 48078
-    "NEC Enterprise Communication Technologies",                                          // 48079
+    "Forerunner Technologies, Inc.",                                                      // 48079
     "Mimetrix Design Group",                                                              // 48080
     "Max Planck Institute for Plant Breeding Research",                                   // 48081
     "Hamburger Energienetze GmbH",                                                        // 48082
@@ -48239,7 +48239,7 @@ static const char * const table[] =
     "codemanufaktur GmbH",                                                                // 48217
     "Government of Manitoba",                                                             // 48218
     "Jackson Hewitt Tax Service Inc.",                                                    // 48219
-    "TPAX.EU UG (haftungsbeschraenkt)",                                                   // 48220
+    "TPAX.EU",                                                                            // 48220
     "Flopsar Technology",                                                                 // 48221
     "Micro 100 Tool Corp",                                                                // 48222
     "Rauland-Borg Corporation",                                                           // 48223
@@ -64198,7 +64198,7 @@ static const char * const table[] =
     "EIDERSCONSULTING SAS",                                                               // 64176
     "Novosad Hayes Associates",                                                           // 64177
     "MNCSoftware",                                                                        // 64178
-    "Cryptsk Pvt Ltd",                                                                    // 64179
+    "CRYPTSK PRIVATE LIMITED",                                                            // 64179
     "Wayne H. Smith",                                                                     // 64180
     "NAXA Inc.",                                                                          // 64181
     "Silverflow",                                                                         // 64182
@@ -64543,7 +64543,64 @@ static const char * const table[] =
     "Polygran GmbH",                                                                      // 64521
     "Workoho GmbH",                                                                       // 64522
     "IDTECH SA",                                                                          // 64523
-    "SERAFE AG"                                                                           // 64524
+    "SERAFE AG",                                                                          // 64524
+    "Chainmail",                                                                          // 64525
+    "Zsolt Erdei",                                                                        // 64526
+    "V.I.P. Mortgage",                                                                    // 64527
+    "Ammattiopisto Spesia",                                                               // 64528
+    "Lapis Drucktechnologie GmbH",                                                        // 64529
+    "Jersey Microwave",                                                                   // 64530
+    "Debriana Connolly",                                                                  // 64531
+    "Aliaxis sa/nv",                                                                      // 64532
+    "National Telecom Public Company Limited (NT)",                                       // 64533
+    "Rimorchi Bertoja Spa",                                                               // 64534
+    "MindTheGap Srl",                                                                     // 64535
+    "Macawi LLC",                                                                         // 64536
+    "AKAERE NETWORKS TECHNOLOGY LTD",                                                     // 64537
+    "Cipherforge",                                                                        // 64538
+    "Sheng Yuan LAI",                                                                     // 64539
+    "Uralsystem",                                                                         // 64540
+    "sdpnow",                                                                             // 64541
+    "HummingLab",                                                                         // 64542
+    "SAS CANOPEE",                                                                        // 64543
+    "Bedford Central School District",                                                    // 64544
+    "elusoft GmbH",                                                                       // 64545
+    "Sibel Health",                                                                       // 64546
+    "Bling Network LLC",                                                                  // 64547
+    "Qian Liu",                                                                           // 64548
+    "SecurePay Sdn. Bhd.",                                                                // 64549
+    "Nicander",                                                                           // 64550
+    "Nortroll AS",                                                                        // 64551
+    "EMH metering GmbH & Co. KG",                                                         // 64552
+    "MDI Health Technologies Inc.",                                                       // 64553
+    "DATASIGH",                                                                           // 64554
+    "Luxer Urgent Care",                                                                  // 64555
+    "Alara Imaging",                                                                      // 64556
+    "Abside Networks, Inc.",                                                              // 64557
+    "Quantea Corporation",                                                                // 64558
+    "Azores Networks LLC",                                                                // 64559
+    "Medical Data Technology SRL",                                                        // 64560
+    "黄冈市城乡数字化平台运营供应链有限公司 (Huanggang City Urban and Rural Digital Platform Operation and Supply Chain Co., Ltd.)",// 64561
+    "Bling Network Ltd",                                                                  // 64562
+    "Jiangxi JSO Network Co., LTD",                                                       // 64563
+    "PINIONAI",                                                                           // 64564
+    "Bundesministerium für Bildung",                                                      // 64565
+    "Johann GARGOT",                                                                      // 64566
+    "OWA Parks & Resort",                                                                 // 64567
+    "Scandinavian log Supply AB",                                                         // 64568
+    "Dragonpay Corporation",                                                              // 64569
+    "Eshowe High School",                                                                 // 64570
+    "Mobile Telecommunication Limited",                                                   // 64571
+    "qubik network services GmbH",                                                        // 64572
+    "HANDPHONE TELECOMUNICACOES",                                                         // 64573
+    "Aeterea.NET",                                                                        // 64574
+    "Belam",                                                                              // 64575
+    "BCOM Networks Limited (BCOM-X Project)",                                             // 64576
+    "secway",                                                                             // 64577
+    "Shanghai CloudPrime.ai Technology Co, Ltd",                                          // 64578
+    "Reliably Coded B.V.",                                                                // 64579
+    "Aéroports de la Côte d'Azur",                                                        // 64580
+    "Emerald Technologies"                                                                // 64581
 };
 
 const char* global_enterprises_lookup(uint32_t value)
