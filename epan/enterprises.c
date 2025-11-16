@@ -5217,7 +5217,7 @@ static const char * const table[] =
     "AdRem Software",                                                                     // 5195
     "E-Tech, Inc.",                                                                       // 5196
     "Startup .com",                                                                       // 5197
-    """Universita`"" degli Studi di Roma ""Tor Vergata""",                                // 5198
+    "Universita` degli Studi di Roma Tor Vergata",                                        // 5198
     "Odetics ITS",                                                                        // 5199
     "EnFlex Corp.",                                                                       // 5200
     "Reserved",                                                                           // 5201
@@ -5314,7 +5314,7 @@ static const char * const table[] =
     "Pirus Networks",                                                                     // 5292
     "HYOSUNG CORPORATION",                                                                // 5293
     "Infinity Trade Inc",                                                                 // 5294
-    """DigitalThink Inc.""",                                                              // 5295
+    "DigitalThink Inc.",                                                                  // 5295
     "IPCell Technologies, Inc.",                                                          // 5296
     "Baxworks, Inc.",                                                                     // 5297
     "xputer.com",                                                                         // 5298
@@ -5411,7 +5411,7 @@ static const char * const table[] =
     "Inter-Tel",                                                                          // 5389
     "OPNET Technologies Co., Ltd.",                                                       // 5390
     "Tyco Submarine Systems Ltd.",                                                        // 5391
-    """Online Creations"", Inc.",                                                         // 5392
+    "Online Creations, Inc.",                                                             // 5392
     "Renault",                                                                            // 5393
     "Gateway Inc.",                                                                       // 5394
     "Laurel Networks, Inc.",                                                              // 5395
@@ -5607,7 +5607,7 @@ static const char * const table[] =
     "Very Clever Software Ltd.",                                                          // 5585
     "IPWireless Inc.",                                                                    // 5586
     "Flughafen Muenchen GmbH",                                                            // 5587
-    "Thomcast Communication, Inc.Comwave Division (""Comwave"")",                         // 5588
+    "Thomcast Communication, Inc.Comwave Division (Comwave)",                             // 5588
     "Synopsys, Inc.",                                                                     // 5589
     "Marimba Inc.",                                                                       // 5590
     "SCTE",                                                                               // 5591
@@ -7026,7 +7026,7 @@ static const char * const table[] =
     "Metodo Srl",                                                                         // 7004
     "Kagoor Networks",                                                                    // 7005
     "eyeo.com",                                                                           // 7006
-    "Guangzhou Thinker Communications Technology Co., Ltd.""",                            // 7007
+    "Guangzhou Thinker Communications Technology Co., Ltd.",                              // 7007
     "Discordian Alliance For Teaching",                                                   // 7008
     "Chemtex Engineering of India Ltd",                                                   // 7009
     "Oranje Consulting, Inc.",                                                            // 7010
@@ -8308,7 +8308,7 @@ static const char * const table[] =
     "Incirco",                                                                            // 8286
     "Klinikum der Johannes Gutenberg-Universität Mainz",                                  // 8287
     "Jung von Matt Werbeagentur GmbH",                                                    // 8288
-    "Universita' degli Studi di Napoli ""Federico II""",                                  // 8289
+    "Universita' degli Studi di Napoli Federico II",                                      // 8289
     "Certus Technology, Inc.",                                                            // 8290
     "DigiStamp, Inc.",                                                                    // 8291
     "Mt. Holyoke College",                                                                // 8292
@@ -8558,7 +8558,7 @@ static const char * const table[] =
     "Datachorus",                                                                         // 8536
     "Turbo NetWorks Co., Ltd.",                                                           // 8537
     "Saxonia Systems AG",                                                                 // 8538
-    "Institute ""Norilskproject""",                                                       // 8539
+    "Institute Norilskproject",                                                           // 8539
     "LCPC",                                                                               // 8540
     "Interactive Media S.r.l.",                                                           // 8541
     "Sandial Systems, Inc.",                                                              // 8542
@@ -12175,7 +12175,7 @@ static const char * const table[] =
     "HPCinteractive",                                                                     // 12153
     "IKEA IT AB",                                                                         // 12154
     "Innovay Inc.",                                                                       // 12155
-    "JOINT-STOCK COMPANY""STC CONTACT""",                                                 // 12156
+    "JOINT-STOCK COMPANYSTC CONTACT",                                                     // 12156
     "KC Micro Specialists, Inc.",                                                         // 12157
     "Mikros Kosmos",                                                                      // 12158
     "M-TEC N.V.",                                                                         // 12159
@@ -14437,7 +14437,7 @@ static const char * const table[] =
     "e-mobilizer",                                                                        // 14415
     "ntl",                                                                                // 14416
     "Continentale Krankenversicherung A.G.",                                              // 14417
-    "Centro de Tecnologia da Informação ""Luiz de Queiroz""",                             // 14418
+    "Centro de Tecnologia da Informação Luiz de Queiroz",                                 // 14418
     "EMIGRATUS Communications Inc.",                                                      // 14419
     "ltinetworks.com",                                                                    // 14420
     "Mocana Corporation",                                                                 // 14421
@@ -14565,7 +14565,7 @@ static const char * const table[] =
     "N30D",                                                                               // 14543
     "Shanghai Posts&Telecommunications Equipment CO., Ltd.",                              // 14544
     "ICT, Academy of Science, CHINA",                                                     // 14545
-    "NTO ""IRE-POLUS""",                                                                  // 14546
+    "NTO IRE-POLUS",                                                                      // 14546
     "Neue Zurcher Zeitung",                                                               // 14547
     "Autovalley",                                                                         // 14548
     "Awanim",                                                                             // 14549
@@ -14606,7 +14606,7 @@ static const char * const table[] =
     "Celestix Networks",                                                                  // 14584
     "Compass Internet",                                                                   // 14585
     "Tmax soft",                                                                          // 14586
-    "Technological Centre ""Tushino"" CB RF",                                             // 14587
+    "Technological Centre Tushino CB RF",                                                 // 14587
     "Neosymmetria",                                                                       // 14588
     "Sicap Ltd",                                                                          // 14589
     "Passave Inc.",                                                                       // 14590
@@ -14717,7 +14717,7 @@ static const char * const table[] =
     "Herrmannsdoerfer Software Entwicklung",                                              // 14695
     "Absolut OK",                                                                         // 14696
     "RRDtool",                                                                            // 14697
-    "CSRI ""Elektropribor""",                                                             // 14698
+    "CSRI Elektropribor",                                                                 // 14698
     "Hagen Software Inc.",                                                                // 14699
     "frontiertech",                                                                       // 14700
     "Persist Technologies",                                                               // 14701
@@ -14904,7 +14904,7 @@ static const char * const table[] =
     "smartBridges",                                                                       // 14882
     "antek networks INC.",                                                                // 14883
     "Exelmon Technologies",                                                               // 14884
-    "JSC RPE ""Polygon""",                                                                // 14885
+    "JSC RPE Polygon",                                                                    // 14885
     "AIR Co., Ltd.",                                                                      // 14886
     "Nomura Research Institute, Ltd.",                                                    // 14887
     "Das Werk",                                                                           // 14888
@@ -15588,7 +15588,7 @@ static const char * const table[] =
     "EmberPoint Holdings Co., Ltd",                                                       // 15566
     "Neople Ltd.",                                                                        // 15567
     "Center for Development of Information Technology - CDIT",                            // 15568
-    "Krasnoyarsk ICC subdivision of MCC, JSC ""Russian Railways""",                       // 15569
+    "Krasnoyarsk ICC subdivision of MCC, JSC Russian Railways",                           // 15569
     "Bayerische Landesbank",                                                              // 15570
     "Schuler Electronics",                                                                // 15571
     "Tcom&dtvro",                                                                         // 15572
@@ -15691,7 +15691,7 @@ static const char * const table[] =
     "Lifecycle Software",                                                                 // 15669
     "The Internet Marketing Center",                                                      // 15670
     "Wardega Consulting",                                                                 // 15671
-    "Javno preduzece ""Posta Srbije""",                                                   // 15672
+    "Javno preduzece Posta Srbije",                                                       // 15672
     "Codeangels Solutions",                                                               // 15673
     "Valente CC",                                                                         // 15674
     "StoneDonut, LLC",                                                                    // 15675
@@ -15957,7 +15957,7 @@ static const char * const table[] =
     "Centerplex",                                                                         // 15935
     "Koreadotcom",                                                                        // 15936
     "Svyazinform of Republic Mordovia Joint Stock Company",                               // 15937
-    "JOINT-STOCK COMPANY IMPORT-EXPORT BANK ""IMPEXBANK"" , Moscow",                      // 15938
+    "JOINT-STOCK COMPANY IMPORT-EXPORT BANK IMPEXBANK , Moscow",                          // 15938
     "Coral Telecom Ltd",                                                                  // 15939
     "Factoria de iniciativas internet fi2, s.a",                                          // 15940
     "Galena Park ISD",                                                                    // 15941
@@ -17057,7 +17057,7 @@ static const char * const table[] =
     "Cerberian Inc",                                                                      // 17035
     "Alisys Software S.L.",                                                               // 17036
     "Brannstroms Elektronik AB",                                                          // 17037
-    "Federal State Unitary Enterprise ""Production Company 'Start'""",                    // 17038
+    "Federal State Unitary Enterprise Production Company 'Start'",                        // 17038
     "Vontu, Inc",                                                                         // 17039
     "Integrits Corporation",                                                              // 17040
     "TeleDomani, Inc.",                                                                   // 17041
@@ -17909,7 +17909,7 @@ static const char * const table[] =
     "Realtime Systems Limited",                                                           // 17887
     "Xor-Technologies",                                                                   // 17888
     "Porsche Informatik GmbH",                                                            // 17889
-    "JSC ""OSS Corporation""",                                                            // 17890
+    "JSC OSS Corporation",                                                                // 17890
     "MidAmerica Nazarene University",                                                     // 17891
     "Lumenaré Networks, Inc",                                                             // 17892
     "Cellent AG",                                                                         // 17893
@@ -18543,7 +18543,7 @@ static const char * const table[] =
     "TakeNET",                                                                            // 18521
     NULL,                                                                                 // 18522
     "Liverton Limited",                                                                   // 18523
-    "Empresa Metalúrgica Central de Acero ""José Valdes Reyes""",                         // 18524
+    "Empresa Metalúrgica Central de Acero José Valdes Reyes",                             // 18524
     "robinbowes.com",                                                                     // 18525
     "Fisk Labs, Inc.",                                                                    // 18526
     "Maersk Data Organisator A/S",                                                        // 18527
@@ -18564,7 +18564,7 @@ static const char * const table[] =
     "Sphinx Information Technologies Inc.",                                               // 18542
     "Innove Communications",                                                              // 18543
     "ecofinance",                                                                         // 18544
-    "Joint-stock company ""Trading System Administrator of Wholesale Electricity Market Transactions""",// 18545
+    "Joint-stock company Trading System Administrator of Wholesale Electricity Market Transactions",// 18545
     "FAST Video Security AG",                                                             // 18546
     "Amanda Emily",                                                                       // 18547
     "Relationalware",                                                                     // 18548
@@ -18908,7 +18908,7 @@ static const char * const table[] =
     "PFU LIMITED",                                                                        // 18886
     "University of Massachusetts Boston CPCS",                                            // 18887
     "Guoxin Telecom System Ltd",                                                          // 18888
-    """Arhangelsk Television Company"" Ltd.",                                             // 18889
+    "Arhangelsk Television Company Ltd.",                                                 // 18889
     "Integrated Communication Technologies",                                              // 18890
     "The Closed Joint-Stock Company ?DeltaBank¦",                                         // 18891
     "GEMMA Systems, spol. s r.o.",                                                        // 18892
@@ -18945,7 +18945,7 @@ static const char * const table[] =
     "Yamaguchi University",                                                               // 18923
     "Relston Consulting Limited",                                                         // 18924
     "Prior",                                                                              // 18925
-    "JTT ""Novel-IL""",                                                                   // 18926
+    "JTT Novel-IL",                                                                       // 18926
     "tandav enterprises",                                                                 // 18927
     "Areca Technology Corporation",                                                       // 18928
     "Interwise, Inc.",                                                                    // 18929
@@ -19063,7 +19063,7 @@ static const char * const table[] =
     "Apparent Networks Inc.",                                                             // 19041
     "ACBR Computadores Ltda.",                                                            // 19042
     "XiTrust Secure Technologies GmbH",                                                   // 19043
-    "JSC ""Kredyt Bank (Ukrajina)""",                                                     // 19044
+    "JSC Kredyt Bank (Ukrajina)",                                                         // 19044
     "MyNetwork System Co.,Ltd",                                                           // 19045
     "Lenovo Enterprise Business Group",                                                   // 19046
     "Magerealm Enterprises",                                                              // 19047
@@ -20226,7 +20226,7 @@ static const char * const table[] =
     "EBC",                                                                                // 20204
     "TIS Grupa d.o.o.",                                                                   // 20205
     "The Unwins Wine Group Ltd",                                                          // 20206
-    "Closed Joint Stock Company ""PIOGLOBAL Services""",                                  // 20207
+    "Closed Joint Stock Company PIOGLOBAL Services",                                      // 20207
     "Latitude Technologies, Inc.",                                                        // 20208
     "Submersion Corporation",                                                             // 20209
     "Vigilant Privacy Corporation",                                                       // 20210
@@ -20334,7 +20334,7 @@ static const char * const table[] =
     "Semantico Limited",                                                                  // 20312
     "ix-tech",                                                                            // 20313
     "FabDouglas",                                                                         // 20314
-    "OCA ""OpenCallArgentina""",                                                          // 20315
+    "OCA OpenCallArgentina",                                                              // 20315
     "Qosmetrics, Inc.",                                                                   // 20316
     "Lissi Co. Ltd.",                                                                     // 20317
     "Friedrich + Lochner GmbH",                                                           // 20318
@@ -20779,7 +20779,7 @@ static const char * const table[] =
     "Prisacom s.a.",                                                                      // 20757
     "netSurity Ltd",                                                                      // 20758
     "Kepler-Rominfo S.A.",                                                                // 20759
-    "Autonomous noncommercial organization ""Scientific and Training Center of Information Security of Pr",// 20760
+    "Autonomous noncommercial organization Scientific and Training Center of Information Security of Pr",// 20760
     "Uniklinikum Mannheim",                                                               // 20761
     "Passage Consortia C/O Sony Electronics (Trustee)",                                   // 20762
     "Fastenal Company, Inc.",                                                             // 20763
@@ -21349,7 +21349,7 @@ static const char * const table[] =
     "Westsaechsische Hochschule Zwickau",                                                 // 21327
     "Metos Oy",                                                                           // 21328
     "secXtreme GmbH",                                                                     // 21329
-    "JSC ""TransTeleCom Company""",                                                       // 21330
+    "JSC TransTeleCom Company",                                                           // 21330
     "RESEAUNANCE",                                                                        // 21331
     "Luciad NV",                                                                          // 21332
     "Chongqing Putian Communication Equipment Ltd, Co.",                                  // 21333
@@ -22901,7 +22901,7 @@ static const char * const table[] =
     "Affine DB Ltd.",                                                                     // 22879
     "SonicDuo OSP dep.",                                                                  // 22880
     "Man Investments Ltd",                                                                // 22881
-    "CJSC ""UKRAINIAN MOBILE COMMUNICATIONS""",                                           // 22882
+    "CJSC UKRAINIAN MOBILE COMMUNICATIONS",                                               // 22882
     "OPENLiMiT SignCubes GmbH",                                                           // 22883
     "Western Gas Resources, Inc.",                                                        // 22884
     "GIP CPAGE",                                                                          // 22885
@@ -22909,7 +22909,7 @@ static const char * const table[] =
     "PC-Ware Information Technologies AG",                                                // 22887
     "Interface Business GmbH",                                                            // 22888
     "Zenprise, Inc.",                                                                     // 22889
-    "Department of Applied Mathematics ""U.Dini""",                                       // 22890
+    "Department of Applied Mathematics U.Dini",                                           // 22890
     "Future Connect (Pvt) Ltd",                                                           // 22891
     "Jan B. Telepski Trading",                                                            // 22892
     "Ing. Petr Setka",                                                                    // 22893
@@ -24127,7 +24127,7 @@ static const char * const table[] =
     "di-Cross",                                                                           // 24105
     "Damovo do Brasil S/A",                                                               // 24106
     "xkoto Inc.",                                                                         // 24107
-    "UAB ""Eltera""",                                                                     // 24108
+    "UAB Eltera",                                                                         // 24108
     "Luix",                                                                               // 24109
     "Vigilix. LLC",                                                                       // 24110
     "Optivus Technology, Inc.",                                                           // 24111
@@ -24265,7 +24265,7 @@ static const char * const table[] =
     "Amrita Institute of Medical Sciences",                                               // 24243
     "IntroMobile CO., Ltd",                                                               // 24244
     "OSS Corporaton",                                                                     // 24245
-    "MGP ""Mosvodokanal""",                                                               // 24246
+    "MGP Mosvodokanal",                                                                   // 24246
     "Bettge",                                                                             // 24247
     "Stockway Oy",                                                                        // 24248
     "Clinique Saint-Luc (Bouge)",                                                         // 24249
@@ -24563,7 +24563,7 @@ static const char * const table[] =
     "Beijing GrandRole Software Co.,Ltd.",                                                // 24541
     "Albert-Einstein-Gymnasium",                                                          // 24542
     "Black Eyed Moon",                                                                    // 24543
-    "JSC ""Eltel""",                                                                      // 24544
+    "JSC Eltel",                                                                          // 24544
     "Ursus Technologies, Inc.",                                                           // 24545
     "ServerCave, Inc.",                                                                   // 24546
     "Linux Users Group Singapore",                                                        // 24547
@@ -24666,7 +24666,7 @@ static const char * const table[] =
     "Applied Broadband, Inc.",                                                            // 24644
     "e-DMZ Security, LLC.",                                                               // 24645
     "Fonner",                                                                             // 24646
-    """NTC-Atlas""",                                                                      // 24647
+    "NTC-Atlas",                                                                          // 24647
     "SL EDV-Dienstleistungen",                                                            // 24648
     "MainSkill Technologies GmbH&Co.KG",                                                  // 24649
     "Control Systems srl",                                                                // 24650
@@ -24864,7 +24864,7 @@ static const char * const table[] =
     "Gravitime",                                                                          // 24842
     "Halier",                                                                             // 24843
     "Petroleum Convenience Alliance for Technology Standards, Inc.",                      // 24844
-    "JSC institute ""Promstrojniiproject""",                                              // 24845
+    "JSC institute Promstrojniiproject",                                                  // 24845
     "Scivo Technology Co. Ltd.",                                                          // 24846
     "International Criminal Court - Cour Penale Internationale",                          // 24847
     "bollcons",                                                                           // 24848
@@ -24929,7 +24929,7 @@ static const char * const table[] =
     "Infopact Netwerkdiensten B.V.",                                                      // 24907
     "Stored IQ, Inc.",                                                                    // 24908
     "Secure-24, LLC",                                                                     // 24909
-    "OOO ""ElitStudio""",                                                                 // 24910
+    "OOO ElitStudio",                                                                     // 24910
     "Foxbyte Ltd",                                                                        // 24911
     "ASELSAN INC.",                                                                       // 24912
     "Cook Group Incorporated",                                                            // 24913
@@ -25196,7 +25196,7 @@ static const char * const table[] =
     "NetOp as",                                                                           // 25174
     "DCN",                                                                                // 25175
     "Familie Uhlig",                                                                      // 25176
-    "VAS ""Latvijas Pasts""",                                                             // 25177
+    "VAS Latvijas Pasts",                                                                 // 25177
     "GÉANT",                                                                              // 25178
     "GESA Elektronik GmbH",                                                               // 25179
     "Itonis Ltd.",                                                                        // 25180
@@ -25226,7 +25226,7 @@ static const char * const table[] =
     "Prodato Integration Technology GmbH",                                                // 25204
     "Movial Corporation",                                                                 // 25205
     "Axxess Identification Limited",                                                      // 25206
-    "JSC ""ATLAS""",                                                                      // 25207
+    "JSC ATLAS",                                                                          // 25207
     "CSC Scandihealth A/S",                                                               // 25208
     "CURON Inc.",                                                                         // 25209
     "bizEbox",                                                                            // 25210
@@ -25470,7 +25470,7 @@ static const char * const table[] =
     "Verari Systems, Inc",                                                                // 25448
     "Beijing Easy Broadband Technology Co.,Ltd.",                                         // 25449
     "eTraintronics.com",                                                                  // 25450
-    "UFPS Tymenskoy oblasti - filial FGUP ""Pochta Rossii""",                             // 25451
+    "UFPS Tymenskoy oblasti - filial FGUP Pochta Rossii",                                 // 25451
     "Sikom Software GmbH",                                                                // 25452
     "Seaview Support Systems Pvt Ltd",                                                    // 25453
     "LiComm Co., Ltd.",                                                                   // 25454
@@ -26134,7 +26134,7 @@ static const char * const table[] =
     "ISGS",                                                                               // 26112
     "keuning Information Systems",                                                        // 26113
     "AXIOHM",                                                                             // 26114
-    "JSC STC ""Rissa""",                                                                  // 26115
+    "JSC STC Rissa",                                                                      // 26115
     "Practical Economic Research Limited",                                                // 26116
     "Lux Solis, LLC",                                                                     // 26117
     "BFSt",                                                                               // 26118
@@ -26613,7 +26613,7 @@ static const char * const table[] =
     "Kynetia Networks S.L.",                                                              // 26591
     "HUBER+SUHNER Polatis Ltd",                                                           // 26592
     "littlemail",                                                                         // 26593
-    "ASOIU departament of NTUU ""KPI""",                                                  // 26594
+    "ASOIU departament of NTUU KPI",                                                      // 26594
     "Connect Tech Inc.",                                                                  // 26595
     "S-INFORMATION TECHNOLOGY CO., LTD.",                                                 // 26596
     "Comerica Bank",                                                                      // 26597
@@ -26798,7 +26798,7 @@ static const char * const table[] =
     "maintech GmbH",                                                                      // 26776
     "Declude, Inc.",                                                                      // 26777
     "Nerdboy Services",                                                                   // 26778
-    "PPW ""ARAJ"" Sp. z o.o.",                                                            // 26779
+    "PPW ARAJ Sp. z o.o.",                                                                // 26779
     "GMx Technologies, Inc",                                                              // 26780
     "Greg Cockerham",                                                                     // 26781
     "TRI-D Systems, Inc.",                                                                // 26782
@@ -26971,7 +26971,7 @@ static const char * const table[] =
     "InterComputer Corp.",                                                                // 26949
     "GUST / Ninja Services",                                                              // 26950
     "RENAULT-NISSAN B.V.",                                                                // 26951
-    "Joint-stock company ""Bank SOYUZ""",                                                 // 26952
+    "Joint-stock company Bank SOYUZ",                                                     // 26952
     "Astronix Technology Inc.",                                                           // 26953
     "INdustrias Sola Basic, SA de CV",                                                    // 26954
     "Avalon Networks LLC",                                                                // 26955
@@ -27014,7 +27014,7 @@ static const char * const table[] =
     "ENTEL S.A.",                                                                         // 26992
     "Promwad Innovation Company",                                                         // 26993
     "opensma",                                                                            // 26994
-    "Public Joint-Stock Company  ""Baltiyskiy Bank""",                                    // 26995
+    "Public Joint-Stock Company  Baltiyskiy Bank",                                        // 26995
     "Qmax Communications",                                                                // 26996
     "Studer Professional Audio GmbH",                                                     // 26997
     "Ultra Electronics",                                                                  // 26998
@@ -27275,7 +27275,7 @@ static const char * const table[] =
     "AusRegistry Pty Ltd",                                                                // 27253
     "FIX Flyer LLC",                                                                      // 27254
     "Tarkhany Regional (County) Open Joint-Stock Bank",                                   // 27255
-    "NPF ""KRUG""",                                                                       // 27256
+    "NPF KRUG",                                                                           // 27256
     "Valimo Wireless Oy",                                                                 // 27257
     "NovaSecure AS",                                                                      // 27258
     "BEL POWER SOLUTIONS",                                                                // 27259
@@ -27299,7 +27299,7 @@ static const char * const table[] =
     "SatPath Systems, Inc.",                                                              // 27277
     "Sindoh Co., Ltd.",                                                                   // 27278
     "GoldenNet Technology Inc.",                                                          // 27279
-    "Università Degli Studi di Urbino ""Carlo Bo",                                        // 27280
+    "Università Degli Studi di Urbino Carlo Bo",                                          // 27280
     "Netcon Systems",                                                                     // 27281
     "Realtek Semiconductor corp.",                                                        // 27282
     "Xcenium Technology",                                                                 // 27283
@@ -27362,7 +27362,7 @@ static const char * const table[] =
     "OpenVPN Solutions LLC.",                                                             // 27340
     "Medianstrip",                                                                        // 27341
     "Haskology Consulting",                                                               // 27342
-    """Telekom Srbija"" a.d.",                                                            // 27343
+    "Telekom Srbija a.d.",                                                                // 27343
     "Dallmeier electronic GmbH & Co.KG",                                                  // 27344
     "Alticor, Inc",                                                                       // 27345
     "VDA Elettronica spa",                                                                // 27346
@@ -27797,7 +27797,7 @@ static const char * const table[] =
     "Site Monitoring Solutions Inc.",                                                     // 27775
     "IDAC Ltd.",                                                                          // 27776
     "Auptyma Corporation",                                                                // 27777
-    "UnState educational establishment of additional education ""Educational center ""Meson""",// 27778
+    "UnState educational establishment of additional education Educational center Meson", // 27778
     "OFFRATEL",                                                                           // 27779
     "Public Surplus, LLC",                                                                // 27780
     "Ministerio de Empleo y Seguridad Social",                                            // 27781
@@ -28099,7 +28099,7 @@ static const char * const table[] =
     "WiseSport (Hong Kong) Limited",                                                      // 28077
     "Genos Open Source S.L.",                                                             // 28078
     "OpenScale Technologies GmbH",                                                        // 28079
-    """ISG"" Joint Stock Company",                                                        // 28080
+    "ISG Joint Stock Company",                                                            // 28080
     "New Castle Community School Corporation",                                            // 28081
     "Rdesign",                                                                            // 28082
     "SOSDG",                                                                              // 28083
@@ -28232,7 +28232,7 @@ static const char * const table[] =
     "SunRocket Inc.",                                                                     // 28210
     "Emergency Response Management Services Inc.",                                        // 28211
     "FARIISTA LIMITED",                                                                   // 28212
-    "Open joint-stock company ""Agency for Mortgage Housing  Crediting""",                // 28213
+    "Open joint-stock company Agency for Mortgage Housing  Crediting",                    // 28213
     "KERNEOS",                                                                            // 28214
     "3Roam SA",                                                                           // 28215
     "FingerPost Ltd",                                                                     // 28216
@@ -28616,7 +28616,7 @@ static const char * const table[] =
     "EXGEN Networks Co., Ltd.",                                                           // 28594
     "PATRONAS Financial Systems GmbH",                                                    // 28595
     "CTE Digital Broadcast s.r.l.",                                                       // 28596
-    "National Centre for Scientific Research ""Demokritos""",                             // 28597
+    "National Centre for Scientific Research Demokritos",                                 // 28597
     "Sambers Italia Spa",                                                                 // 28598
     "Landmark Communications, Inc.",                                                      // 28599
     "Hetra Secure Solutions Corp.",                                                       // 28600
@@ -28817,7 +28817,7 @@ static const char * const table[] =
     "uPRESTO, Inc",                                                                       // 28795
     "Haberst Infra AS",                                                                   // 28796
     "SCBA Expert Service Centre",                                                         // 28797
-    "JSC  ""SBERCARD""",                                                                  // 28798
+    "JSC  SBERCARD",                                                                      // 28798
     "Thales Security Solutions and Services",                                             // 28799
     "QualiConsult Ltda",                                                                  // 28800
     "FlexStar Technology, Inc",                                                           // 28801
@@ -29008,7 +29008,7 @@ static const char * const table[] =
     "FNMS Project",                                                                       // 28986
     "marsldap",                                                                           // 28987
     "icanetix Software Systems and Consulting GmbH",                                      // 28988
-    "Sociedad Mutual ""Seguro de Vida""",                                                 // 28989
+    "Sociedad Mutual Seguro de Vida",                                                     // 28989
     "PrivateMonitoring",                                                                  // 28990
     "Ghz Soluções em Informatica Dracena LTDA ME",                                        // 28991
     "American Century Proprietary Holdings, Inc.",                                        // 28992
@@ -29024,7 +29024,7 @@ static const char * const table[] =
     "PGGM",                                                                               // 29002
     "Fibernet International",                                                             // 29003
     "La Voz de Galicia",                                                                  // 29004
-    "Joint Stock Company ""Scientific & Production Enterprise ""ORBITA""",                // 29005
+    "Joint Stock Company Scientific & Production Enterprise ORBITA",                      // 29005
     "Vocalink Limited",                                                                   // 29006
     "R&D ScanEx",                                                                         // 29007
     "Kaya Software, LLC",                                                                 // 29008
@@ -29188,7 +29188,7 @@ static const char * const table[] =
     "NetQoSt",                                                                            // 29166
     "ISTEC GmbH",                                                                         // 29167
     "T-Mobile International",                                                             // 29168
-    "LLC ""Astelit""",                                                                    // 29169
+    "LLC Astelit",                                                                        // 29169
     "Interactive Quality Services Inc.",                                                  // 29170
     "ESET, spol. s r.o.",                                                                 // 29171
     "Bresnan Communications, LLC.",                                                       // 29172
@@ -29971,7 +29971,7 @@ static const char * const table[] =
     "Cassiopea OnLine srl",                                                               // 29949
     "GMIT GmbH",                                                                          // 29950
     "DCom, spol. s r.o.",                                                                 // 29951
-    "JSC ""Alliance Group Holding""",                                                     // 29952
+    "JSC Alliance Group Holding",                                                         // 29952
     "deburit chemical engineering GmbH",                                                  // 29953
     "Health Identity Management Consortium - HIMC",                                       // 29954
     "Medina VoIP",                                                                        // 29955
@@ -30493,7 +30493,7 @@ static const char * const table[] =
     "TwoPiRadian Infotech Private Limited",                                               // 30471
     "CityLink, Ltd.",                                                                     // 30472
     "Steropes Technologies Limited",                                                      // 30473
-    "CJSC ""InCore""",                                                                    // 30474
+    "CJSC InCore",                                                                        // 30474
     "Intra2net AG",                                                                       // 30475
     "BIS",                                                                                // 30476
     "gig mbh berlin",                                                                     // 30477
@@ -30984,7 +30984,7 @@ static const char * const table[] =
     "Denis Knauf",                                                                        // 30962
     "HUTON",                                                                              // 30963
     "ZLGMCU",                                                                             // 30964
-    "University ""Dunarea de Jos"" Galati",                                               // 30965
+    "University Dunarea de Jos Galati",                                                   // 30965
     "SHENZHEN CLEVER ELECTRONIC CO.,LTD.",                                                // 30966
     "VVAAQIS",                                                                            // 30967
     "For Sale Digital Internet-Agentur GmbH",                                             // 30968
@@ -31129,7 +31129,7 @@ static const char * const table[] =
     "Global Protocols",                                                                   // 31107
     "Compriva Communications Privacy Solutions Inc.",                                     // 31108
     "IAVANTE Foundation",                                                                 // 31109
-    "UAB ""BT-Grupe""",                                                                   // 31110
+    "UAB BT-Grupe",                                                                       // 31110
     "Norfello Oy",                                                                        // 31111
     "XForm Systems GmbH",                                                                 // 31112
     "Swemel JSC",                                                                         // 31113
@@ -31213,7 +31213,7 @@ static const char * const table[] =
     "Alset Corporation",                                                                  // 31191
     "Hella KGaA Hueck & Co.",                                                             // 31192
     "DT Netsolution GmbH",                                                                // 31193
-    "Public Association ""RENAM"" (Research and Educational Networking Association of Moldova)",// 31194
+    "Public Association RENAM (Research and Educational Networking Association of Moldova)",// 31194
     "audio data Ton- und Datentechnik GmbH",                                              // 31195
     "Sosialistisk Venstreparti",                                                          // 31196
     "Ousmane Ba  International Business Automation",                                      // 31197
@@ -32721,7 +32721,7 @@ static const char * const table[] =
     "Thales Alenia Space France",                                                         // 32699
     "INBUSS Informatikai Szolgáltató és Kereskedelmi Kft.",                               // 32700
     "Loyalty Partner GmbH",                                                               // 32701
-    "Joint Stock Company ""NPO RusBITech""",                                              // 32702
+    "Joint Stock Company NPO RusBITech",                                                  // 32702
     "Centre de Recherche Henri Tudor - SANTEC",                                           // 32703
     "JSC ErshovTelecom",                                                                  // 32704
     "dSys e.K.",                                                                          // 32705
@@ -33048,7 +33048,7 @@ static const char * const table[] =
     "Positive Advisory S.A.",                                                             // 33026
     "CAJA DE AHORROS DE GALICIA",                                                         // 33027
     "Prassel S.r.l.",                                                                     // 33028
-    "CJSC “Borisoglebsk Communication System""",                                          // 33029
+    "CJSC “Borisoglebsk Communication System",                                            // 33029
     "Timico Ltd",                                                                         // 33030
     "C.G.C.,a.s.",                                                                        // 33031
     "CTP GmbH",                                                                           // 33032
@@ -33218,7 +33218,7 @@ static const char * const table[] =
     "VITA",                                                                               // 33196
     "WIT",                                                                                // 33197
     "SISCA",                                                                              // 33198
-    """TERRATEL"" LLC",                                                                   // 33199
+    "TERRATEL LLC",                                                                       // 33199
     "Gelber Group LLC",                                                                   // 33200
     "3F Elettronica s.n.c.",                                                              // 33201
     "ASUMO CO., LTD.",                                                                    // 33202
@@ -33872,7 +33872,7 @@ static const char * const table[] =
     "Capgemini Spain SLU",                                                                // 33850
     "Combilent A/S",                                                                      // 33851
     "Tractis",                                                                            // 33852
-    """STM"" Co., Ltd",                                                                   // 33853
+    "STM Co., Ltd",                                                                       // 33853
     "RP Compounds GmbH",                                                                  // 33854
     "ADVtools",                                                                           // 33855
     "Ansgar Jonietz",                                                                     // 33856
@@ -34078,7 +34078,7 @@ static const char * const table[] =
     "NetActuate",                                                                         // 34056
     "Beehive Security",                                                                   // 34057
     "Babicom",                                                                            // 34058
-    "NII ""Vektor""",                                                                     // 34059
+    "NII Vektor",                                                                         // 34059
     "Nexgen Technologies",                                                                // 34060
     "COS-CRPF",                                                                           // 34061
     "Mosart Medialab AS",                                                                 // 34062
@@ -34588,7 +34588,7 @@ static const char * const table[] =
     "Tradar Limited",                                                                     // 34566
     "Micronetics, Inc.",                                                                  // 34567
     "Synectics",                                                                          // 34568
-    "KB ""Uniastrumbank""",                                                               // 34569
+    "KB Uniastrumbank",                                                                   // 34569
     "Netdeep Tecnologia",                                                                 // 34570
     "SIGNION SYSTEMS",                                                                    // 34571
     "NARI-RELAYS Electric Co., Ltd.",                                                     // 34572
@@ -34724,7 +34724,7 @@ static const char * const table[] =
     "Parity Energy Inc.",                                                                 // 34702
     "Stefan Sieber",                                                                      // 34703
     "H. Lundbeck A/S",                                                                    // 34704
-    "ZAO GU NPO ""Stroytechautomatika""",                                                 // 34705
+    "ZAO GU NPO Stroytechautomatika",                                                     // 34705
     "Aprius Inc.",                                                                        // 34706
     "Centro Federal de Educação Tecnológica de Minas Gerais",                             // 34707
     "Etrafficers, Inc.",                                                                  // 34708
@@ -34813,7 +34813,7 @@ static const char * const table[] =
     "Centre Hospitalier de Péronne",                                                      // 34791
     "Gouvernement de Nouvelle-Caledonie",                                                 // 34792
     "Azblink",                                                                            // 34793
-    "JSC Commercial Bank ""Center-invest""",                                              // 34794
+    "JSC Commercial Bank Center-invest",                                                  // 34794
     "DATA-PKS Ltd.",                                                                      // 34795
     "MBS GmbH",                                                                           // 34796
     "AM-GmbH",                                                                            // 34797
@@ -34945,7 +34945,7 @@ static const char * const table[] =
     "KOOLING",                                                                            // 34923
     "Augustine Consulting",                                                               // 34924
     "Nantes Systems Private Limited",                                                     // 34925
-    "Limited Liability Company ""Wild Orchid""",                                          // 34926
+    "Limited Liability Company Wild Orchid",                                              // 34926
     "DL Santé",                                                                           // 34927
     "ACVITAS",                                                                            // 34928
     "SURGIDEX",                                                                           // 34929
@@ -35050,7 +35050,7 @@ static const char * const table[] =
     "netPark LLC",                                                                        // 35028
     "K.C.Innovations Co.,Ltd.",                                                           // 35029
     "Run Technologies Co.,Ltd.Beijing",                                                   // 35030
-    "GP NPF ""Ratex""",                                                                   // 35031
+    "GP NPF Ratex",                                                                       // 35031
     "BelTechInfo",                                                                        // 35032
     "Global Net Commerce, Inc.",                                                          // 35033
     "Sentai Digital, LLC",                                                                // 35034
@@ -35072,7 +35072,7 @@ static const char * const table[] =
     "topdog.ru.net",                                                                      // 35050
     "Systemnoe Modelirovanie i Analiz LLC",                                               // 35051
     "Condrey Corporation",                                                                // 35052
-    "LLC ""Promo Interactive""",                                                          // 35053
+    "LLC Promo Interactive",                                                              // 35053
     "Jan Schampera",                                                                      // 35054
     "Gameloft",                                                                           // 35055
     "whiteroad",                                                                          // 35056
@@ -35192,7 +35192,7 @@ static const char * const table[] =
     "Bioptic Co., Ltd.",                                                                  // 35170
     "Cloudeva",                                                                           // 35171
     "Nordex",                                                                             // 35172
-    "Automobile Association ""DreamCar""",                                                // 35173
+    "Automobile Association DreamCar",                                                    // 35173
     "PBS&J",                                                                              // 35174
     "TamKang University  - Information Management Network Association",                   // 35175
     "Asavie Technologies Ltd.",                                                           // 35176
@@ -35234,7 +35234,7 @@ static const char * const table[] =
     "dealnews.com, Inc.",                                                                 // 35212
     "Sandbox Solutions",                                                                  // 35213
     "Agence pour l'Enseignement Français à l'Etranger",                                   // 35214
-    "ZAO ""Begun""",                                                                      // 35215
+    "ZAO Begun",                                                                          // 35215
     "w-Ha",                                                                               // 35216
     "Adknowledge Inc",                                                                    // 35217
     "Beemaster ICT",                                                                      // 35218
@@ -35394,7 +35394,7 @@ static const char * const table[] =
     "Daniel Clark",                                                                       // 35372
     "Slovak Telekom, a.s.",                                                               // 35373
     "Universidade Federal do Espirito Santo",                                             // 35374
-    "UAB ""Mano numeris""",                                                               // 35375
+    "UAB Mano numeris",                                                                   // 35375
     "SOFTWAY MEDICAL",                                                                    // 35376
     "Funkwerk IP-Appliances GmbH",                                                        // 35377
     "Antwerpse Waterwerken",                                                              // 35378
@@ -35486,7 +35486,7 @@ static const char * const table[] =
     "Blues Point Partners Pty Ltd",                                                       // 35464
     "Bank Julius Baer & Co. Ltd.",                                                        // 35465
     "Forsway Scandinavia AB",                                                             // 35466
-    "OOO""SpinBrain""",                                                                   // 35467
+    "OOOSpinBrain",                                                                       // 35467
     "Kaunas University of Technology",                                                    // 35468
     "Seamless Distribution AB",                                                           // 35469
     "First-Matrix",                                                                       // 35470
@@ -35610,13 +35610,13 @@ static const char * const table[] =
     "ndl.kiev.ua",                                                                        // 35588
     "Confederación Pirata",                                                               // 35589
     "Convergent Communications, Inc",                                                     // 35590
-    "Limited Liability Company ""Mejregiongaz """,                                        // 35591
+    "Limited Liability Company Mejregiongaz ",                                            // 35591
     "FiberSensing S.A.",                                                                  // 35592
     "Thales / Rockwell Collins",                                                          // 35593
     "iCOMcept GmbH",                                                                      // 35594
     "distributedmatter.net",                                                              // 35595
     "Innovid Co., Ltd.",                                                                  // 35596
-    """TeleMiks"" UE",                                                                    // 35597
+    "TeleMiks UE",                                                                        // 35597
     "PIWorks Inc",                                                                        // 35598
     "Marketware",                                                                         // 35599
     "TCC R&D GmbH",                                                                       // 35600
@@ -35625,7 +35625,7 @@ static const char * const table[] =
     "TIANJIN DEVISER ELECTRONICS INSTRUMENT CO.,LTD",                                     // 35603
     "Compal Broadband Networks Inc.",                                                     // 35604
     "Montani Webdevelopment + Strategie",                                                 // 35605
-    "ZAO NPC ""KOMPYUTERNYE TECHNOLOGII""",                                               // 35606
+    "ZAO NPC KOMPYUTERNYE TECHNOLOGII",                                                   // 35606
     "Wireless eSystems",                                                                  // 35607
     "Answer Quick",                                                                       // 35608
     "AXIe Consortium, Inc.",                                                              // 35609
@@ -35899,7 +35899,7 @@ static const char * const table[] =
     "High Technology Industries B.V.",                                                    // 35877
     "Conseil général de l'Aube",                                                          // 35878
     "WellDoc, Inc.",                                                                      // 35879
-    "JSC ""Mediafon""",                                                                   // 35880
+    "JSC Mediafon",                                                                       // 35880
     "Ionis group",                                                                        // 35881
     "NTT DATA KYUSHU CORPORATION",                                                        // 35882
     "VisualSoft Private Limited",                                                         // 35883
@@ -36232,7 +36232,7 @@ static const char * const table[] =
     "Centre hospitalier de l'Université de Montréal",                                     // 36210
     "The Catholic University of America",                                                 // 36211
     "Research and Education Bridge Certification Authority, Inc.",                        // 36212
-    "SIA ""INBOKSS""",                                                                    // 36213
+    "SIA INBOKSS",                                                                        // 36213
     "Galaxy Telecom Technologies Ltd",                                                    // 36214
     "Greek Academic Network - GUnet",                                                     // 36215
     "GoliathDNS ENK",                                                                     // 36216
@@ -36415,7 +36415,7 @@ static const char * const table[] =
     "Bohemia Interactive",                                                                // 36393
     "Benco Dental",                                                                       // 36394
     "Hochschule Wilhelmshaven/Oldenburg/Elsfleth",                                        // 36395
-    "OAO ""FSK EES"" MES Siberian",                                                       // 36396
+    "OAO FSK EES MES Siberian",                                                           // 36396
     "Plurk Inc.",                                                                         // 36397
     "Ingenieria GBR, C.A.",                                                               // 36398
     "39th Studios, LLC",                                                                  // 36399
@@ -36725,7 +36725,7 @@ static const char * const table[] =
     "ABR Innovations, LLC.",                                                              // 36703
     "My Ways, Org.",                                                                      // 36704
     "National Time Service Center,Chinese Academy of Sciences",                           // 36705
-    "Fundación Centro Oncológico de Galicia ""José Antonio Quiroga y Piñeyro""",          // 36706
+    "Fundación Centro Oncológico de Galicia José Antonio Quiroga y Piñeyro",              // 36706
     "SpiderCloud Wireless, Inc.",                                                         // 36707
     "Sensus Informatika Kft.",                                                            // 36708
     "Mezeo Software Corporation",                                                         // 36709
@@ -36843,7 +36843,7 @@ static const char * const table[] =
     "Local Matters, Inc.",                                                                // 36821
     "Adaffix GmbH",                                                                       // 36822
     "Conference Plus, Inc.",                                                              // 36823
-    "UFPS ""Tatarstan pochtasy"" - filial FGUP ""Pochta Rossii""",                        // 36824
+    "UFPS Tatarstan pochtasy - filial FGUP Pochta Rossii",                                // 36824
     "Grenada Lake Medical Center",                                                        // 36825
     "Control Zero",                                                                       // 36826
     "Message Solution",                                                                   // 36827
@@ -36865,7 +36865,7 @@ static const char * const table[] =
     "Valley Telegence Private Ltd",                                                       // 36843
     "Sozialhilfeverband Kirchdorf an der Krems",                                          // 36844
     "ABACOM-Ingenieurgesllschaft",                                                        // 36845
-    "OOO ""SMU OFISSTROY""",                                                              // 36846
+    "OOO SMU OFISSTROY",                                                                  // 36846
     "International Game Technology, Inc.",                                                // 36847
     "CRE-DO GmbH",                                                                        // 36848
     "Hanwha Vision Co., Ltd.",                                                            // 36849
@@ -36963,7 +36963,7 @@ static const char * const table[] =
     "Solekai Systems Corporation",                                                        // 36941
     "KAVECO-Workflow",                                                                    // 36942
     "Venice International University",                                                    // 36943
-    "ANO ""TV-Novosti""",                                                                 // 36944
+    "ANO TV-Novosti",                                                                     // 36944
     "Advance Milles System Co.,Ltd.",                                                     // 36945
     "Web Technology Projects ltd.",                                                       // 36946
     "Multilab AS",                                                                        // 36947
@@ -37596,7 +37596,7 @@ static const char * const table[] =
     "Alberta Distance Learning Centre",                                                   // 37574
     "Infobip LTD",                                                                        // 37575
     "NovelSat",                                                                           // 37576
-    "Branch of LLC ""Tabak-Invest"" Trade Center ""Korona""",                             // 37577
+    "Branch of LLC Tabak-Invest Trade Center Korona",                                     // 37577
     "Samworth Brothers Ltd",                                                              // 37578
     "Synetrix Holdings Limited",                                                          // 37579
     "Chao-Inn elementary school",                                                         // 37580
@@ -37625,7 +37625,7 @@ static const char * const table[] =
     "Meami.org",                                                                          // 37603
     "RMG Tech (Malaysia) Sdn Bhd",                                                        // 37604
     "MCX Telecom 2 Sp. z o.o.",                                                           // 37605
-    """SM Finance"",JSC",                                                                 // 37606
+    "SM Finance,JSC",                                                                     // 37606
     "Cascada Software & Consulting",                                                      // 37607
     "CareEvolution, Inc",                                                                 // 37608
     "Dang Networks Inc.",                                                                 // 37609
@@ -37661,7 +37661,7 @@ static const char * const table[] =
     "ECYS S.A.",                                                                          // 37639
     "Federal Cardiovascular surgery center",                                              // 37640
     "Neebula Systems",                                                                    // 37641
-    "GK ""SoftExpert""",                                                                  // 37642
+    "GK SoftExpert",                                                                      // 37642
     "IBM BTO Business Consulting Services Sp. z o.o.",                                    // 37643
     "Fuzhou Ucore Information Technologies Co,.Ltd",                                      // 37644
     "Medical Data Express",                                                               // 37645
@@ -37795,7 +37795,7 @@ static const char * const table[] =
     "OAO NESK Novorossiyskenergosbit",                                                    // 37773
     "51.6 Noord B.V.",                                                                    // 37774
     "BaoBros Studio",                                                                     // 37775
-    "Co. Ltd. ""RCS Labs""",                                                              // 37776
+    "Co. Ltd. RCS Labs",                                                                  // 37776
     "Cabinet Pierre Guerin",                                                              // 37777
     "Northern Design (Electronics) Ltd",                                                  // 37778
     "Nuvolas",                                                                            // 37779
@@ -37932,7 +37932,7 @@ static const char * const table[] =
     "Modesat Communications",                                                             // 37910
     "CDP Communications Inc.",                                                            // 37911
     "Locomotive Software & Consulting",                                                   // 37912
-    "ZAO PTKB ""MERCURIY""",                                                              // 37913
+    "ZAO PTKB MERCURIY",                                                                  // 37913
     "TECNOTEL s.r.l.",                                                                    // 37914
     "Shenzhen Zyeeda Information Technology Co. Ltd.",                                    // 37915
     "Volvo Car Corporation AB",                                                           // 37916
@@ -37965,7 +37965,7 @@ static const char * const table[] =
     "Medium Link System Technology CO., LTD",                                             // 37943
     "megalo & company",                                                                   // 37944
     "Inspur(BeiJing) Electronic Information Industry Co.,Ltd",                            // 37945
-    "CJSC ""Dzetta""",                                                                    // 37946
+    "CJSC Dzetta",                                                                        // 37946
     "Banco Central del Ecuador",                                                          // 37947
     "TOS.BG",                                                                             // 37948
     "TenneT TSO",                                                                         // 37949
@@ -38046,7 +38046,7 @@ static const char * const table[] =
     "Logic Soft sas",                                                                     // 38024
     "MindArray Systems (P) Ltd",                                                          // 38025
     "ACOME",                                                                              // 38026
-    "Ltd ""InfoTechnoService""",                                                          // 38027
+    "Ltd InfoTechnoService",                                                              // 38027
     "DANTECH Limited",                                                                    // 38028
     "University of South Florida",                                                        // 38029
     "Conngame Co.Ltd.",                                                                   // 38030
@@ -38239,7 +38239,7 @@ static const char * const table[] =
     "gigatec GmbH",                                                                       // 38217
     "Designer Systems Ltd",                                                               // 38218
     "Therap Services, LLC",                                                               // 38219
-    "Private Unitary Enterprise on Rendering Services ""Greenwall Systems""",             // 38220
+    "Private Unitary Enterprise on Rendering Services Greenwall Systems",                 // 38220
     "IP Gorshkov Yuri Valerevich",                                                        // 38221
     "Philips North America LLC",                                                          // 38222
     "definition six, inc.",                                                               // 38223
@@ -38385,7 +38385,7 @@ static const char * const table[] =
     "PT Primatama Sentra Solusi",                                                         // 38363
     "Netsis Technology",                                                                  // 38364
     "BKW Management AG",                                                                  // 38365
-    "Joint-Stock Bank ""Master-Bank""",                                                   // 38366
+    "Joint-Stock Bank Master-Bank",                                                       // 38366
     "KIS Information Services GmbH",                                                      // 38367
     "Radimetrics Inc.",                                                                   // 38368
     "ZiXi, LLC",                                                                          // 38369
@@ -38445,7 +38445,7 @@ static const char * const table[] =
     "PBeaKK",                                                                             // 38423
     "BalTstamp",                                                                          // 38424
     "Private University College of Education of the Diocese of Linz",                     // 38425
-    "State company ""Russian highways""",                                                 // 38426
+    "State company Russian highways",                                                     // 38426
     "Genève Aéroport",                                                                    // 38427
     "SlimPay",                                                                            // 38428
     "Dryden Municipal Telephone System",                                                  // 38429
@@ -38475,7 +38475,7 @@ static const char * const table[] =
     "Indigo Dynamic Networks, LLC",                                                       // 38453
     "Adpuntum GmbH",                                                                      // 38454
     "Cyberware Inc.",                                                                     // 38455
-    "IC ""ISKRA"" Ltd.",                                                                  // 38456
+    "IC ISKRA Ltd.",                                                                      // 38456
     "ecvision",                                                                           // 38457
     "Nachtwacht",                                                                         // 38458
     "SBIT GmbH",                                                                          // 38459
@@ -38891,7 +38891,7 @@ static const char * const table[] =
     "Alexey S Khromov",                                                                   // 38869
     "Mandiant",                                                                           // 38870
     "Vostokcement Ltd.",                                                                  // 38871
-    "JSC ""Prompribor""",                                                                 // 38872
+    "JSC Prompribor",                                                                     // 38872
     "Alex Bolgov",                                                                        // 38873
     "ENABIL Solutions Ltd.",                                                              // 38874
     "UnifiedPost S.A.",                                                                   // 38875
@@ -39201,7 +39201,7 @@ static const char * const table[] =
     "Accuoss",                                                                            // 39179
     "MTICUBE, LLC",                                                                       // 39180
     "International Development Council for Academic Studies (IDCAS)",                     // 39181
-    "OJSC ""GT-TEC Energo""",                                                             // 39182
+    "OJSC GT-TEC Energo",                                                                 // 39182
     "Layered Logic, Inc.",                                                                // 39183
     "xingplatform inc",                                                                   // 39184
     "System Level Solutions (India) Pvt. Ltd",                                            // 39185
@@ -39401,7 +39401,7 @@ static const char * const table[] =
     "Lab M, llc",                                                                         // 39379
     "Fysisch-Mathematische Faculteitsvereniging",                                         // 39380
     "Daggerpoint Technologies",                                                           // 39381
-    "JSC ""ZHASO""",                                                                      // 39382
+    "JSC ZHASO",                                                                          // 39382
     "Flex Valley srl",                                                                    // 39383
     "CRYPTAS it-Security GmbH",                                                           // 39384
     "M.M. Elektrolab",                                                                    // 39385
@@ -39825,14 +39825,14 @@ static const char * const table[] =
     "IT-Box GmbH",                                                                        // 39803
     "Ctyle Corporation",                                                                  // 39804
     "Ingenious Med",                                                                      // 39805
-    "PrJSC ""IC SEB LIFE UKRAINE""",                                                      // 39806
+    "PrJSC IC SEB LIFE UKRAINE",                                                          // 39806
     "Edgewater Wireless Systems Inc.",                                                    // 39807
     "SHINE SYSTEM",                                                                       // 39808
     "Lonely Planet",                                                                      // 39809
     "KNET Co., Ltd.",                                                                     // 39810
     "ZaPOP (Pty) Ltd",                                                                    // 39811
     "UC RUSAL",                                                                           // 39812
-    "Public Joint-Stock Company ""National Depository of Ukraine""",                      // 39813
+    "Public Joint-Stock Company National Depository of Ukraine",                          // 39813
     "SOLYSTIC",                                                                           // 39814
     "iphion B.V.",                                                                        // 39815
     "Accelatis",                                                                          // 39816
@@ -40042,7 +40042,7 @@ static const char * const table[] =
     "Gutenberg Networks",                                                                 // 40020
     "Viscount Systems Inc",                                                               // 40021
     "Sirius Software, Inc.",                                                              // 40022
-    "LLC "" NPF DUKON""",                                                                 // 40023
+    "LLC  NPF DUKON",                                                                     // 40023
     "iNovo Broadband, Inc.",                                                              // 40024
     "Tym3",                                                                               // 40025
     "Société d’Informatique et de Systèmes",                                              // 40026
@@ -40265,7 +40265,7 @@ static const char * const table[] =
     "3U HOLDING AG",                                                                      // 40243
     "SDAMO Group, LLC",                                                                   // 40244
     "Böning Automationstechnologie GmbH & Co. KG",                                        // 40245
-    "OOO ""Laboratoriya Trehmernogo Zreniya""",                                           // 40246
+    "OOO Laboratoriya Trehmernogo Zreniya",                                               // 40246
     "GGS German Graduate School of Management and Law",                                   // 40247
     "NPO Telecom JSC",                                                                    // 40248
     "Vargyas Networks, Inc D/B/A Maxxwave",                                               // 40249
@@ -40313,7 +40313,7 @@ static const char * const table[] =
     "Central National Australia Pty Ltd",                                                 // 40291
     "Mekelle University",                                                                 // 40292
     "TG Byte Software GmbH",                                                              // 40293
-    "OOO ""Jewelry House ""Kristall""",                                                   // 40294
+    "OOO Jewelry House Kristall",                                                         // 40294
     "dogado Internet GmbH",                                                               // 40295
     "stocka",                                                                             // 40296
     "Hytera Communications Co.,Ltd.",                                                     // 40297
@@ -40572,7 +40572,7 @@ static const char * const table[] =
     "OZtell",                                                                             // 40550
     "Bootable Cluster CD",                                                                // 40551
     "Salcininku rajono savivaldybes administracija",                                      // 40552
-    """Bulgartabac-Holding"" AD",                                                         // 40553
+    "Bulgartabac-Holding AD",                                                             // 40553
     "Tecom",                                                                              // 40554
     "Garz & Fricke GmbH",                                                                 // 40555
     "Moving Possibilities LLC",                                                           // 40556
@@ -40644,7 +40644,7 @@ static const char * const table[] =
     "Covea Insurance plc",                                                                // 40622
     "Morgowicz Inc",                                                                      // 40623
     "Willops Management",                                                                 // 40624
-    "SBO ""Centre of Information Technology of the Orenburg region""",                    // 40625
+    "SBO Centre of Information Technology of the Orenburg region",                        // 40625
     "Web de Confianza Andaluza S.Coop.And.",                                              // 40626
     "Jefferson Regional Medical Center",                                                  // 40627
     "FormPipe Software A/S",                                                              // 40628
@@ -40652,7 +40652,7 @@ static const char * const table[] =
     "Crexendo, Inc.",                                                                     // 40630
     "AVA Communications",                                                                 // 40631
     "Trüb AG",                                                                            // 40632
-    """Scan Engineering Telecom"" CJSC",                                                  // 40633
+    "Scan Engineering Telecom CJSC",                                                      // 40633
     "Willway, S.A.",                                                                      // 40634
     "opvizor GmbH",                                                                       // 40635
     "Use System Engineering B.V.",                                                        // 40636
@@ -40954,7 +40954,7 @@ static const char * const table[] =
     "SuccWare (Beijing) Software System Co., Ltd",                                        // 40932
     "QiZhi Technologies",                                                                 // 40933
     "LIG Nex1",                                                                           // 40934
-    "LTD ""MedScann""",                                                                   // 40935
+    "LTD MedScann",                                                                       // 40935
     "St. Elisabeth Convent",                                                              // 40936
     "Axelprod GSM Transmission",                                                          // 40937
     "MobileIron Inc.",                                                                    // 40938
@@ -41013,7 +41013,7 @@ static const char * const table[] =
     "tedox KG",                                                                           // 40991
     "vijay.  Pvt. Ltd",                                                                   // 40992
     "HD Vest Inc.",                                                                       // 40993
-    "LLC ""AIS Gorod""",                                                                  // 40994
+    "LLC AIS Gorod",                                                                      // 40994
     "DLG Automacao Industrial Ltda",                                                      // 40995
     "SilverRail Technologies, Inc.",                                                      // 40996
     "Armonti Digital Services",                                                           // 40997
@@ -41273,7 +41273,7 @@ static const char * const table[] =
     "Simple Software Solutions",                                                          // 41251
     "Wicked Software",                                                                    // 41252
     "Millry Telephone Co",                                                                // 41253
-    "Wroclaw School of Applied Informatics ""Horyzont""",                                 // 41254
+    "Wroclaw School of Applied Informatics Horyzont",                                     // 41254
     "Maui Systems Ltd",                                                                   // 41255
     "NormanStudios",                                                                      // 41256
     "SignOn",                                                                             // 41257
@@ -41613,7 +41613,7 @@ static const char * const table[] =
     "Sipi srl",                                                                           // 41591
     "Evanti",                                                                             // 41592
     "Sard Verbinnen & Co",                                                                // 41593
-    "LLC ""Ekb-Info""",                                                                   // 41594
+    "LLC Ekb-Info",                                                                       // 41594
     "Genesis Technical Systems Corp",                                                     // 41595
     "HornersCorners, LLC",                                                                // 41596
     "RFEvolution s.r.l.",                                                                 // 41597
@@ -41771,7 +41771,7 @@ static const char * const table[] =
     "Owens State Community College",                                                      // 41749
     "Head Department for Statistics and Information Technologies of State Customs Committee",// 41750
     "ROBIN'S",                                                                            // 41751
-    "ZAO ""NPK Rotek""",                                                                  // 41752
+    "ZAO NPK Rotek",                                                                      // 41752
     "Greg Waterhouse",                                                                    // 41753
     "Daniel Sage",                                                                        // 41754
     "Lastline, Inc.",                                                                     // 41755
@@ -41893,7 +41893,7 @@ static const char * const table[] =
     "Sonifex Ltd",                                                                        // 41871
     "Masdar PV GmbH",                                                                     // 41872
     "Institut Superieur d'Electronique de Paris (ISEP)",                                  // 41873
-    "LLC ""ANTE-MEDIAM""",                                                                // 41874
+    "LLC ANTE-MEDIAM",                                                                    // 41874
     "Esselte IPR AB",                                                                     // 41875
     "FOXCOMM NETWORKS",                                                                   // 41876
     "Orban",                                                                              // 41877
@@ -41972,7 +41972,7 @@ static const char * const table[] =
     "DTI Solutions",                                                                      // 41950
     "Quarles & Brady, LLP",                                                               // 41951
     "Asad Ahmed",                                                                         // 41952
-    "JSC ""ESC of EVRAAS""",                                                              // 41953
+    "JSC ESC of EVRAAS",                                                                  // 41953
     "Polewall Norge AS",                                                                  // 41954
     "Jansen AG",                                                                          // 41955
     "Fellig e.V.",                                                                        // 41956
@@ -42125,7 +42125,7 @@ static const char * const table[] =
     "hmcw gmbh",                                                                          // 42103
     "wi2be Tecnologia S/A",                                                               // 42104
     "WebControl",                                                                         // 42105
-    "'MIGHTY APPARATUS FOR RADIOBRODCASTING AND TV"" Joint-Stock Company",                // 42106
+    "'MIGHTY APPARATUS FOR RADIOBRODCASTING AND TV Joint-Stock Company",                  // 42106
     "South Carolina Department of Revenue",                                               // 42107
     "HRSoftworks",                                                                        // 42108
     "Linux Based Systems Design, Ltd",                                                    // 42109
@@ -42580,7 +42580,7 @@ static const char * const table[] =
     "Canis Lupus LLC",                                                                    // 42558
     "AppEnsure",                                                                          // 42559
     "Kirovohrad Volodymyr Vynnychenko State Pedagogical University",                      // 42560
-    "ZAO ""MD Project 2000""",                                                            // 42561
+    "ZAO MD Project 2000",                                                                // 42561
     "Universidad Pública de Navarra (UPNA)",                                              // 42562
     "Kaleidescape, Inc.",                                                                 // 42563
     "KO4BB Electronics",                                                                  // 42564
@@ -42748,7 +42748,7 @@ static const char * const table[] =
     "ArcSoft Hangzhou CO.,LTD.",                                                          // 42726
     "X-Company Pty Ltd",                                                                  // 42727
     "Tomaxx GmbH",                                                                        // 42728
-    "Private Iron and Steel Joint Stock Company ""Donetsksteel""",                        // 42729
+    "Private Iron and Steel Joint Stock Company Donetsksteel",                            // 42729
     "Croda International Plc",                                                            // 42730
     "Statkraft SF",                                                                       // 42731
     "Southern Power Systems, Inc.",                                                       // 42732
@@ -42798,7 +42798,7 @@ static const char * const table[] =
     "one2many BV",                                                                        // 42776
     "Gosuncn Technology Group Co., Ltd",                                                  // 42777
     "Michael Offel (mflour.com)",                                                         // 42778
-    "CJSC ""NORSI-TRANS""",                                                               // 42779
+    "CJSC NORSI-TRANS",                                                                   // 42779
     "SEB DEVELOPPEMENT SAS",                                                              // 42780
     "Bragg Communications Inc.",                                                          // 42781
     "Ekrompt, JSC",                                                                       // 42782
@@ -42972,7 +42972,7 @@ static const char * const table[] =
     "Hangzhou Joson Technology Co.,Ltd",                                                  // 42950
     "Highlands Technologies Solutions",                                                   // 42951
     "SOREDI touch systems GmbH",                                                          // 42952
-    """Runet Business Systems""",                                                         // 42953
+    "Runet Business Systems",                                                             // 42953
     "Bizerba GmbH & Co. KG",                                                              // 42954
     "Louisville-Jefferson County Metro Government",                                       // 42955
     "HumanIT Inc.",                                                                       // 42956
@@ -42989,7 +42989,7 @@ static const char * const table[] =
     "liedloff.org",                                                                       // 42967
     "Wertschütz GmbH i.Gr.",                                                              // 42968
     "Iorga Group",                                                                        // 42969
-    "RP SIA ""Rigas satiksme""",                                                          // 42970
+    "RP SIA Rigas satiksme",                                                              // 42970
     "ONELAN LIMITED",                                                                     // 42971
     "IT Business Solutions and Services (ITBSS)",                                         // 42972
     "COMDOK GmbH",                                                                        // 42973
@@ -43269,7 +43269,7 @@ static const char * const table[] =
     "Rui Pereira (netcloud.pt)",                                                          // 43247
     "3 Turn Productions LLC",                                                             // 43248
     "THM Consulting Ltd",                                                                 // 43249
-    """Group of companies ""POWER ENGINEERING"" Ltd",                                     // 43250
+    "Group of companies POWER ENGINEERING Ltd",                                           // 43250
     "Planet Erde",                                                                        // 43251
     "CosDay e. V.",                                                                       // 43252
     "ASGraphics",                                                                         // 43253
@@ -43293,7 +43293,7 @@ static const char * const table[] =
     "Justus-Liebig-Universität Gießen",                                                   // 43271
     "Austria Card Plastikkarten und Ausweissysteme Ges.m.b.H",                            // 43272
     "Control Center Apps GmbH",                                                           // 43273
-    """Group of Companies ""RosIntegracija"" LLC.",                                       // 43274
+    "Group of Companies RosIntegracija LLC.",                                             // 43274
     "Alex Eggenberger",                                                                   // 43275
     "Coreline Soft Co.,Ltd",                                                              // 43276
     "AE Telelink System Limited",                                                         // 43277
@@ -44365,7 +44365,7 @@ static const char * const table[] =
     "Jackson Oncology Associates, PLLC",                                                  // 44343
     "CANCER CENTER ASSOCIATES",                                                           // 44344
     "LLC, Sintek",                                                                        // 44345
-    "JSC ""Promstroikontrakt""",                                                          // 44346
+    "JSC Promstroikontrakt",                                                              // 44346
     "IK SATPROF LLC",                                                                     // 44347
     "NIL KSA",                                                                            // 44348
     "Highland Clinic, APMC",                                                              // 44349
@@ -44543,7 +44543,7 @@ static const char * const table[] =
     "WUNDERVOLL NETWORKS",                                                                // 44521
     "Information Technology Solutions Laboratory",                                        // 44522
     "NetBeez",                                                                            // 44523
-    "Research & Development Center ""Vulkan"" LLC",                                       // 44524
+    "Research & Development Center Vulkan LLC",                                           // 44524
     "Breast Surgery of Tulsa",                                                            // 44525
     "Carta Solutions Processing Services Corp",                                           // 44526
     "Marco Dominguez",                                                                    // 44527
@@ -44583,7 +44583,7 @@ static const char * const table[] =
     "Alachua County Library District",                                                    // 44561
     "aixtools (Michael Felt)",                                                            // 44562
     "Irkutsk Diagnostic Centre",                                                          // 44563
-    "CJSC ""ENERGOMERA""",                                                                // 44564
+    "CJSC ENERGOMERA",                                                                    // 44564
     "Tobias Mandjik",                                                                     // 44565
     "OOO Komandor-holding",                                                               // 44566
     "Agencja Rozwoju Przemyslu S.A.",                                                     // 44567
@@ -44707,7 +44707,7 @@ static const char * const table[] =
     "NTENT",                                                                              // 44685
     "ROI Development Corp., DBA Newmar",                                                  // 44686
     "Hebeo",                                                                              // 44687
-    "WorldWide Supply LLC (aka ""WWS"")",                                                 // 44688
+    "WorldWide Supply LLC (aka WWS)",                                                     // 44688
     "Groupe Simplinet inc.",                                                              // 44689
     "Sonavox Canada Inc.",                                                                // 44690
     "GRUPO ONCOLOGICO COMUNITARIO DE SAN JUAN",                                           // 44691
@@ -44743,7 +44743,7 @@ static const char * const table[] =
     "Okaki Health Intelligence Inc",                                                      // 44721
     "WALLMEDIEN AG",                                                                      // 44722
     NULL,                                                                                 // 44723
-    "LLC ""ITTech""",                                                                     // 44724
+    "LLC ITTech",                                                                         // 44724
     "BADTRONIC sarl",                                                                     // 44725
     "Radionika Sp. z o.o.",                                                               // 44726
     "Y2S Corporation",                                                                    // 44727
@@ -44831,7 +44831,7 @@ static const char * const table[] =
     "HealthStream, Inc.",                                                                 // 44809
     "arales.org",                                                                         // 44810
     "Funambolo Technologies Private Limited",                                             // 44811
-    "JSC ""Institute of Automation of Energy Systems""",                                  // 44812
+    "JSC Institute of Automation of Energy Systems",                                      // 44812
     "Beijing Easynetworks Technology Co.,Ltd.",                                           // 44813
     "Genexyx Srl",                                                                        // 44814
     "Mauro Altamura",                                                                     // 44815
@@ -44889,7 +44889,7 @@ static const char * const table[] =
     "Etic Telecom",                                                                       // 44867
     "Earthling Interactive",                                                              // 44868
     "Zen Solutions Limited",                                                              // 44869
-    "JSC ""SKB Electronmash""",                                                           // 44870
+    "JSC SKB Electronmash",                                                               // 44870
     "Universidad de Cuenca",                                                              // 44871
     "FiberLabs Inc.",                                                                     // 44872
     "CJSC «INTERSET»",                                                                    // 44873
@@ -45000,7 +45000,7 @@ static const char * const table[] =
     "Telefónica Soluciones de Criptografía, S. A.",                                       // 44978
     "Tsmart Inc.",                                                                        // 44979
     "MEDiA LiNK Co.,Ltd.",                                                                // 44980
-    "LLC ""PromIT""",                                                                     // 44981
+    "LLC PromIT",                                                                         // 44981
     "INNEXIV, INC.",                                                                      // 44982
     "ARTIS GmbH",                                                                         // 44983
     "EPAM Systems",                                                                       // 44984
@@ -45113,7 +45113,7 @@ static const char * const table[] =
     "Cisco Sera",                                                                         // 45091
     "Silectica",                                                                          // 45092
     "SUMOMO Computer Association",                                                        // 45093
-    "UAB ""VAATC""",                                                                      // 45094
+    "UAB VAATC",                                                                          // 45094
     "INAF - Osservatorio Astrofisico di Arcetri",                                         // 45095
     "INTERNATIONAL MEDICAL SOLUTIONS INC.",                                               // 45096
     "Graphite Systems, Inc.",                                                             // 45097
@@ -45358,7 +45358,7 @@ static const char * const table[] =
     "Microbase",                                                                          // 45336
     "voria.net",                                                                          // 45337
     "Tableau Software, Inc.",                                                             // 45338
-    "JSC ""Housing Construction Savings Bank of Kazakhstan""",                            // 45339
+    "JSC Housing Construction Savings Bank of Kazakhstan",                                // 45339
     "Half-Baked Software",                                                                // 45340
     "NEXT Srl",                                                                           // 45341
     "IWD Ltd.",                                                                           // 45342
@@ -45603,7 +45603,7 @@ static const char * const table[] =
     "YICHUN YILIAN PRINT TECH CO.,LTD",                                                   // 45581
     "paysafecard.com Wertkarten GmbH",                                                    // 45582
     "Puminsoft Co.,Ltd.",                                                                 // 45583
-    "OJSC ""RIRT""",                                                                      // 45584
+    "OJSC RIRT",                                                                          // 45584
     "Space Imaging Middle East (SIME)",                                                   // 45585
     "Mythic Network",                                                                     // 45586
     "Software & Service Center,Sichuan Changhong Electric Co.,Ltd",                       // 45587
@@ -45812,7 +45812,7 @@ static const char * const table[] =
     "Crystal GmbH",                                                                       // 45790
     "Neos Ventures GmbH",                                                                 // 45791
     "Flohr IT",                                                                           // 45792
-    "Joint Stock Company ""PK Kupchino""",                                                // 45793
+    "Joint Stock Company PK Kupchino",                                                    // 45793
     "Safe Creative",                                                                      // 45794
     "Primo1D SA",                                                                         // 45795
     "Umea Municipality",                                                                  // 45796
@@ -45990,7 +45990,7 @@ static const char * const table[] =
     "perinova IT-Management GmbH",                                                        // 45968
     "perinova IT-Management GmbH",                                                        // 45969
     "Böttcher & Collin GbR",                                                              // 45970
-    "CJSC ""Transinfoset""",                                                              // 45971
+    "CJSC Transinfoset",                                                                  // 45971
     "Baptist School of Health Professions",                                               // 45972
     "Playground Global",                                                                  // 45973
     "SPINNER GmbH",                                                                       // 45974
@@ -46075,7 +46075,7 @@ static const char * const table[] =
     "AVEBE U.A.",                                                                         // 46053
     "NBS Ltd.",                                                                           // 46054
     "Hytera Broadband Products",                                                          // 46055
-    "OOO""NPF MULTIOBRABOTKA""",                                                          // 46056
+    "OOONPF MULTIOBRABOTKA",                                                              // 46056
     "Hong Kong Community Athletic Development",                                           // 46057
     "Panda Sports",                                                                       // 46058
     "Vidamin Ltd",                                                                        // 46059
@@ -46512,7 +46512,7 @@ static const char * const table[] =
     "Captel",                                                                             // 46490
     "Valerio Morozzo",                                                                    // 46491
     "Conevity Solutions Inc",                                                             // 46492
-    "UAB ""GKF""",                                                                        // 46493
+    "UAB GKF",                                                                            // 46493
     "Assimil8 Limited",                                                                   // 46494
     "European Dynamics SA",                                                               // 46495
     "DEPARTAMENTO ADMINISTRATIVO DE CIENCIA, TECNOLOGIA E INNOVACION - COLCIENCIAS",      // 46496
@@ -46632,7 +46632,7 @@ static const char * const table[] =
     "Sensorpoint, LLC",                                                                   // 46610
     "St Vincents Health Australia (NSW)",                                                 // 46611
     "DV Impex, Ltd",                                                                      // 46612
-    "JSC ""SPO Angstrem""",                                                               // 46613
+    "JSC SPO Angstrem",                                                                   // 46613
     "BBM spol. s r. o.",                                                                  // 46614
     "WirelessCar",                                                                        // 46615
     "Anghel F. Dan-Alexandru PFA",                                                        // 46616
@@ -47052,7 +47052,7 @@ static const char * const table[] =
     "HAN Networks Co., Ltd",                                                              // 47030
     "Shenzhen Eunicum Electric Co., Ltd.",                                                // 47031
     "Shanghai Yamu Technology Limited",                                                   // 47032
-    "LLC ""66 Parallel""",                                                                // 47033
+    "LLC 66 Parallel",                                                                    // 47033
     "CARS",                                                                               // 47034
     "trash.net",                                                                          // 47035
     "Ecosoft B.V. (trademark is Vidicode)",                                               // 47036
@@ -47304,7 +47304,7 @@ static const char * const table[] =
     "The LinchPinGroup, LLC",                                                             // 47282
     "PJSC SOLLERS",                                                                       // 47283
     "Cyber IT Solutions",                                                                 // 47284
-    "LLC ""Smartbrood""",                                                                 // 47285
+    "LLC Smartbrood",                                                                     // 47285
     "UANATACA S.A.",                                                                      // 47286
     "Brabbler Secure Message and Data Exchange Aktiengesellschaft",                       // 47287
     "COMMUNITHINGS S.A.",                                                                 // 47288
@@ -47320,7 +47320,7 @@ static const char * const table[] =
     "Pastem Solutions, Ltd.",                                                             // 47298
     "P2 Wireless Technologies Limited",                                                   // 47299
     "NTT DATA Business Solutions AG",                                                     // 47300
-    """NR""WEB US",                                                                       // 47301
+    "NRWEB US",                                                                           // 47301
     "Alnatura Produktions- und Handels GmbH",                                             // 47302
     "Moratua Solutions",                                                                  // 47303
     "Ivnosys Soluciones S.L.U.",                                                          // 47304
@@ -47555,7 +47555,7 @@ static const char * const table[] =
     "Balyasny Asset management L.P.",                                                     // 47533
     "AutoAlert",                                                                          // 47534
     "Autoridad Certificante de la Oficina Nacional de Tecnologías de Información",        // 47535
-    "PJSC ""Sumykhimprom""",                                                              // 47536
+    "PJSC Sumykhimprom",                                                                  // 47536
     "SATT PACA Corse",                                                                    // 47537
     "knoefel.xyz",                                                                        // 47538
     "Greendoc Systems Kft.",                                                              // 47539
@@ -47619,7 +47619,7 @@ static const char * const table[] =
     "christmann informationstechnik + medien GmbH & Co. KG",                              // 47597
     "Weiss Klimatechnik GmbH",                                                            // 47598
     "Changzhou Wisdom Intelligent Technology CO.,LTD.",                                   // 47599
-    "LLC ""Commercial Bank"" Bank Talmenka """,                                           // 47600
+    "LLC Commercial Bank Bank Talmenka ",                                                 // 47600
     "Novo Nordisk A/S",                                                                   // 47601
     "pandoranorge",                                                                       // 47602
     "eClinicalWorks",                                                                     // 47603
@@ -47808,7 +47808,7 @@ static const char * const table[] =
     "5BARz India Private Limited",                                                        // 47786
     "MuseumsIT",                                                                          // 47787
     "Prismaflex International",                                                           // 47788
-    "OAO MNIIPI OKOSZ ""MOSPROEKT-4""",                                                   // 47789
+    "OAO MNIIPI OKOSZ MOSPROEKT-4",                                                       // 47789
     "ASYS Automatic Systems GmbH & Co. KG",                                               // 47790
     "Rayed Alrashed",                                                                     // 47791
     "Pew Research Center",                                                                // 47792
@@ -47826,7 +47826,7 @@ static const char * const table[] =
     "Bravowhale Information Technology Ltd",                                              // 47804
     "Shenzhen Grentech RF Communication Limited",                                         // 47805
     "Trussan Co., Ltd",                                                                   // 47806
-    "DSRI ""Volna"", OJSC",                                                               // 47807
+    "DSRI Volna, OJSC",                                                                   // 47807
     "Delaware County Community College",                                                  // 47808
     "Centerline Biomedical, Inc.",                                                        // 47809
     "LINAGORA TUNISIE",                                                                   // 47810
@@ -47853,7 +47853,7 @@ static const char * const table[] =
     "Robert Half Inc.",                                                                   // 47831
     NULL,                                                                                 // 47832
     "Teleworks Co., Ltd.",                                                                // 47833
-    "OOO NPP ""POLUS""",                                                                  // 47834
+    "OOO NPP POLUS",                                                                      // 47834
     "ARCHIVECO",                                                                          // 47835
     "Bernd Matusche",                                                                     // 47836
     "Produban Global Services",                                                           // 47837
@@ -47965,7 +47965,7 @@ static const char * const table[] =
     "Oesterreichischer Mantrailing Verband - Mantrailing Austria",                        // 47943
     "Center for International Private Enterprise",                                        // 47944
     "Fukoku Matual Life Insurance Company",                                               // 47945
-    "OOO ""Eko Paper""",                                                                  // 47946
+    "OOO Eko Paper",                                                                      // 47946
     "Hoermann GmbH",                                                                      // 47947
     "Systemtechnik LEBER GmbH & Co. KG",                                                  // 47948
     "SYMACORP",                                                                           // 47949
@@ -48150,7 +48150,7 @@ static const char * const table[] =
     "Distributed Data Systems Ltd.",                                                      // 48128
     "simplicityEngine Inc.",                                                              // 48129
     "Batscan / PL Trading AB",                                                            // 48130
-    """DEP Company"" Ltd.",                                                               // 48131
+    "DEP Company Ltd.",                                                                   // 48131
     "Sparebanken Vest",                                                                   // 48132
     "McCullough-Solutions.NET",                                                           // 48133
     "8438757 Canada Inc D.B.A. Multifactor.net",                                          // 48134
@@ -48247,7 +48247,7 @@ static const char * const table[] =
     "Summonte",                                                                           // 48225
     "Sandåsa Timber AB",                                                                  // 48226
     "AB Tutor",                                                                           // 48227
-    "LLC ""Tecon MT""",                                                                   // 48228
+    "LLC Tecon MT",                                                                       // 48228
     "Platina Systems, Inc.",                                                              // 48229
     "Montefiore Medicine",                                                                // 48230
     "Alvernia University",                                                                // 48231
@@ -48258,7 +48258,7 @@ static const char * const table[] =
     "Zschimmer & Schwarz GmbH & Co KG",                                                   // 48236
     "SOFTEL Corp.",                                                                       // 48237
     "Optima Tours GmbH",                                                                  // 48238
-    "Non-public JSC ""Krasnaya polyana""",                                                // 48239
+    "Non-public JSC Krasnaya polyana",                                                    // 48239
     "senselan gmbh",                                                                      // 48240
     "Neptune and Company, Inc.",                                                          // 48241
     "Serban Nistor",                                                                      // 48242
@@ -48348,9 +48348,9 @@ static const char * const table[] =
     "Vänerbränsle AB",                                                                    // 48326
     "Johnson Controls Inc.",                                                              // 48327
     "Veritas Technologies LLC",                                                           // 48328
-    "OJSC ""MINSK TRACTOR WORKS""",                                                       // 48329
+    "OJSC MINSK TRACTOR WORKS",                                                           // 48329
     "Nationalmuseet",                                                                     // 48330
-    "SKTB ""SKiT""",                                                                      // 48331
+    "SKTB SKiT",                                                                          // 48331
     "Callans Trä AB",                                                                     // 48332
     "Koolsign Co., LTD",                                                                  // 48333
     "Bank of the South",                                                                  // 48334
@@ -48549,7 +48549,7 @@ static const char * const table[] =
     "LEGO System A/S",                                                                    // 48527
     "IT Niedersachsen",                                                                   // 48528
     "MediaSift Ltd",                                                                      // 48529
-    "OOO ""TIUS""",                                                                       // 48530
+    "OOO TIUS",                                                                           // 48530
     "FIS",                                                                                // 48531
     "Inlandsfrakt AB",                                                                    // 48532
     "Sony Mobile Communications AB",                                                      // 48533
@@ -48983,7 +48983,7 @@ static const char * const table[] =
     "struktur AG",                                                                        // 48961
     "Unilogic Networks B.V.",                                                             // 48962
     "Gällö Skog AB",                                                                      // 48963
-    "VŠĮ ""Šviesos kūgiai""",                                                             // 48964
+    "VŠĮ Šviesos kūgiai",                                                                 // 48964
     "eMudhra Limited",                                                                    // 48965
     "Nils Kaczenski",                                                                     // 48966
     "ZincFive, Inc.",                                                                     // 48967
@@ -49005,7 +49005,7 @@ static const char * const table[] =
     "Open Consent Group",                                                                 // 48983
     "Athene Lebensversicherung AG",                                                       // 48984
     "Netresec AB",                                                                        // 48985
-    "LLC ""INVEST-M""",                                                                   // 48986
+    "LLC INVEST-M",                                                                       // 48986
     "SkyDNS LLC",                                                                         // 48987
     "Streamonix Ltd",                                                                     // 48988
     "Ture Johanssons Trävaru AB",                                                         // 48989
@@ -49019,7 +49019,7 @@ static const char * const table[] =
     "Colorado Blood Cancer Institute",                                                    // 48997
     "Colorado Blood Cancer Institute",                                                    // 48998
     "MoraMedSoft",                                                                        // 48999
-    """Zheldorconsulting"", Ltd.",                                                        // 49000
+    "Zheldorconsulting, Ltd.",                                                            // 49000
     "KHADAMAT NOVIN DADEAVARZI SADAD",                                                    // 49001
     "ULTRA SA",                                                                           // 49002
     "Gen Re",                                                                             // 49003
@@ -49117,7 +49117,7 @@ static const char * const table[] =
     "Swedish National Agency for Education",                                              // 49095
     "KPCS CZ",                                                                            // 49096
     "EVTEC AG",                                                                           // 49097
-    "NP ZAO ""REKO-VEK""",                                                                // 49098
+    "NP ZAO REKO-VEK",                                                                    // 49098
     "GBLabs Ltd.",                                                                        // 49099
     "ce - corporate education GmbH",                                                      // 49100
     "EBS BrokerTec",                                                                      // 49101
@@ -49487,7 +49487,7 @@ static const char * const table[] =
     "Yuki Enterprises",                                                                   // 49465
     "Helse Midt-Norge IT",                                                                // 49466
     "LOGISMAN ARAGÓN, S.L.",                                                              // 49467
-    "PrJSC ""MTS UKRAINE""",                                                              // 49468
+    "PrJSC MTS UKRAINE",                                                                  // 49468
     "WIT",                                                                                // 49469
     "Community Life GmbH",                                                                // 49470
     "bayernets GmbH",                                                                     // 49471
@@ -50075,7 +50075,7 @@ static const char * const table[] =
     "AVer Information Inc.",                                                              // 50053
     "Cherry Grass",                                                                       // 50054
     "Telegra",                                                                            // 50055
-    "Public Joint-Stock Company ""Detsky Mir""",                                          // 50056
+    "Public Joint-Stock Company Detsky Mir",                                              // 50056
     "PrimeCalc GmbH",                                                                     // 50057
     "RtBrick Inc.",                                                                       // 50058
     "JSC Penza Research Electrotechnical Institute",                                      // 50059
@@ -50415,7 +50415,7 @@ static const char * const table[] =
     "HongKong JoyTelecom Co., Limited",                                                   // 50393
     "Conrad Electronic SE",                                                               // 50394
     "VARTA Consumer Batteries GmbH & Co. KGaA",                                           // 50395
-    "FSUE ""State ATM Corporation"", branch ""Aerocontrol""",                             // 50396
+    "FSUE State ATM Corporation, branch Aerocontrol",                                     // 50396
     "Shanghai YuHuan Information System.,Ltd",                                            // 50397
     "Asseance Software Inc.",                                                             // 50398
     "Association of German Transport Companies (VDV)",                                    // 50399
@@ -50611,7 +50611,7 @@ static const char * const table[] =
     "Xorble",                                                                             // 50589
     "RunSmart",                                                                           // 50590
     "SCIERIE ET CAISSERIE DE STEINBOURG",                                                 // 50591
-    "OOO ""OTZVUK""/ООО ""ОТЗВУК""",                                                      // 50592
+    "OOO OTZVUK/ООО ОТЗВУК",                                                              // 50592
     "FSI (FM Solutions) Ltd",                                                             // 50593
     "Peregrine Labs LLC",                                                                 // 50594
     "AtFCyber Inc",                                                                       // 50595
@@ -50662,7 +50662,7 @@ static const char * const table[] =
     "R2 Dermatology",                                                                     // 50640
     "Orthopädie-Schuhtechnik Frisch GmbH & Co. KG",                                       // 50641
     "Andreas Schufft SW Entwicklung & EDV Beratung",                                      // 50642
-    """ИП"" Kostakov Dmitry",                                                             // 50643
+    "ИП Kostakov Dmitry",                                                                 // 50643
     "Elumbus GmbH",                                                                       // 50644
     "Salvage Management & Disposals (Pty) Ltd.",                                          // 50645
     "Signaturit Solutions, S.L.",                                                         // 50646
@@ -50736,7 +50736,7 @@ static const char * const table[] =
     "Jones Lang LaSalle IP, Inc.",                                                        // 50714
     "Bluink Ltd",                                                                         // 50715
     "Huaqin Telecom Technology Co.,Ltd.",                                                 // 50716
-    "FTI ""ROSTRANSMODERNIZATSIYA""",                                                     // 50717
+    "FTI ROSTRANSMODERNIZATSIYA",                                                         // 50717
     "BPO Advisors SpA",                                                                   // 50718
     "RNLI",                                                                               // 50719
     "Hawaii Oncology, Inc.",                                                              // 50720
@@ -50812,7 +50812,7 @@ static const char * const table[] =
     "Synforma Ltd.",                                                                      // 50790
     "Redtea Technology (Shanghai) Co., LTD",                                              // 50791
     "Genetus Inc.",                                                                       // 50792
-    "Compulsory inforcement bureau under the Prosecutor general's office of the repoblic of Uzbekistan state unitary enterprise ""Centr on electronic online auctions organization""",// 50793
+    "Compulsory inforcement bureau under the Prosecutor general's office of the repoblic of Uzbekistan state unitary enterprise Centr on electronic online auctions organization",// 50793
     "Hellomouse",                                                                         // 50794
     "HENSOLDT Holding Germany GmbH",                                                      // 50795
     "Clienia Management AG",                                                              // 50796
@@ -50999,7 +50999,7 @@ static const char * const table[] =
     "eMudhra Technologies Limited",                                                       // 50977
     "DareNET",                                                                            // 50978
     "Radnor Township School District",                                                    // 50979
-    "PJSC ""TGC-2""",                                                                     // 50980
+    "PJSC TGC-2",                                                                         // 50980
     "Gartenmann Software AG",                                                             // 50981
     "Viken Skog SA",                                                                      // 50982
     "BAUR GesmbH",                                                                        // 50983
@@ -52036,7 +52036,7 @@ static const char * const table[] =
     "Volkswagen Group Rus",                                                               // 52014
     "Sabinet Online",                                                                     // 52015
     "Tidalis B.V.",                                                                       // 52016
-    "OOO FPK ""Kosmos-Neft-Gaz""",                                                        // 52017
+    "OOO FPK Kosmos-Neft-Gaz",                                                            // 52017
     "A.D.SION Info Santé",                                                                // 52018
     "littlemore.me.uk",                                                                   // 52019
     "Havana University",                                                                  // 52020
@@ -52286,7 +52286,7 @@ static const char * const table[] =
     "Verbraucherzentrale NRW e.V.",                                                       // 52264
     "NNIP-Marketing",                                                                     // 52265
     "Global Legal Entity Identifier Foundation (GLEIF)",                                  // 52266
-    "VAS ""Valsts nekustamie ipasumi""",                                                  // 52267
+    "VAS Valsts nekustamie ipasumi",                                                      // 52267
     "SHAZAM, Inc.",                                                                       // 52268
     "Consumer Affairs Agency, Government of Japan",                                       // 52269
     "Particle Industries, Inc.",                                                          // 52270
@@ -52550,7 +52550,7 @@ static const char * const table[] =
     "Novigo S.R.L",                                                                       // 52528
     "Synchronet Telecomunicações Ltda",                                                   // 52529
     "Eldis-Soft",                                                                         // 52530
-    "CJSC ""GOLLARD""",                                                                   // 52531
+    "CJSC GOLLARD",                                                                       // 52531
     "LANGROOM LTD",                                                                       // 52532
     "PayOS",                                                                              // 52533
     "Engineered Floors",                                                                  // 52534
@@ -52635,7 +52635,7 @@ static const char * const table[] =
     "Hetrogenous communications Pvt ltd",                                                 // 52613
     "Gregory Pest Control LLC",                                                           // 52614
     "hangzhou anlantech Co.",                                                             // 52615
-    "OOO ""RusBITech-Astra""",                                                            // 52616
+    "OOO RusBITech-Astra",                                                                // 52616
     "RomTeck Australia Pty Ltd",                                                          // 52617
     "Health Gorilla Inc.",                                                                // 52618
     "KeyWest Networks",                                                                   // 52619
@@ -52830,7 +52830,7 @@ static const char * const table[] =
     "Paragon Development System",                                                         // 52808
     "Nayax Ltd.",                                                                         // 52809
     "MCC of Roshydromet",                                                                 // 52810
-    "National museum ""Kyiv art gallery""",                                               // 52811
+    "National museum Kyiv art gallery",                                                   // 52811
     "TriNet",                                                                             // 52812
     "Fidesmo AB",                                                                         // 52813
     "Virginia Indigent Defense Commission",                                               // 52814
@@ -52983,7 +52983,7 @@ static const char * const table[] =
     "Cohen & Company",                                                                    // 52961
     "AVA Abfallverwertung Augsburg KU",                                                   // 52962
     "BRNET",                                                                              // 52963
-    "OOO ""Synergy Team""",                                                               // 52964
+    "OOO Synergy Team",                                                                   // 52964
     "Berale of Teldan Group",                                                             // 52965
     "Itzos",                                                                              // 52966
     "Mascaro Construction Company",                                                       // 52967
@@ -53205,7 +53205,7 @@ static const char * const table[] =
     "QalifSolutions",                                                                     // 53183
     "Reg.Ru",                                                                             // 53184
     "KA-RaceIng e.V.",                                                                    // 53185
-    "FEDERAL STATE BUDGETARY INSTITUTION ""FEDERAL CENTER OF Cerebrovascular Pathology and Stress"" MINISTRY OF HEALTH OF THE RUSSIAN FEDERATION",// 53186
+    "FEDERAL STATE BUDGETARY INSTITUTION FEDERAL CENTER OF Cerebrovascular Pathology and Stress MINISTRY OF HEALTH OF THE RUSSIAN FEDERATION",// 53186
     "MAJMAU ENGLISH SCHOOL",                                                              // 53187
     "Queen Margaret's School",                                                            // 53188
     "Share IT Limited",                                                                   // 53189
@@ -53716,7 +53716,7 @@ static const char * const table[] =
     "CapSpecialty",                                                                       // 53694
     "AMC",                                                                                // 53695
     "BITECH SPA",                                                                         // 53696
-    "Liceo Classico Statale ""G.B. Morgagni""",                                           // 53697
+    "Liceo Classico Statale G.B. Morgagni",                                               // 53697
     "Gray Day Cafe",                                                                      // 53698
     "mecom Medien-Communikations-Gesellschaft mbH",                                       // 53699
     "PrimeWest Health",                                                                   // 53700
@@ -54039,7 +54039,7 @@ static const char * const table[] =
     "Implenia Ltd.",                                                                      // 54017
     "LLC MasterPlast",                                                                    // 54018
     "AMSORT Sp. z o.o.",                                                                  // 54019
-    "Joint Stock Company ""Scientific research institute ""Rubin""",                      // 54020
+    "Joint Stock Company Scientific research institute Rubin",                            // 54020
     "Ubirch GmbH",                                                                        // 54021
     "Eram Data Center Infrastructure",                                                    // 54022
     "Drivio LTD",                                                                         // 54023
@@ -54201,7 +54201,7 @@ static const char * const table[] =
     "Radionor Communications AS",                                                         // 54179
     "Softwise, Inc.",                                                                     // 54180
     "Treon",                                                                              // 54181
-    "JSC ""Informtehtrans""",                                                             // 54182
+    "JSC Informtehtrans",                                                                 // 54182
     "Evaluate Ltd",                                                                       // 54183
     "Meson",                                                                              // 54184
     "PHOTRON LIMITED",                                                                    // 54185
@@ -54292,7 +54292,7 @@ static const char * const table[] =
     "Nanjing e-Quantum Information Technology Co., Ltd.",                                 // 54270
     "Lulin Systems Co., Ltd.",                                                            // 54271
     "Encurest",                                                                           // 54272
-    "LLC ""Imlight-Showtechnic""",                                                        // 54273
+    "LLC Imlight-Showtechnic",                                                            // 54273
     "ITEres GmbH",                                                                        // 54274
     "Surface Generation Ltd",                                                             // 54275
     "DWF LLP",                                                                            // 54276
@@ -54349,7 +54349,7 @@ static const char * const table[] =
     "Tule River Tribe Gaming Commission",                                                 // 54327
     "Kimbrell",                                                                           // 54328
     "Modern Treasury Corp.",                                                              // 54329
-    """Digital Solutions"" JSC",                                                          // 54330
+    "Digital Solutions JSC",                                                              // 54330
     "Eurofins Digital Testing",                                                           // 54331
     "Nefeli Networks",                                                                    // 54332
     "Clicks Online Business e.K",                                                         // 54333
@@ -54537,7 +54537,7 @@ static const char * const table[] =
     "EN TOUTE CONFIANCE INC.",                                                            // 54515
     "INTERTRONIC IT GmbH Wörrstadt",                                                      // 54516
     "Vibrant Health, P.C.",                                                               // 54517
-    "LLC ""Medicina AlfaStrahovaniya""",                                                  // 54518
+    "LLC Medicina AlfaStrahovaniya",                                                      // 54518
     "JD",                                                                                 // 54519
     "Baryon, LLC",                                                                        // 54520
     "AP Sensing GmbH",                                                                    // 54521
@@ -54589,7 +54589,7 @@ static const char * const table[] =
     "ORES SCRL",                                                                          // 54567
     "Rail-Mil sp. z o.o. sp. komandytowa",                                                // 54568
     "Connor Horman",                                                                      // 54569
-    "JSC “Scientific Industrial Enterprise ""Rubin""",                                    // 54570
+    "JSC “Scientific Industrial Enterprise Rubin",                                        // 54570
     "AMI Praha a.s.",                                                                     // 54571
     "Viggo Service Enablers",                                                             // 54572
     "OpenIT",                                                                             // 54573
@@ -54629,7 +54629,7 @@ static const char * const table[] =
     "Epsom & St Helier University Hospitals NHS Trust",                                   // 54607
     "Definium Technologies",                                                              // 54608
     "Centurion Intelligence Consulting Agency",                                           // 54609
-    "OOO ""NTC Rotek""",                                                                  // 54610
+    "OOO NTC Rotek",                                                                      // 54610
     "Stichting Casade",                                                                   // 54611
     "Chicago Digital Power",                                                              // 54612
     "Adaptive Security SpA",                                                              // 54613
@@ -54876,7 +54876,7 @@ static const char * const table[] =
     "Simplifia",                                                                          // 54854
     "Brigantia Learning Trust",                                                           // 54855
     "Electro Design Pty Ltd",                                                             // 54856
-    "UAB ""Affidea Lietuva""",                                                            // 54857
+    "UAB Affidea Lietuva",                                                                // 54857
     "T-CZ a.s.",                                                                          // 54858
     "GTI Technologies Inc",                                                               // 54859
     "US Home Automation LLC",                                                             // 54860
@@ -55333,7 +55333,7 @@ static const char * const table[] =
     "Facultad de Ciencias Médicas - UBA",                                                 // 55311
     "Kerr, Russell and Weber, PLC",                                                       // 55312
     "Compelling Technologies, LLC",                                                       // 55313
-    "LLC NPO ""Svyazkomplektservis""",                                                    // 55314
+    "LLC NPO Svyazkomplektservis",                                                        // 55314
     "Auerswald GmbH & Co. KG",                                                            // 55315
     "ROBERT DANIEL BUONOCORE",                                                            // 55316
     "Lely Holding BV",                                                                    // 55317
@@ -55471,7 +55471,7 @@ static const char * const table[] =
     "MangoTelecom",                                                                       // 55449
     "IVECloud (Pty) Ltd",                                                                 // 55450
     "Enable-U B.V.",                                                                      // 55451
-    "JSC ""AGROBANK""",                                                                   // 55452
+    "JSC AGROBANK",                                                                       // 55452
     "Sprecher Brewing Co. Inc.",                                                          // 55453
     "Elgama-Elektronika",                                                                 // 55454
     "dualstack AG",                                                                       // 55455
@@ -55505,7 +55505,7 @@ static const char * const table[] =
     "Kellenberger & Co AG",                                                               // 55483
     "DMHIS",                                                                              // 55484
     "Sierra Automated Systems & Engineering Corp",                                        // 55485
-    "JSC ""GIS""",                                                                        // 55486
+    "JSC GIS",                                                                            // 55486
     "CookieDen Online",                                                                   // 55487
     "Kirisun Communication Co.,Ltd.",                                                     // 55488
     "Winnet Information",                                                                 // 55489
@@ -55731,7 +55731,7 @@ static const char * const table[] =
     "TECNED B.V.",                                                                        // 55709
     "Talent4Transition",                                                                  // 55710
     "Proius",                                                                             // 55711
-    "Joint-stock Company ""Accent-Bank""",                                                // 55712
+    "Joint-stock Company Accent-Bank",                                                    // 55712
     "KNS Inc",                                                                            // 55713
     "VRBANK",                                                                             // 55714
     "Ikle",                                                                               // 55715
@@ -55746,7 +55746,7 @@ static const char * const table[] =
     "NATIONAL INFORMATION TECHNOLOGY DEVELOPMENT AGENCY,",                                // 55724
     "Ovio Smart World",                                                                   // 55725
     "MaxiTech",                                                                           // 55726
-    "AO ""RACIM""",                                                                       // 55727
+    "AO RACIM",                                                                           // 55727
     "CER Groupe",                                                                         // 55728
     "Identification International, Inc.",                                                 // 55729
     "BISDN GmbH",                                                                         // 55730
@@ -55830,10 +55830,10 @@ static const char * const table[] =
     "Drifting Mind Studio",                                                               // 55808
     "Crystal Crest Cleaners",                                                             // 55809
     "Vitesco Technologies",                                                               // 55810
-    "JSC ""MIR UPAKOVKI""",                                                               // 55811
+    "JSC MIR UPAKOVKI",                                                                   // 55811
     "Laboratories of Molecular Anthropology and Microbiome Research",                     // 55812
     "HashiCorp, Inc.",                                                                    // 55813
-    "RnD Center ""IMPULSE""",                                                             // 55814
+    "RnD Center IMPULSE",                                                                 // 55814
     "Factor-y S.r.l.",                                                                    // 55815
     "LifeLens Technologies",                                                              // 55816
     "Teichmann Integration Services",                                                     // 55817
@@ -56128,7 +56128,7 @@ static const char * const table[] =
     "Cambridge University Hospitals NHS Foundation Trust",                                // 56106
     "Convention Center Authority of the Metropolitan Government of Nashville & Davidson County",// 56107
     "Intelligent Waves LLC",                                                              // 56108
-    "ДП ""Одеський порт"" (State Enterprise ""Odesa Sea Trade Port"")",                   // 56109
+    "ДП Одеський порт (State Enterprise Odesa Sea Trade Port)",                           // 56109
     "FSV Analytics",                                                                      // 56110
     "EKTA-Prom",                                                                          // 56111
     "Unisyue Technologies Co., Ltd.",                                                     // 56112
@@ -56143,7 +56143,7 @@ static const char * const table[] =
     "Busch's INc.",                                                                       // 56121
     "LORIOT AG",                                                                          // 56122
     "Vodafone India Services",                                                            // 56123
-    "ANEO ""Ust-Labinsky Lyceum""",                                                       // 56124
+    "ANEO Ust-Labinsky Lyceum",                                                           // 56124
     "Mars Bioimaging Limited",                                                            // 56125
     "uni software plus GmbH",                                                             // 56126
     "WAREHOUSE SPECIALISTS LLC",                                                          // 56127
@@ -56411,7 +56411,7 @@ static const char * const table[] =
     "The Munshi Group",                                                                   // 56389
     "Wuhan Yangtze Computing Technologies Co.,LTD",                                       // 56390
     "Digital Devices GmbH",                                                               // 56391
-    "OOO ""Gagar.IN"" (LLC)",                                                             // 56392
+    "OOO Gagar.IN (LLC)",                                                                 // 56392
     "Crnogorski Telekom A.D.",                                                            // 56393
     "American Lebanese Syrian Associated Charities",                                      // 56394
     "ENT Specialists of Metairie",                                                        // 56395
@@ -56751,7 +56751,7 @@ static const char * const table[] =
     "Kylan Robinson",                                                                     // 56729
     "ZedNot",                                                                             // 56730
     "Beijing SG technology Co.,Ltd",                                                      // 56731
-    "ООО ""Технологии Безопасности"" (Security Technologies)",                            // 56732
+    "ООО Технологии Безопасности (Security Technologies)",                                // 56732
     "Iberexáminis Consulting S.L.",                                                       // 56733
     "Eversec Technology Co.,Ltd.",                                                        // 56734
     "Bundesamt für Verfassungsschutz",                                                    // 56735
@@ -56889,7 +56889,7 @@ static const char * const table[] =
     "Group of industrial technologies,  Ltd.",                                            // 56867
     "WESTPRESS GmbH & Co. KG",                                                            // 56868
     "ITC - Israel Internet",                                                              // 56869
-    "GAU RD ""CIT""",                                                                     // 56870
+    "GAU RD CIT",                                                                         // 56870
     "First Quantum Minerals Limited",                                                     // 56871
     "Sidekicks House",                                                                    // 56872
     "ANO School21",                                                                       // 56873
@@ -56900,7 +56900,7 @@ static const char * const table[] =
     "ENTEGA MediaNet GmbH",                                                               // 56878
     "DARES TECHNOLOGY, SL",                                                               // 56879
     "Ascon JSC",                                                                          // 56880
-    "LLC ""Emzior""",                                                                     // 56881
+    "LLC Emzior",                                                                         // 56881
     "AWXG Corporation",                                                                   // 56882
     "Rewara Inc",                                                                         // 56883
     "Centro Oncologico de Cayey",                                                         // 56884
@@ -56994,7 +56994,7 @@ static const char * const table[] =
     "Millabs Corporation",                                                                // 56972
     "e-intouch company",                                                                  // 56973
     "Izaac Brånn",                                                                        // 56974
-    "LLC ""Helicoid""",                                                                   // 56975
+    "LLC Helicoid",                                                                       // 56975
     "WISE SECURITY GLOBAL S.L.",                                                          // 56976
     "ISECO.CZ",                                                                           // 56977
     "DATALIT S.R.L.",                                                                     // 56978
@@ -57055,7 +57055,7 @@ static const char * const table[] =
     "Nightmare Computers Inc",                                                            // 57033
     "Inagora",                                                                            // 57034
     "MONT International Co., Ltd.",                                                       // 57035
-    "OOO ""Nizhnekamskaya TEC""",                                                         // 57036
+    "OOO Nizhnekamskaya TEC",                                                             // 57036
     "Thales SEC Transportation System Limited Company",                                   // 57037
     "BayCare Health Systems",                                                             // 57038
     "Cash Time Title Loans",                                                              // 57039
@@ -57075,7 +57075,7 @@ static const char * const table[] =
     "Martin Gallitzendoerfer",                                                            // 57053
     "Maxtropy",                                                                           // 57054
     "Public Key Server",                                                                  // 57055
-    "JSC ""Sintels""",                                                                    // 57056
+    "JSC Sintels",                                                                        // 57056
     "AmperageApps AS",                                                                    // 57057
     "TELECAMERA",                                                                         // 57058
     "Business Continuity Solutions, LLC",                                                 // 57059
@@ -57119,7 +57119,7 @@ static const char * const table[] =
     "China Telecom Fufu Information Technology CO.,LTD.",                                 // 57097
     "Dawning Information Industry Co., LTD.",                                             // 57098
     "Shanghai Chint Power Systems Co., Ltd.",                                             // 57099
-    "Joint Stock Company ""Research Institute"" Masshtab""",                              // 57100
+    "Joint Stock Company Research Institute Masshtab",                                    // 57100
     "Kleware",                                                                            // 57101
     "Azelis Corporate Services NV",                                                       // 57102
     "Verband der Studierenden an der ETH Zürich (VSETH)",                                 // 57103
@@ -57217,7 +57217,7 @@ static const char * const table[] =
     "CNTech Co., LTD",                                                                    // 57195
     "hailingguangdian",                                                                   // 57196
     "Magellan Power",                                                                     // 57197
-    "OJSC ""Eximbank""",                                                                  // 57198
+    "OJSC Eximbank",                                                                      // 57198
     "Natural Resources Wales",                                                            // 57199
     "PowerOn Platforms",                                                                  // 57200
     "Aero Simulation, Inc.",                                                              // 57201
@@ -57394,7 +57394,7 @@ static const char * const table[] =
     "PCCW Solutions Limited",                                                             // 57372
     "ERSTREAM VIDEO DELIVERY CORP",                                                       // 57373
     "rongyi.io",                                                                          // 57374
-    "JSC ""NTC FB""",                                                                     // 57375
+    "JSC NTC FB",                                                                         // 57375
     "Hangchun Broadcast Equipment Co, Ltd",                                               // 57376
     "ABZ Informatik Dr. Krottmaier e.U.",                                                 // 57377
     "bwIDM",                                                                              // 57378
@@ -57697,7 +57697,7 @@ static const char * const table[] =
     "Dr. Markus Regensburger",                                                            // 57675
     "La marm'hotte",                                                                      // 57676
     "Shenandoah Medical Center",                                                          // 57677
-    "KGAU ""RCSS""",                                                                      // 57678
+    "KGAU RCSS",                                                                          // 57678
     "Travel Technologies, LLC",                                                           // 57679
     "Roman Prokhorenko",                                                                  // 57680
     "ICOWORKS",                                                                           // 57681
@@ -57836,7 +57836,7 @@ static const char * const table[] =
     "New Balance Poland Sp. z o.o.",                                                      // 57814
     "Shenzhen C&M I.T. Co., Ltd.",                                                        // 57815
     "Shanghai Xin Tonglian Packing Co.,Ltd",                                              // 57816
-    "Guangzhou JN UNION Technology Co., Ltd (""JN Union"")",                              // 57817
+    "Guangzhou JN UNION Technology Co., Ltd (JN Union)",                                  // 57817
     "PNTECH JSC",                                                                         // 57818
     "eprimo GmbH",                                                                        // 57819
     "Europapier Austria GmbH",                                                            // 57820
@@ -57984,7 +57984,7 @@ static const char * const table[] =
     "Sedam IT d.o.o.",                                                                    // 57962
     "Afzar Pardaz Tose'eh",                                                               // 57963
     "ZAP Surgical Systems, Inc",                                                          // 57964
-    "LLC ""Company DVK-electro""",                                                        // 57965
+    "LLC Company DVK-electro",                                                            // 57965
     "Aethera Technologies Limited",                                                       // 57966
     "INSTITUTO PARA LA DINAMIZACIÓN ECONÓMICA S.A.",                                      // 57967
     "TUI Cruises GmbH",                                                                   // 57968
@@ -57999,7 +57999,7 @@ static const char * const table[] =
     "Lyquidity Solutions Limited",                                                        // 57977
     "Infomedics",                                                                         // 57978
     "Broadacres Housing Association",                                                     // 57979
-    """RUPOST"" LLC",                                                                     // 57980
+    "RUPOST LLC",                                                                         // 57980
     "(Hefei) Zijun guangheng Technology Co., Ltd",                                        // 57981
     "ALFIERI CARDIOLOGY",                                                                 // 57982
     "Linka Cloud",                                                                        // 57983
@@ -58085,7 +58085,7 @@ static const char * const table[] =
     "Beyond Identity, Inc.",                                                              // 58063
     "Zezima",                                                                             // 58064
     "cyan Security Group GmbH",                                                           // 58065
-    "UAB ""ICECO""",                                                                      // 58066
+    "UAB ICECO",                                                                          // 58066
     "Exsolvi Holding AB",                                                                 // 58067
     "TCN Inc",                                                                            // 58068
     "BxR",                                                                                // 58069
@@ -58146,7 +58146,7 @@ static const char * const table[] =
     "DPC INDIA PRIVATE LIMITED",                                                          // 58124
     "Pulsar K Bogusz Spółka Jawna",                                                       // 58125
     "Frodexim Trade LLC",                                                                 // 58126
-    "ООО ""Корда Групп"" (""Korda Group"" Ltd.)",                                         // 58127
+    "ООО Корда Групп (Korda Group Ltd.)",                                                 // 58127
     "Salzgitter Maschinenbau",                                                            // 58128
     "Beyond Expectations - BEXP",                                                         // 58129
     "Sapphire Community Health Inc.",                                                     // 58130
@@ -58228,7 +58228,7 @@ static const char * const table[] =
     "Newbury Corporation",                                                                // 58206
     "Collège Sainte-Anne",                                                                // 58207
     "Verbandsgemeinde Leiningerland",                                                     // 58208
-    "LLC ""LODM-Technology""",                                                            // 58209
+    "LLC LODM-Technology",                                                                // 58209
     "MDS Global",                                                                         // 58210
     "Friedrichs",                                                                         // 58211
     "Dytech IT-Solutions GmbH",                                                           // 58212
@@ -58400,7 +58400,7 @@ static const char * const table[] =
     "Delta Electronics Inc.",                                                             // 58378
     "International Data Spaces Association e.V.",                                         // 58379
     "Tailor, inc.",                                                                       // 58380
-    "ТОО ""Юникс-Beverage"" (Unix-Beverage LLP)",                                         // 58381
+    "ТОО Юникс-Beverage (Unix-Beverage LLP)",                                             // 58381
     "CONSEIL DEPARTEMENTAL DE LA HAUTE-MARNE",                                            // 58382
     "CONSEIL DEPARTEMENTAL DE LA HAUTE-MARNE",                                            // 58383
     "Hanhaa GenX",                                                                        // 58384
@@ -58512,7 +58512,7 @@ static const char * const table[] =
     "Care Oncology Center",                                                               // 58490
     "MAPLE HOME GARDEN COMPANY LIMITED",                                                  // 58491
     "Stemmer Imaging AG",                                                                 // 58492
-    "AFFILIATED COMPANY ""NAFTOGAZBEZPEKA"" OF NATIONAL JOINT STOCK COMPANY ""NAFTOGAZ OF UKRAINE""",// 58493
+    "AFFILIATED COMPANY NAFTOGAZBEZPEKA OF NATIONAL JOINT STOCK COMPANY NAFTOGAZ OF UKRAINE",// 58493
     "sector7 GmbH",                                                                       // 58494
     "Omnisens SA",                                                                        // 58495
     "Raincubic",                                                                          // 58496
@@ -58526,7 +58526,7 @@ static const char * const table[] =
     "Beijing Yuanshan Networks",                                                          // 58504
     "PERCEIG AI SYSTEMS (OPC) PVT LTD",                                                   // 58505
     "The Sapling Company, Inc.",                                                          // 58506
-    "JSC ""IB-Reform""",                                                                  // 58507
+    "JSC IB-Reform",                                                                      // 58507
     "ISEN Yncrea OUEST",                                                                  // 58508
     "INRAE",                                                                              // 58509
     "ICHEC",                                                                              // 58510
@@ -58656,7 +58656,7 @@ static const char * const table[] =
     "aity AG",                                                                            // 58634
     "Almi GmbH",                                                                          // 58635
     "Aegis Power Systems, Inc.",                                                          // 58636
-    "CJSC ""Interdnestrcom""",                                                            // 58637
+    "CJSC Interdnestrcom",                                                                // 58637
     "HATSec LLC",                                                                         // 58638
     "sematicon AG",                                                                       // 58639
     "SMC Gateway Ltd",                                                                    // 58640
@@ -58762,7 +58762,7 @@ static const char * const table[] =
     "Softwerke Magdeburg e.V.",                                                           // 58740
     "The General Authority for State Registration of Mongolia",                           // 58741
     "ETHIAS",                                                                             // 58742
-    "SIA ""TELESTRIDER""",                                                                // 58743
+    "SIA TELESTRIDER",                                                                    // 58743
     "zerotrustlab",                                                                       // 58744
     "VASSILI LEONOV LML",                                                                 // 58745
     "AMC Engineers",                                                                      // 58746
@@ -58926,7 +58926,7 @@ static const char * const table[] =
     "Hôtel-Dieu Grace Healthcare",                                                        // 58904
     "Windsor Regional Hospital",                                                          // 58905
     "Chatham-Kent Health Alliance",                                                       // 58906
-    "KGAU ""RCSP ""AZVS""",                                                               // 58907
+    "KGAU RCSP AZVS",                                                                     // 58907
     "Gmantra",                                                                            // 58908
     "Austin DeFrancesco",                                                                 // 58909
     "Innoflight",                                                                         // 58910
@@ -59080,7 +59080,7 @@ static const char * const table[] =
     "CHSLD90",                                                                            // 59058
     "BeFoxIT",                                                                            // 59059
     "Capgemini Outsourcing Services GmbH",                                                // 59060
-    "PRIVATE JOINT-STOCK COMPANY ""UKRAINSKY GRAFIT""",                                   // 59061
+    "PRIVATE JOINT-STOCK COMPANY UKRAINSKY GRAFIT",                                       // 59061
     "e-Governance infrastructure implementation agency (EKENG)",                          // 59062
     "NETWORK RAIL LIMITED",                                                               // 59063
     "Valdosta State University",                                                          // 59064
@@ -59335,7 +59335,7 @@ static const char * const table[] =
     "Westas Group Oy",                                                                    // 59313
     "National Telecommunication Corporation",                                             // 59314
     "R&R Software Zrt.",                                                                  // 59315
-    "MB ""Applicus""",                                                                    // 59316
+    "MB Applicus",                                                                        // 59316
     "itesys AG",                                                                          // 59317
     "BigCat TEK IT Services & Solutions, LLC",                                            // 59318
     "dgos",                                                                               // 59319
@@ -59494,7 +59494,7 @@ static const char * const table[] =
     "Algar Telecom S/A",                                                                  // 59472
     "China Society of Automotive Engineers (CSAE)",                                       // 59473
     "JSC KUCHUKSULPHATE",                                                                 // 59474
-    "АО «НТЦ ЕЭС Информационные комплексы» (JSC ""NTC UES Information complexes"")",      // 59475
+    "АО «НТЦ ЕЭС Информационные комплексы» (JSC NTC UES Information complexes)",          // 59475
     "La Compagnie du Logement",                                                           // 59476
     "Racklive",                                                                           // 59477
     "Liljestig",                                                                          // 59478
@@ -59848,7 +59848,7 @@ static const char * const table[] =
     "AIA New Zealand",                                                                    // 59826
     "Efficture AB",                                                                       // 59827
     "Payment Alliance International",                                                     // 59828
-    "AO ""Nacional'naja nerudnaja kompanija""",                                           // 59829
+    "AO Nacional'naja nerudnaja kompanija",                                               // 59829
     "Mapo",                                                                               // 59830
     "CSSSPNQL",                                                                           // 59831
     "Ideamatrix",                                                                         // 59832
@@ -60555,7 +60555,7 @@ static const char * const table[] =
     "Henrik Norrman",                                                                     // 60533
     "Meidensha Corporation",                                                              // 60534
     "thyssenkrupp Components Technology Hungary Kft.",                                    // 60535
-    "UAB ""iSense Technologies""",                                                        // 60536
+    "UAB iSense Technologies",                                                            // 60536
     "Nebius",                                                                             // 60537
     "EDR Credit Services",                                                                // 60538
     "Paper Excellence",                                                                   // 60539
@@ -60699,7 +60699,7 @@ static const char * const table[] =
     "Moolex",                                                                             // 60677
     "Zen Exim Pvt. Ltd.",                                                                 // 60678
     "KT Corporation",                                                                     // 60679
-    """TC Profenergy"" LLC",                                                              // 60680
+    "TC Profenergy LLC",                                                                  // 60680
     "Vivek Bhoj",                                                                         // 60681
     "Kingfisher Clinic, PLLC",                                                            // 60682
     "EnuxMail",                                                                           // 60683
@@ -61144,7 +61144,7 @@ static const char * const table[] =
     "Sakarya University of Applied Sciences",                                             // 61122
     "HEXIN Technologies Co., Ltd",                                                        // 61123
     "Paperless doo Beograd",                                                              // 61124
-    """Group of Industrial Technologies"", Ltd",                                          // 61125
+    "Group of Industrial Technologies, Ltd",                                              // 61125
     "MRD Rail Technologies",                                                              // 61126
     "Scenic Rim Regional Council",                                                        // 61127
     "AppViewX Inc",                                                                       // 61128
@@ -61367,7 +61367,7 @@ static const char * const table[] =
     "Marshall Health Network",                                                            // 61345
     "LLC «P C Most»",                                                                     // 61346
     "Kirill Sluzhaev",                                                                    // 61347
-    "Limited Liability Company ""Thunder Soft""",                                         // 61348
+    "Limited Liability Company Thunder Soft",                                             // 61348
     "北京中科恒伦科技有限公司 (Beijing Zhongke Henglun Technology Co., Ltd.)",                        // 61349
     "smartgen",                                                                           // 61350
     "Telekomi Kosoves",                                                                   // 61351
@@ -62083,7 +62083,7 @@ static const char * const table[] =
     "WalkHorizon",                                                                        // 62061
     "4MITECH",                                                                            // 62062
     "EasyNet Industry (Shenzhen) Co., Ltd",                                               // 62063
-    "ООО ""Новые облачные технологии"" (LLC ""New cloud technologies"")",                 // 62064
+    "ООО Новые облачные технологии (LLC New cloud technologies)",                         // 62064
     "ANDREW, an Amphenol company",                                                        // 62065
     "CloudXP Ltd",                                                                        // 62066
     "ORLEN Oddział Centralny PGNiG w Warszawie",                                          // 62067
@@ -62270,7 +62270,7 @@ static const char * const table[] =
     "言创智信（北京）科技有限公司 (Yanchuang Zhixin (Beijing) Technology Co., Ltd.)",                   // 62248
     "廖雷 (Liao Lei)",                                                                      // 62249
     "Australian Centre for International Agricultural Research",                          // 62250
-    "OOO ""Softime""",                                                                    // 62251
+    "OOO Softime",                                                                        // 62251
     "Softime LLC",                                                                        // 62252
     "Bas Westerbaan",                                                                     // 62253
     "KWD Automotive AG & Co. KG",                                                         // 62254
@@ -62302,7 +62302,7 @@ static const char * const table[] =
     "Profundities LLC",                                                                   // 62280
     "Saman Tadbir Fartak",                                                                // 62281
     "Shanghai Belong Technology Co., Ltd.",                                               // 62282
-    "LLC ""Remer automation""",                                                           // 62283
+    "LLC Remer automation",                                                               // 62283
     "Skogsfraktarna i Sundsvall AB",                                                      // 62284
     "Aodun (Beijing) Technology Co., Ltd.",                                               // 62285
     "Vidya Sagar",                                                                        // 62286
@@ -62426,7 +62426,7 @@ static const char * const table[] =
     "Solve Industrial Motion Group",                                                      // 62404
     "USINA ALTA MOGIANA S/A-ACUCAR E ALCOOL",                                             // 62405
     "Pangea Connected",                                                                   // 62406
-    "LLC ""FoxyTrade""",                                                                  // 62407
+    "LLC FoxyTrade",                                                                      // 62407
     "江苏航天七零六信息科技有限公司 (Jiangsu Aerospace 706 Information Technology Co., Ltd.)",           // 62408
     "Bluewater Health",                                                                   // 62409
     "ITtechCA",                                                                           // 62410
@@ -62583,7 +62583,7 @@ static const char * const table[] =
     "Decon Corporation",                                                                  // 62561
     "Advanced Acoustic Concepts",                                                         // 62562
     "JURONG PORT PTE LTD",                                                                // 62563
-    """ICT"" Srl.",                                                                       // 62564
+    "ICT Srl.",                                                                           // 62564
     "Huntsville International Airport",                                                   // 62565
     "Letmi Ecuador S.A",                                                                  // 62566
     "JFE Plant Engineering Co., Ltd.",                                                    // 62567
@@ -62669,7 +62669,7 @@ static const char * const table[] =
     "Redflex Traffic Systems Ltd",                                                        // 62647
     "Verra Mobility",                                                                     // 62648
     "AXASOFT, a.s.",                                                                      // 62649
-    "Moscow State University ""ROSBIOTECH""",                                             // 62650
+    "Moscow State University ROSBIOTECH",                                                 // 62650
     "Transition Technologies Advanced Solutions Sp. z o. o.",                             // 62651
     "Emanuele Faranda",                                                                   // 62652
     "Brodinger IT-Sicherheitstechnik",                                                    // 62653
@@ -62894,7 +62894,7 @@ static const char * const table[] =
     "OOOLT",                                                                              // 62872
     "Marcus Nelle",                                                                       // 62873
     "Tsa Lynx Process",                                                                   // 62874
-    "Moscow plant ""Fizpribor"" Ltd.",                                                    // 62875
+    "Moscow plant Fizpribor Ltd.",                                                        // 62875
     "neoom",                                                                              // 62876
     "Grundfos Holding A/S",                                                               // 62877
     "BIP",                                                                                // 62878
@@ -63056,7 +63056,7 @@ static const char * const table[] =
     "Tecnologias Plexus S.L.",                                                            // 63034
     "COFO e.K.",                                                                          // 63035
     "Onsite Women's Health",                                                              // 63036
-    "Limited liability company ""Mobil Telecom""",                                        // 63037
+    "Limited liability company Mobil Telecom",                                            // 63037
     "Nikolay Zaytsev",                                                                    // 63038
     "vaettir.net",                                                                        // 63039
     "TOAD Consulting",                                                                    // 63040
@@ -63111,7 +63111,7 @@ static const char * const table[] =
     "Moose Interactive LTD",                                                              // 63089
     "Järvi-Suomen Uittoyhdistys",                                                         // 63090
     "elektronik-labor CARLS GmbH & Co. KG",                                               // 63091
-    """RUBICON WIRELESS COMMUNICATION"" LLC",                                             // 63092
+    "RUBICON WIRELESS COMMUNICATION LLC",                                                 // 63092
     "TJ Innovation",                                                                      // 63093
     "3um",                                                                                // 63094
     "OpenSensie.org",                                                                     // 63095
@@ -63592,7 +63592,7 @@ static const char * const table[] =
     "Skryptek",                                                                           // 63570
     "KERRYJ INVESTMENT PTY LTD",                                                          // 63571
     "TrustNXT GmbH",                                                                      // 63572
-    "JSC ""STC UPS""",                                                                    // 63573
+    "JSC STC UPS",                                                                        // 63573
     "Standards and Interoperability Lab",                                                 // 63574
     "NEXGOV",                                                                             // 63575
     "Lanboss Limited",                                                                    // 63576
@@ -63636,7 +63636,7 @@ static const char * const table[] =
     "Kuttler Tech",                                                                       // 63614
     "Area Science Park",                                                                  // 63615
     "Coop7",                                                                              // 63616
-    "LIMITED LIABILITY COMPANY ""TA-INFORMATION TECHNOLOGIES"" (TA-IT LLC)",              // 63617
+    "LIMITED LIABILITY COMPANY TA-INFORMATION TECHNOLOGIES (TA-IT LLC)",                  // 63617
     "ATAN LLC",                                                                           // 63618
     "TM Ausbau GmbH",                                                                     // 63619
     "SAE EVPKI",                                                                          // 63620
@@ -64059,7 +64059,7 @@ static const char * const table[] =
     "Stellar Cartography LLC",                                                            // 64037
     "LUZI AG",                                                                            // 64038
     "Commtel Networks Limited",                                                           // 64039
-    """Korvet SP"" LLC",                                                                  // 64040
+    "Korvet SP LLC",                                                                      // 64040
     "contractreporting.com",                                                              // 64041
     "Manas Kumar Dash",                                                                   // 64042
     "广东乐心医疗电子股份有限公司 (Guangdong Lexin Medical Electronics Co., Ltd.)",                     // 64043
@@ -64168,7 +64168,7 @@ static const char * const table[] =
     "Marko Apfel",                                                                        // 64146
     "Hochschule für Polizei und öffentliche Verwaltung Nordrhein-Westfalen",              // 64147
     "DIGIFRANCE",                                                                         // 64148
-    """Bizness Systema Telecom"" LTD",                                                    // 64149
+    "Bizness Systema Telecom LTD",                                                        // 64149
     "Girls Day School Trust",                                                             // 64150
     "Kvaser AB",                                                                          // 64151
     "Armatura LLC",                                                                       // 64152
@@ -64283,7 +64283,7 @@ static const char * const table[] =
     "AVS Electronics SpA",                                                                // 64261
     "Polycomp Technologies (PTY) Ltd.",                                                   // 64262
     "Networkers Rocks",                                                                   // 64263
-    "LIMITED LIABILITY COMPANY ""DYNASWITCH PRO""",                                       // 64264
+    "LIMITED LIABILITY COMPANY DYNASWITCH PRO",                                           // 64264
     "Tecweigh",                                                                           // 64265
     "Corista LLC",                                                                        // 64266
     "NOAA/CSL",                                                                           // 64267
@@ -64606,7 +64606,7 @@ static const char * const table[] =
     "Thomas Cerny Inc.",                                                                  // 64584
     "segMedix, Co.",                                                                      // 64585
     "Wahid Group, LLC",                                                                   // 64586
-    """VPG Laserone"" LLC",                                                               // 64587
+    "VPG Laserone LLC",                                                                   // 64587
     "Lane Clark & Peacock LLP",                                                           // 64588
     "System Dynamics",                                                                    // 64589
     "Final DeFi",                                                                         // 64590
