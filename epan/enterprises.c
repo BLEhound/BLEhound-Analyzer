@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2025-11-07) */
+/* (last updated 2025-11-14) */
 
 #include "config.h"
 
@@ -40091,7 +40091,7 @@ static const char * const table[] =
     "enprovia Software Engineering s. r. o.",                                             // 40069
     "RetailNext",                                                                         // 40070
     "P. St. Onge",                                                                        // 40071
-    "techlab.jp",                                                                         // 40072
+    "ouchi.dev",                                                                          // 40072
     "Lutron Electronics Company, Inc",                                                    // 40073
     "Energy Solutions Ltd.",                                                              // 40074
     "SPL-Xdemat",                                                                         // 40075
@@ -64600,7 +64600,56 @@ static const char * const table[] =
     "Shanghai CloudPrime.ai Technology Co, Ltd",                                          // 64578
     "Reliably Coded B.V.",                                                                // 64579
     "Aéroports de la Côte d'Azur",                                                        // 64580
-    "Emerald Technologies"                                                                // 64581
+    "Emerald Technologies",                                                               // 64581
+    "DennySu",                                                                            // 64582
+    "Beijing GuangRunTong Technology Development Co., Ltd.",                              // 64583
+    "Thomas Cerny Inc.",                                                                  // 64584
+    "segMedix, Co.",                                                                      // 64585
+    "Wahid Group, LLC",                                                                   // 64586
+    """VPG Laserone"" LLC",                                                               // 64587
+    "Lane Clark & Peacock LLP",                                                           // 64588
+    "System Dynamics",                                                                    // 64589
+    "Final DeFi",                                                                         // 64590
+    "MJD Technologies",                                                                   // 64591
+    "Shenzhen SOFARSOLAR Co., Ltd.",                                                      // 64592
+    "Kiepe Electric GmbH",                                                                // 64593
+    "Alexander Kofanov",                                                                  // 64594
+    "Atikon EDV & Marketing GmbH",                                                        // 64595
+    "Henjes, Conner & Williams, P.C.",                                                    // 64596
+    "المحارب الرقمي (Digital Warrior)",                                                   // 64597
+    "Chutian Dragon Co.,Ltd.",                                                            // 64598
+    "Benjamin Ray",                                                                       // 64599
+    "Meiflow",                                                                            // 64600
+    "Corrections Technology Group",                                                       // 64601
+    "Forrest County General Hospital",                                                    // 64602
+    "BrainChild Electronic",                                                              // 64603
+    "Partronics eBoards Pvt Ltd",                                                         // 64604
+    "Shield Security Software",                                                           // 64605
+    "Swisscom Lab",                                                                       // 64606
+    "Peter J. Mello",                                                                     // 64607
+    "RISEN ENERGY Co., LTD.",                                                             // 64608
+    "FAIRagro",                                                                           // 64609
+    "Z Elektronika kft",                                                                  // 64610
+    "Tyven",                                                                              // 64611
+    "Myrddhinn Technologies",                                                             // 64612
+    "FINTRAC LTD",                                                                        // 64613
+    "initEnergy GmbH",                                                                    // 64614
+    "Pelton Shepherd Industries",                                                         // 64615
+    "MR Sifiso Sizwe Shezi",                                                              // 64616
+    "DrHEX",                                                                              // 64617
+    "Wombat Labs",                                                                        // 64618
+    "IDCITI",                                                                             // 64619
+    "Centry Cognitive Capital",                                                           // 64620
+    "MT-LINK TECHNOLOGIES CO",                                                            // 64621
+    "Deutsche Pfandbriefbank AG",                                                         // 64622
+    "Värne Skog AB",                                                                      // 64623
+    "Prival ODC Inc.",                                                                    // 64624
+    "Pat O'Donnell & Co",                                                                 // 64625
+    "Australian New Energy Technology Pty Ltd",                                           // 64626
+    "TDF",                                                                                // 64627
+    "Lynx Innovation Inc",                                                                // 64628
+    "GajShield Infotech India Private Limited",                                           // 64629
+    "Xinnor"                                                                              // 64630
 };
 
 const char* global_enterprises_lookup(uint32_t value)
