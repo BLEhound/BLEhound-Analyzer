@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2025-11-14) */
+/* (last updated 2025-11-21) */
 
 #include "config.h"
 
@@ -13731,7 +13731,7 @@ static const char * const table[] =
     "The Bank of New York",                                                               // 13709
     "LVM Versicherungen",                                                                 // 13710
     "Primus Telecommunications Australia Pty Ltd",                                        // 13711
-    "ARINC (Aeronautical Radio, Inc.) Roy L. Courtney",                                   // 13712
+    "ARINC Industry Activities",                                                          // 13712
     "Gateweaver",                                                                         // 13713
     "Reea",                                                                               // 13714
     "Alescere",                                                                           // 13715
@@ -37727,7 +37727,7 @@ static const char * const table[] =
     "CommSoft RMS LLC",                                                                   // 37705
     "Netmedia Systems e. K.",                                                             // 37706
     "Rocrail",                                                                            // 37707
-    "Systola Forwarding GmbH",                                                            // 37708
+    "Systola GmbH",                                                                       // 37708
     "S3 Satcom Ltd",                                                                      // 37709
     "Dane E. Jones",                                                                      // 37710
     "FileMaker Inc",                                                                      // 37711
@@ -52238,7 +52238,7 @@ static const char * const table[] =
     "PrimosTI",                                                                           // 52216
     "Ambient System sp. z o.o.",                                                          // 52217
     "Castle Global",                                                                      // 52218
-    "NOVOTEA",                                                                            // 52219
+    "MiMiR bv",                                                                           // 52219
     "Nianet A/S",                                                                         // 52220
     "Landkreis Mansfeld-Südharz",                                                         // 52221
     "Support Logistic Services srl",                                                      // 52222
@@ -64649,7 +64649,55 @@ static const char * const table[] =
     "TDF",                                                                                // 64627
     "Lynx Innovation Inc",                                                                // 64628
     "GajShield Infotech India Private Limited",                                           // 64629
-    "Xinnor"                                                                              // 64630
+    "Xinnor",                                                                             // 64630
+    "NDV",                                                                                // 64631
+    "BankUnited",                                                                         // 64632
+    "BVA",                                                                                // 64633
+    "Fuzhou Gulou Yuqing Network Co., Ltd",                                               // 64634
+    "Gemeinde Hude (Oldb)",                                                               // 64635
+    "AdvComm Inc",                                                                        // 64636
+    "CCS-ENGRS",                                                                          // 64637
+    "Peter Gallwas",                                                                      // 64638
+    "Joshua Bollinger",                                                                   // 64639
+    "Nodominium S.A.S. de C.V.",                                                          // 64640
+    "Soramitsu Khmer CO., LTD.",                                                          // 64641
+    "Tatweer Cyber Security",                                                             // 64642
+    "AGENCIA ESTATAL DE METEOROLOGIA (AEMET)",                                            // 64643
+    "Kellola Metsä Oy",                                                                   // 64644
+    "LEMO Maschinenbau GmbH",                                                             // 64645
+    "Safescap",                                                                           // 64646
+    "Radix Metasystems Inc.",                                                             // 64647
+    "Hadrian Automation",                                                                 // 64648
+    "PowerSync Pty Ltd",                                                                  // 64649
+    "LuxCarta Corp",                                                                      // 64650
+    "CHAOS.CORP",                                                                         // 64651
+    "Phaidra Inc",                                                                        // 64652
+    "MultiService Aviation",                                                              // 64653
+    "Zhang San",                                                                          // 64654
+    "Duke",                                                                               // 64655
+    "Platinum Optics Technology Inc.",                                                    // 64656
+    "Dungeon Technologies",                                                               // 64657
+    "Beijing New Matrix Information Technology Co., Ltd",                                 // 64658
+    "Innovate Systems, LLC",                                                              // 64659
+    "Polish Linux Users Group - PLUG",                                                    // 64660
+    "Puddingify, Inc",                                                                    // 64661
+    "Relativity Space",                                                                   // 64662
+    "Guangzhou Felicity Solar Technology Co., Ltd.",                                      // 64663
+    "Finspångs Tekniska Verk AB",                                                         // 64664
+    "Camkeeper, LLC",                                                                     // 64665
+    "Skogsbränsle Småland AB",                                                            // 64666
+    "Nueng Diao Solutions Co.,Ltd.",                                                      // 64667
+    "SWO De Wolden Hoogeveen",                                                            // 64668
+    "Eventide Communications",                                                            // 64669
+    "北京维冠机电股份有限公司 (Beijing Weiguan Electromechanical Co., Ltd.)",                         // 64670
+    "zaphyra",                                                                            // 64671
+    "Dalaskog försäljning AB",                                                            // 64672
+    "Arco Marketing",                                                                     // 64673
+    "Datastyx",                                                                           // 64674
+    "Shanghai Candy Rectangle Technology Co., Ltd.",                                      // 64675
+    "Gane Móvil SAS",                                                                     // 64676
+    "Synapse ITS",                                                                        // 64677
+    "Aim Transportation Solutions"                                                        // 64678
 };
 
 const char* global_enterprises_lookup(uint32_t value)
