@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2025-11-21) */
+/* (last updated 2025-11-26) */
 
 #include "config.h"
 
@@ -1571,7 +1571,7 @@ static const char * const table[] =
     "Allied Data Technologies",                                                           // 1549
     "Nuera Communication Inc.",                                                           // 1550
     "Radnet Ltd.",                                                                        // 1551
-    "Océ Technologies BV",                                                                // 1552
+    "Canon Production Printing Holding B.V.",                                             // 1552
     "Air France",                                                                         // 1553
     "Communications & Power Engineering, Inc.",                                           // 1554
     "Charter Systems",                                                                    // 1555
@@ -9380,7 +9380,7 @@ static const char * const table[] =
     "Wicom Communications Ltd",                                                           // 9358
     "Symeko Datasystems bv",                                                              // 9359
     "Green Light Inc.",                                                                   // 9360
-    "Océ Software Laboratories Namur",                                                    // 9361
+    NULL,                                                                                 // 9361
     "ENSEIRB",                                                                            // 9362
     "Spelio",                                                                             // 9363
     "InterPark Incorporated",                                                             // 9364
@@ -12221,7 +12221,7 @@ static const char * const table[] =
     "SAGE SRL",                                                                           // 12199
     "Seneca Groep B.V.",                                                                  // 12200
     "University Health Network",                                                          // 12201
-    "UP3I",                                                                               // 12202
+    NULL,                                                                                 // 12202
     "VTT Information Technology",                                                         // 12203
     "DevonIT",                                                                            // 12204
     "Allianz Ireland PLC",                                                                // 12205
@@ -12930,7 +12930,7 @@ static const char * const table[] =
     "Litech Systems Design",                                                              // 12908
     "Machine Vision Products, Inc.",                                                      // 12909
     "Next Element",                                                                       // 12910
-    "Oce NV",                                                                             // 12911
+    NULL,                                                                                 // 12911
     "PeerPro",                                                                            // 12912
     "Procera Networks, Inc.",                                                             // 12913
     "Production Robots Engineering Ltd",                                                  // 12914
@@ -26477,7 +26477,7 @@ static const char * const table[] =
     "Secretariat of Information Technology, Government of Haryana",                       // 26455
     "Budapest University of Technology and Economics (BME)",                              // 26456
     "Meditec GmbH",                                                                       // 26457
-    "tetrade inc.",                                                                       // 26458
+    "United Security Providers AG",                                                       // 26458
     "wavesyscom co.,Ltd",                                                                 // 26459
     "Alcor Communications",                                                               // 26460
     "Knorr & Partner Ingenieure",                                                         // 26461
@@ -52126,7 +52126,7 @@ static const char * const table[] =
     "ShamAn",                                                                             // 52104
     "spoe",                                                                               // 52105
     "ISED Ingegneria dei sistemi S.p.A.",                                                 // 52106
-    "Volkswagen Financial Services Digital Solutions GmbH",                               // 52107
+    "Volkswagen Financial Services AG",                                                   // 52107
     "Exponential-e Limited",                                                              // 52108
     "Zeitounian Tecnologia",                                                              // 52109
     "Grupo Idial",                                                                        // 52110
@@ -64697,7 +64697,32 @@ static const char * const table[] =
     "Shanghai Candy Rectangle Technology Co., Ltd.",                                      // 64675
     "Gane Móvil SAS",                                                                     // 64676
     "Synapse ITS",                                                                        // 64677
-    "Aim Transportation Solutions"                                                        // 64678
+    "Aim Transportation Solutions",                                                       // 64678
+    "Verification & Validation Technology Co., Ltd。",                                     // 64679
+    "Tulsa Community College",                                                            // 64680
+    "Nashville State Community College",                                                  // 64681
+    "ViMITRiX",                                                                           // 64682
+    "Napp",                                                                               // 64683
+    "Clever Sky Systems Co., Ltd.",                                                       // 64684
+    "Code Construct Pty Ltd",                                                             // 64685
+    "EHS Group",                                                                          // 64686
+    "Reiner Kartengeräte GmbH & Co. KG",                                                  // 64687
+    "Dawning Cloud Computing Group Co.,Ltd.",                                             // 64688
+    "Granola Labs Ltd",                                                                   // 64689
+    "T&W Operations Inc",                                                                 // 64690
+    "Malå Såg AB",                                                                        // 64691
+    "Malå kommun",                                                                        // 64692
+    "EDIN",                                                                               // 64693
+    "MoRENet (Mozambique Research and Education Network)",                                // 64694
+    "All4Labels UK Ltd",                                                                  // 64695
+    "Konstantin",                                                                         // 64696
+    "KernelSU",                                                                           // 64697
+    "StreamsITS",                                                                         // 64698
+    "Northside Hospital LLC",                                                             // 64699
+    "Michael Herstine",                                                                   // 64700
+    "Puentes del Oeste S.L.",                                                             // 64701
+    "ALES a. s.",                                                                         // 64702
+    "Autorité des marchés financiers (Québec)"                                            // 64703
 };
 
 const char* global_enterprises_lookup(uint32_t value)
