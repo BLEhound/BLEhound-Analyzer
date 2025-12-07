@@ -2243,7 +2243,7 @@ static int hf_lte_rrc_numberOfPreamblesSent_r16;  /* NumberOfPreamblesSent_r11 *
 static int hf_lte_rrc_contentionDetected_r16;     /* BOOLEAN */
 static int hf_lte_rrc_initialCEL_r16;             /* INTEGER_0_3 */
 static int hf_lte_rrc_edt_Fallback_r16;           /* BOOLEAN */
-static int hf_lte_rrc_rach_ReportListNR_r18;      /* OCTET_STRING */
+static int hf_lte_rrc_rach_ReportListNR_r18;      /* T_rach_ReportListNR_r18 */
 static int hf_lte_rrc_cellIdListNR_r18;           /* CellIdListNR_r18 */
 static int hf_lte_rrc_CellIdListNR_r18_item;      /* CellIdNR_r18 */
 static int hf_lte_rrc_cellGlobalId_r18;           /* CellGlobalIdNR_r16 */
@@ -90998,6 +90998,23 @@ dissect_lte_rrc_T_coarseLocationInfo_r17(tvbuff_t *tvb _U_, int offset _U_, asn1
 }
 
 
+
+static int
+dissect_lte_rrc_T_rach_ReportListNR_r18(tvbuff_t *tvb _U_, int offset _U_, asn1_ctx_t *actx _U_, proto_tree *tree _U_, int hf_index _U_) {
+  tvbuff_t *ra_reportlist_tvb = NULL;
+  offset = dissect_per_octet_string(tvb, offset, actx, tree, hf_index,
+                                       NO_BOUND, NO_BOUND, false, &ra_reportlist_tvb);
+
+  if (ra_reportlist_tvb) {
+    dissect_nr_rrc_RA_ReportList_r16_PDU(ra_reportlist_tvb, actx->pinfo, tree, NULL);
+  }
+
+
+
+  return offset;
+}
+
+
 static const per_sequence_t T_pci_arfcn_r18_sequence[] = {
   { &hf_lte_rrc_physCellId_r18, ASN1_NO_EXTENSIONS     , ASN1_NOT_OPTIONAL, dissect_lte_rrc_PhysCellIdNR_r15 },
   { &hf_lte_rrc_carrierFreq_r18, ASN1_NO_EXTENSIONS     , ASN1_NOT_OPTIONAL, dissect_lte_rrc_ARFCN_ValueNR_r15 },
@@ -91050,22 +91067,15 @@ dissect_lte_rrc_CellIdListNR_r18(tvbuff_t *tvb _U_, int offset _U_, asn1_ctx_t *
 
 
 static const per_sequence_t RACH_ReportNR_r18_sequence[] = {
-  { &hf_lte_rrc_rach_ReportListNR_r18, ASN1_NO_EXTENSIONS     , ASN1_NOT_OPTIONAL, dissect_lte_rrc_OCTET_STRING },
+  { &hf_lte_rrc_rach_ReportListNR_r18, ASN1_NO_EXTENSIONS     , ASN1_NOT_OPTIONAL, dissect_lte_rrc_T_rach_ReportListNR_r18 },
   { &hf_lte_rrc_cellIdListNR_r18, ASN1_NO_EXTENSIONS     , ASN1_NOT_OPTIONAL, dissect_lte_rrc_CellIdListNR_r18 },
   { NULL, 0, 0, NULL }
 };
 
 static int
 dissect_lte_rrc_RACH_ReportNR_r18(tvbuff_t *tvb _U_, int offset _U_, asn1_ctx_t *actx _U_, proto_tree *tree _U_, int hf_index _U_) {
-  tvbuff_t *ra_reportlist_tvb = NULL;
   offset = dissect_per_sequence(tvb, offset, actx, tree, hf_index,
                                    ett_lte_rrc_RACH_ReportNR_r18, RACH_ReportNR_r18_sequence);
-
-  if (ra_reportlist_tvb) {
-    dissect_nr_rrc_RA_ReportList_r16_PDU(ra_reportlist_tvb, actx->pinfo, tree, NULL);
-  }
-
-
 
   return offset;
 }
@@ -146654,7 +146664,7 @@ void proto_register_lte_rrc(void) {
     { &hf_lte_rrc_rach_ReportListNR_r18,
       { "rach-ReportListNR-r18", "lte-rrc.rach_ReportListNR_r18",
         FT_BYTES, BASE_NONE, NULL, 0,
-        "OCTET_STRING", HFILL }},
+        NULL, HFILL }},
     { &hf_lte_rrc_cellIdListNR_r18,
       { "cellIdListNR-r18", "lte-rrc.cellIdListNR_r18",
         FT_UINT32, BASE_DEC, NULL, 0,
