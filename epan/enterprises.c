@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2025-11-26) */
+/* (last updated 2025-12-06) */
 
 #include "config.h"
 
@@ -819,7 +819,7 @@ static const char * const table[] =
     "Link Technologies, Inc.",                                                            // 797
     "IIS",                                                                                // 798
     "Mobile Solutions Inc.",                                                              // 799
-    "Xylan Corp.",                                                                        // 800
+    "ALE USA Inc. - OmniSwitch",                                                          // 800
     "Airtech Software Forge Limited",                                                     // 801
     "National Semiconductor",                                                             // 802
     "Video Lottery Technologies",                                                         // 803
@@ -6505,7 +6505,7 @@ static const char * const table[] =
     "Captus Networks",                                                                    // 6483
     "Campus Crusade for Christ, Inc.",                                                    // 6484
     "Spatial Technologies",                                                               // 6485
-    "Alcatel-Lucent Enterprise (previous was 'Alcatel')",                                 // 6486
+    "Alcatel-Lucent Enterprise",                                                          // 6486
     "YouSync",                                                                            // 6487
     "TalentStorm Enterprises",                                                            // 6488
     "Siemens Cerberus",                                                                   // 6489
@@ -22831,7 +22831,7 @@ static const char * const table[] =
     "VLI Communications CO.,LTD.",                                                        // 22809
     "Aktia Savings Bank p.l.c.",                                                          // 22810
     "Pfeiffer & May Grosshandel AG",                                                      // 22811
-    "Allscripts, LLC",                                                                    // 22812
+    "Veradigm, LLC",                                                                      // 22812
     "Pest Control Data Systems, Inc.",                                                    // 22813
     "radiowave limted",                                                                   // 22814
     "Axeda Systems Inc.",                                                                 // 22815
@@ -32533,7 +32533,7 @@ static const char * const table[] =
     "Fountainhead Investments Ltd.",                                                      // 32511
     "Zen Soluciones",                                                                     // 32512
     "Buerologistik GmbH & Co. KG",                                                        // 32513
-    "JSC Effortel",                                                                       // 32514
+    "Effortel",                                                                           // 32514
     "Rebtel Networks AB",                                                                 // 32515
     "Gisdata",                                                                            // 32516
     "Accsys GmbH",                                                                        // 32517
@@ -39638,7 +39638,7 @@ static const char * const table[] =
     "GlasgowNet",                                                                         // 39616
     "PDT Partners, LLC",                                                                  // 39617
     "Cloud Assist",                                                                       // 39618
-    "Institutul pentru Tehnologii Avansate",                                              // 39619
+    "UM 0296 Bucuresti",                                                                  // 39619
     "JANUS srl",                                                                          // 39620
     "SOPLEX Consult GmbH",                                                                // 39621
     "Intermas France S.A.S",                                                              // 39622
@@ -56555,7 +56555,7 @@ static const char * const table[] =
     "Dowslake Technologies",                                                              // 56533
     "Net Ice 9 LTD",                                                                      // 56534
     "Great Wall Motor Company Limited.",                                                  // 56535
-    "HUARUI EXPON(henan) Technology Co.,Ltd.",                                            // 56536
+    "Huarui Expon Technologies (Shenzhen) Co., Ltd.",                                     // 56536
     "AVAP",                                                                               // 56537
     "Portsmouth City Council",                                                            // 56538
     "Horry County Airports",                                                              // 56539
@@ -62688,7 +62688,7 @@ static const char * const table[] =
     "Uddevalla Kraft AB",                                                                 // 62666
     "OPEN LAKE TECHNOLOGY",                                                               // 62667
     "svetlana-k",                                                                         // 62668
-    "MACH AG",                                                                            // 62669
+    "MACH GmbH",                                                                          // 62669
     "Stichting governmental roaming Nederland",                                           // 62670
     "simplen",                                                                            // 62671
     "IPT Powertech",                                                                      // 62672
@@ -64722,7 +64722,52 @@ static const char * const table[] =
     "Michael Herstine",                                                                   // 64700
     "Puentes del Oeste S.L.",                                                             // 64701
     "ALES a. s.",                                                                         // 64702
-    "Autorité des marchés financiers (Québec)"                                            // 64703
+    "Autorité des marchés financiers (Québec)",                                           // 64703
+    "Materiais para Construção Irmãos Camargo",                                           // 64704
+    "FSIT Services LLC",                                                                  // 64705
+    "Beijing ZWCX Robotic Technology Co., Ltd",                                           // 64706
+    "CSE Energy & Technology Co., Ltd.",                                                  // 64707
+    "Jean-Marie Leroy",                                                                   // 64708
+    "SIRECOM",                                                                            // 64709
+    "Emerlink, LLC",                                                                      // 64710
+    "Mirsam Habibi",                                                                      // 64711
+    "Kaia Technologies, Inc.",                                                            // 64712
+    "The Phillies",                                                                       // 64713
+    "Ovolab",                                                                             // 64714
+    "cedar",                                                                              // 64715
+    "Pardakht Novin Arian",                                                               // 64716
+    "Lars Borisek",                                                                       // 64717
+    "Walks Cloud Inc.",                                                                   // 64718
+    "Hellenic Electricity Distribution Network Operator",                                 // 64719
+    "Brilliant Care sp. z o.o.",                                                          // 64720
+    "Routecore LLC",                                                                      // 64721
+    "Immunity Networks and Technologies Private Limited",                                 // 64722
+    "pcc.scot",                                                                           // 64723
+    "Klimatech Sp. z o. o.",                                                              // 64724
+    "VI LAB",                                                                             // 64725
+    "Tank Studios Limited",                                                               // 64726
+    "RURAL ROADS HEALTH SERVICES",                                                        // 64727
+    "Triple EYE B.V.",                                                                    // 64728
+    "EPEC",                                                                               // 64729
+    "Madison Venture Corporation",                                                        // 64730
+    "Sutro Software",                                                                     // 64731
+    "IPer.uk",                                                                            // 64732
+    "Universal School",                                                                   // 64733
+    "ELEKTRA LLC",                                                                        // 64734
+    "BGH Edelstahlwerke GmbH",                                                            // 64735
+    "河北听风科技有限公司 (Hebei Tingfeng Technology Co., Ltd.)",                                   // 64736
+    "TAKRAF GmbH",                                                                        // 64737
+    "Allender inc",                                                                       // 64738
+    "Stavropol Electrotechnical Factory “Energomera” Ltd.",                               // 64739
+    "zencontrol Pty Ltd",                                                                 // 64740
+    "Universidad Nacional Experimental del Táchira (UNET)",                               // 64741
+    "Safarifone Inc",                                                                     // 64742
+    "Caribbean Industrial Research Institute(CARIRI)",                                    // 64743
+    "Europe Technologies",                                                                // 64744
+    "Karrier One",                                                                        // 64745
+    "Chengdu Sobey Digital Technology Co., Ltd",                                          // 64746
+    "Shenzhen KSTAR New Energy Company Limited",                                          // 64747
+    "POLYPAP LLC"                                                                         // 64748
 };
 
 const char* global_enterprises_lookup(uint32_t value)
