@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2025-12-06) */
+/* (last updated 2025-12-13) */
 
 #include "config.h"
 
@@ -64767,7 +64767,48 @@ static const char * const table[] =
     "Karrier One",                                                                        // 64745
     "Chengdu Sobey Digital Technology Co., Ltd",                                          // 64746
     "Shenzhen KSTAR New Energy Company Limited",                                          // 64747
-    "POLYPAP LLC"                                                                         // 64748
+    "POLYPAP LLC",                                                                        // 64748
+    "Kai KETELHUT",                                                                       // 64749
+    "Igreja Universal do Reino de Deus",                                                  // 64750
+    "MINISTERIO DE INDUSTRIA Y COMERCIO",                                                 // 64751
+    "Wamos Air",                                                                          // 64752
+    "HEXON",                                                                              // 64753
+    "EVIDENT CANADA",                                                                     // 64754
+    "Uros Tement",                                                                        // 64755
+    "brij bihari",                                                                        // 64756
+    "31 Concept",                                                                         // 64757
+    "GANSAT TEKNOLOJI URETIM SANAYI VE TIC LTD STI",                                      // 64758
+    "Applied Enclaves",                                                                   // 64759
+    "VIRIDISLAB, LDA",                                                                    // 64760
+    "Willstrong Solutions Pvt Ltd",                                                       // 64761
+    "Plymouth Public Schools",                                                            // 64762
+    "SeDaTec Ltd.",                                                                       // 64763
+    "Carsten Bormann",                                                                    // 64764
+    "jack chen",                                                                          // 64765
+    "Nexburg GmbH",                                                                       // 64766
+    "ENCHOICE, UK LIMITED",                                                               // 64767
+    "Theta Health",                                                                       // 64768
+    "Ecotype AB",                                                                         // 64769
+    "Next Generation Cooling",                                                            // 64770
+    "Ostpreußen-russe-Gakushūjo Further Education College",                               // 64771
+    "Sietehr Foundation",                                                                 // 64772
+    "DigioZ UG (haftungsbeschränkt)",                                                     // 64773
+    "Erste Bank Polska SA",                                                               // 64774
+    "Simple History",                                                                     // 64775
+    "Cyprus Police",                                                                      // 64776
+    "Hive Security Technologies",                                                         // 64777
+    "Alteripso",                                                                          // 64778
+    "Rogers Communications Inc - Wireless Data Core",                                     // 64779
+    "Definitive EPoS Solutions",                                                          // 64780
+    "Axians Performance Solutions B.V.",                                                  // 64781
+    "Energotechlab Ltd",                                                                  // 64782
+    "NinjaOne, LLC",                                                                      // 64783
+    "Agat Soft",                                                                          // 64784
+    "SYNEKTIK SA",                                                                        // 64785
+    "energielenker solutions GmbH",                                                       // 64786
+    "Authava",                                                                            // 64787
+    "ER-Saha Oy",                                                                         // 64788
+    "technotrans SE"                                                                      // 64789
 };
 
 const char* global_enterprises_lookup(uint32_t value)
