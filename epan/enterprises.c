@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2025-12-13) */
+/* (last updated 2025-12-18) */
 
 #include "config.h"
 
@@ -13912,7 +13912,7 @@ static const char * const table[] =
     "Teltier Technologies Inc.",                                                          // 13890
     "The Advantage Group",                                                                // 13891
     "University of New Hampshire",                                                        // 13892
-    "International Truck and Engine Corporation",                                         // 13893
+    "International Motors, LLC",                                                          // 13893
     "LGNsys",                                                                             // 13894
     "LaGrange School District 102",                                                       // 13895
     "Atos Origin CMS / TSP",                                                              // 13896
@@ -16814,7 +16814,7 @@ static const char * const table[] =
     "Zapata Engineering, P.A.",                                                           // 16792
     "University of New England",                                                          // 16793
     "Savant Technologies Private Ltd",                                                    // 16794
-    "MRO - TEK LIMITED",                                                                  // 16795
+    "UMIYA BUILDCON LIMITED",                                                             // 16795
     "Institute of High Energy Physics ,Beijing,China",                                    // 16796
     "InfoThuis Nieuwe Media BV",                                                          // 16797
     "Digital Technical Ltd., National Libaray of China",                                  // 16798
@@ -29169,7 +29169,7 @@ static const char * const table[] =
     "Proficient Technology",                                                              // 29147
     "Axolotl Corp.",                                                                      // 29148
     "data inform srl",                                                                    // 29149
-    "COMLAB AG",                                                                          // 29150
+    "Kontron Transportation Schweiz AG",                                                  // 29150
     "Live Data Group, inc.",                                                              // 29151
     "Palo Alto Unified School District",                                                  // 29152
     "Ridgecrest Financial, Inc.",                                                         // 29153
@@ -64808,7 +64808,35 @@ static const char * const table[] =
     "energielenker solutions GmbH",                                                       // 64786
     "Authava",                                                                            // 64787
     "ER-Saha Oy",                                                                         // 64788
-    "technotrans SE"                                                                      // 64789
+    "technotrans SE",                                                                     // 64789
+    "Kellola Metsä Oy",                                                                   // 64790
+    "ANVOLE",                                                                             // 64791
+    "Bitvise Limited",                                                                    // 64792
+    "New Pos Network (HK) Limited",                                                       // 64793
+    "Tiger Technology",                                                                   // 64794
+    "Niseva Technologies Pvt. Ltd.",                                                      // 64795
+    "Lenovo Image",                                                                       // 64796
+    "Intouch Systems",                                                                    // 64797
+    "DimeCorp, LLC",                                                                      // 64798
+    "Wizzie Analytics S.L.",                                                              // 64799
+    "Shared Care Noord",                                                                  // 64800
+    "Techport",                                                                           // 64801
+    "芯见（广州）科技有限公司 (SimLine (Guangzhou) Technology Co., Ltd.)",                            // 64802
+    "Compuware Technology Inc.",                                                          // 64803
+    "LLC TechnoNICOL-Construction Systems",                                               // 64804
+    "MyNet Certificates",                                                                 // 64805
+    "Dmitry Papchenkov",                                                                  // 64806
+    "Hills Health Pty Ltd",                                                               // 64807
+    "KOLT Mühendislik A.Ş.",                                                              // 64808
+    "AST Solar Telecom P Ltd",                                                            // 64809
+    "Zener Cominicaciones",                                                               // 64810
+    "MSIG USA",                                                                           // 64811
+    "Beijing Yillion  Deepcompute Technology Co., Ltd",                                   // 64812
+    "TEXON CO.,LTD",                                                                      // 64813
+    "Arab-Computers",                                                                     // 64814
+    "Recare Deutschland GmbH",                                                            // 64815
+    "SkySpecs Inc",                                                                       // 64816
+    "TEL&CO Srl"                                                                          // 64817
 };
 
 const char* global_enterprises_lookup(uint32_t value)
