@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2025-12-18) */
+/* (last updated 2025-12-25) */
 
 #include "config.h"
 
@@ -61540,7 +61540,7 @@ static const char * const table[] =
     "Tout Pareil Corp.",                                                                  // 61518
     "TDK Sensors AG & Co. KG",                                                            // 61519
     "Abbott LLC",                                                                         // 61520
-    "llang.at - IT-Dienstleistungen",                                                     // 61521
+    "Lukas Lang",                                                                         // 61521
     "Perryton Equity Exchange",                                                           // 61522
     "EQUIRON",                                                                            // 61523
     "Research and Production Association named after A.S. Popov",                         // 61524
@@ -64836,7 +64836,36 @@ static const char * const table[] =
     "Arab-Computers",                                                                     // 64814
     "Recare Deutschland GmbH",                                                            // 64815
     "SkySpecs Inc",                                                                       // 64816
-    "TEL&CO Srl"                                                                          // 64817
+    "TEL&CO Srl",                                                                         // 64817
+    "Potter ERCES",                                                                       // 64818
+    "Lryncloud (Beijing) Information Technology Co., Ltd.",                               // 64819
+    "UpscaleAI",                                                                          // 64820
+    "BaseZen Consulting, Inc.",                                                           // 64821
+    "CASHPOINT Solutions GmbH",                                                           // 64822
+    "Hans Heukenkamp",                                                                    // 64823
+    "Lebara Nigeria",                                                                     // 64824
+    "PermAlert",                                                                          // 64825
+    "Pixelstream, Inc.",                                                                  // 64826
+    "Digicomm",                                                                           // 64827
+    "Procopa IT ApS",                                                                     // 64828
+    "C2SP",                                                                               // 64829
+    "Leoch Battery Pte Ltd",                                                              // 64830
+    "IMOBIL STAR SRL",                                                                    // 64831
+    "Mesan Kilit A.Ş.",                                                                   // 64832
+    "Brightfield Ukraine LLC",                                                            // 64833
+    "Dmirty Rupasov",                                                                     // 64834
+    "Planisys",                                                                           // 64835
+    "LLC ONTEK",                                                                          // 64836
+    "Picogrid Inc.",                                                                      // 64837
+    "General Tax Authority, State of Qatar",                                              // 64838
+    "Sententia LLC",                                                                      // 64839
+    "Corpintra Plus . Ltd.",                                                              // 64840
+    "Infosec CA Lab",                                                                     // 64841
+    "Spheralogic",                                                                        // 64842
+    "Evoltix Energy",                                                                     // 64843
+    "MarkAny",                                                                            // 64844
+    "ModelESA",                                                                           // 64845
+    "HubN Network"                                                                        // 64846
 };
 
 const char* global_enterprises_lookup(uint32_t value)
