@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2025-12-25) */
+/* (last updated 2026-01-02) */
 
 #include "config.h"
 
@@ -3203,7 +3203,7 @@ static const char * const table[] =
     "MICROSENS GmbH & Co. KG",                                                            // 3181
     "Unihold Technologies",                                                               // 3182
     "Wired for Management",                                                               // 3183
-    "Raymond and Lae Engineering, Inc.",                                                  // 3184
+    "Parameter, LLC",                                                                     // 3184
     "Parapsco Designs Ltd.",                                                              // 3185
     "TouchNet Information Systems, Inc.",                                                 // 3186
     "FUZZY! Informatik GmbH",                                                             // 3187
@@ -35929,7 +35929,7 @@ static const char * const table[] =
     "CRV Natural",                                                                        // 35907
     "Embrane, Inc.",                                                                      // 35908
     "Horace Mann Educators Corporation",                                                  // 35909
-    "overnet.qc.ca",                                                                      // 35910
+    "overnet.ca",                                                                         // 35910
     "Mrezne Tehnologije Verso",                                                           // 35911
     "Makedonijalek",                                                                      // 35912
     "Diputacion  Provincial de Cáceres",                                                  // 35913
@@ -60351,7 +60351,7 @@ static const char * const table[] =
     "Marcus Alessandro Pavan Francisco",                                                  // 60329
     "hssystem",                                                                           // 60330
     "ACMOSS",                                                                             // 60331
-    "RLS Consulting Services",                                                            // 60332
+    NULL,                                                                                 // 60332
     "Borders Online Ltd",                                                                 // 60333
     "Eugenio Tampieri",                                                                   // 60334
     "Jefferson County Board of Education",                                                // 60335
@@ -64865,7 +64865,28 @@ static const char * const table[] =
     "Evoltix Energy",                                                                     // 64843
     "MarkAny",                                                                            // 64844
     "ModelESA",                                                                           // 64845
-    "HubN Network"                                                                        // 64846
+    "HubN Network",                                                                       // 64846
+    "i2i Bilişim Danışmanlık Teknoloji Hiz. ve Paz. Tic. A.Ş.",                           // 64847
+    "EPU Engineering LLC",                                                                // 64848
+    "CORPNEWBEST CIA LTDA",                                                               // 64849
+    "Jugendparlament Kaiserslautern",                                                     // 64850
+    "Sferical AI AB",                                                                     // 64851
+    "Witine Limited",                                                                     // 64852
+    "Mycelio",                                                                            // 64853
+    "Aspire Technologies(Beijing) Ltd",                                                   // 64854
+    "Judao",                                                                              // 64855
+    "Easton Velocity",                                                                    // 64856
+    "Gröning Organisation",                                                               // 64857
+    "CFE Solutions",                                                                      // 64858
+    "Uniwersytecki Szpital Kliniczny nr 2 PUM 2 Szczecinie",                              // 64859
+    "Feuerwehr Ebelsbach",                                                                // 64860
+    "NOOB RP LTD",                                                                        // 64861
+    "MinMaxiste Inc.",                                                                    // 64862
+    "Alex Roman baeza",                                                                   // 64863
+    "Tovar Private Network",                                                              // 64864
+    "Kutahya University of Health Sciences",                                              // 64865
+    "Mohamad Rizuan",                                                                     // 64866
+    "Jingze You"                                                                          // 64867
 };
 
 const char* global_enterprises_lookup(uint32_t value)
