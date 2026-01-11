@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2026-01-02) */
+/* (last updated 2026-01-09) */
 
 #include "config.h"
 
@@ -3803,7 +3803,7 @@ static const char * const table[] =
     "WXN, Inc.",                                                                          // 3781
     "University of North Texas",                                                          // 3782
     "EMR Corporation",                                                                    // 3783
-    "Speakerbus Ltd.",                                                                    // 3784
+    "comitFS UK Ltd",                                                                     // 3784
     "Cirrus Logic",                                                                       // 3785
     "Highland Technology Group, Inc.",                                                    // 3786
     "Russel Lane & Associates, Inc.",                                                     // 3787
@@ -9822,7 +9822,7 @@ static const char * const table[] =
     "iNIT-8",                                                                             // 9800
     "ISIS Frontier Communications",                                                       // 9801
     "IUFM de Rouen",                                                                      // 9802
-    "L-3 Communication Systems - East",                                                   // 9803
+    "L3Harris Technologies Camden, NJ",                                                   // 9803
     "Lefthand Networks",                                                                  // 9804
     "Neveda City School District",                                                        // 9805
     "PRIDE Industries",                                                                   // 9806
@@ -48816,7 +48816,7 @@ static const char * const table[] =
     "binnj, inc.",                                                                        // 48794
     "Comm5 Tecnologia Ltda",                                                              // 48795
     "Tennessee Oncology, PLLC",                                                           // 48796
-    "Inspur-Cisco Networking Technology Co., Ltd.",                                       // 48797
+    "Connflix Networking Technology (Shandong) Co., Ltd.",                                // 48797
     "AKIPS Pty Ltd",                                                                      // 48798
     "BiZone LLC",                                                                         // 48799
     "CSNS",                                                                               // 48800
@@ -57176,7 +57176,7 @@ static const char * const table[] =
     "JHW Holdings, LLC",                                                                  // 57154
     "Sparr Electronics Ltd",                                                              // 57155
     "MARTIN CC",                                                                          // 57156
-    "LIVIT",                                                                              // 57157
+    "LIVIT SIA",                                                                          // 57157
     "Festival Balélec",                                                                   // 57158
     "Tocca Systems",                                                                      // 57159
     "CORAF",                                                                              // 57160
@@ -64828,7 +64828,7 @@ static const char * const table[] =
     "Dmitry Papchenkov",                                                                  // 64806
     "Hills Health Pty Ltd",                                                               // 64807
     "KOLT Mühendislik A.Ş.",                                                              // 64808
-    "AST Solar Telecom P Ltd",                                                            // 64809
+    "AST Telecom Solar Private Ltd",                                                      // 64809
     "Zener Cominicaciones",                                                               // 64810
     "MSIG USA",                                                                           // 64811
     "Beijing Yillion  Deepcompute Technology Co., Ltd",                                   // 64812
@@ -64886,7 +64886,46 @@ static const char * const table[] =
     "Tovar Private Network",                                                              // 64864
     "Kutahya University of Health Sciences",                                              // 64865
     "Mohamad Rizuan",                                                                     // 64866
-    "Jingze You"                                                                          // 64867
+    "Jingze You",                                                                         // 64867
+    "Kings III of America LLC",                                                           // 64868
+    "LLC Hosting in Ukraine",                                                             // 64869
+    "Luxnation",                                                                          // 64870
+    "Unikraft",                                                                           // 64871
+    "Elemenik",                                                                           // 64872
+    "Kendal College",                                                                     // 64873
+    "Shanghai Hema Optical Co., Ltd.",                                                    // 64874
+    "BJL13 Enterprise Solutions, LLC d/b/a BES",                                          // 64875
+    "Nestor cv",                                                                          // 64876
+    "Beacon Link Inc.",                                                                   // 64877
+    "Prima Vista Solusi",                                                                 // 64878
+    "Island Technology, Inc.",                                                            // 64879
+    "Ambient Information Processing GmbH",                                                // 64880
+    "QUARQNET",                                                                           // 64881
+    "ARTEMISTRONIKS INDIA PRIVATE LIMITED",                                               // 64882
+    "HDHDDL (Human Dynamic HDDL)",                                                        // 64883
+    "Shanghai Ruicheng Information Technology Co., Ltd.",                                 // 64884
+    "A Clarke and Co Ltd",                                                                // 64885
+    "NT-ware Systemprogrammierungs-GmbH",                                                 // 64886
+    "Deutsche Rentenversicherung Oldenburg-Bremen",                                       // 64887
+    "The Network Entropologist",                                                          // 64888
+    "CyberCentre Australia PTY LTD",                                                      // 64889
+    "ElderIoT",                                                                           // 64890
+    "HANGZHOU INNOWAVEPOWER ELECTRIONIC TECHNOLOGYCO., LTD.",                             // 64891
+    "Mario Schnuerpel",                                                                   // 64892
+    "Dreyfus Söhne & Cie AG, Banquiers",                                                  // 64893
+    "Teklords",                                                                           // 64894
+    "Aurelia Schittler",                                                                  // 64895
+    "LENOVO (BEIJING)INFORMATION TECHNOLOGY LTD.",                                        // 64896
+    "Union College ITS",                                                                  // 64897
+    "Gemeinschaft fuer Erziehungskunst e.V.",                                             // 64898
+    "Beacon Telecom, Inc.",                                                               // 64899
+    "BEYAZ BILGISAYAR YAZILIM TASARIM SANAYI VE TICARET LIMITED SIRKETI",                 // 64900
+    "Ricardo Lacerda",                                                                    // 64901
+    "MJW Innovations LLC",                                                                // 64902
+    "Smagtronics Private Limited",                                                        // 64903
+    "Kokkolan Energia Oy",                                                                // 64904
+    "FMS Group S.r.l.",                                                                   // 64905
+    "Verbandswasserwerk Langenfeld-Monheim GmbH & Co. KG"                                 // 64906
 };
 
 const char* global_enterprises_lookup(uint32_t value)
