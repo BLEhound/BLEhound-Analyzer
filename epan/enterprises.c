@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2026-01-09) */
+/* (last updated 2026-01-16) */
 
 #include "config.h"
 
@@ -1520,7 +1520,7 @@ static const char * const table[] =
     "Ukiah Software Solutions/EDS/HDS",                                                   // 1498
     "STERIA",                                                                             // 1499
     "ATI Australia Pty Limited",                                                          // 1500
-    "The Aerospace Corporation Michael",                                                  // 1501
+    "The Aerospace Corporation",                                                          // 1501
     "Orckit Communications Ltd.",                                                         // 1502
     "Tertio Limited",                                                                     // 1503
     "Frequentis Comsoft GmbH",                                                            // 1504
@@ -10342,7 +10342,7 @@ static const char * const table[] =
     "Amherst College",                                                                    // 10320
     "AUNet",                                                                              // 10321
     "Centre For Advanced Technology",                                                     // 10322
-    "Convergence Network Research Ltd.",                                                  // 10323
+    "Balan Software Ltd",                                                                 // 10323
     "CrabusLDAP",                                                                         // 10324
     "EarthConnect Corporation",                                                           // 10325
     "Ecole Nationale Superieure des Mines de Paris",                                      // 10326
@@ -49532,7 +49532,7 @@ static const char * const table[] =
     "Pragmatik",                                                                          // 49510
     "Arcom Digital, LLC.",                                                                // 49511
     "ipHouse",                                                                            // 49512
-    "AgResearch Ltd",                                                                     // 49513
+    "New Zealand Institute for Bioeconomy Science Limited",                               // 49513
     "EPK Solutions",                                                                      // 49514
     "SQLTreeo",                                                                           // 49515
     "Jesse Friedman",                                                                     // 49516
@@ -64925,7 +64925,58 @@ static const char * const table[] =
     "Smagtronics Private Limited",                                                        // 64903
     "Kokkolan Energia Oy",                                                                // 64904
     "FMS Group S.r.l.",                                                                   // 64905
-    "Verbandswasserwerk Langenfeld-Monheim GmbH & Co. KG"                                 // 64906
+    "Verbandswasserwerk Langenfeld-Monheim GmbH & Co. KG",                                // 64906
+    "ASB Bank Corp S.A.",                                                                 // 64907
+    "MaiaEdge",                                                                           // 64908
+    "ETHERNEXION NETWORKS PTE. LTD.",                                                     // 64909
+    "Maptek Pty Limited",                                                                 // 64910
+    "CHENLE",                                                                             // 64911
+    "Maven Securities Ltd",                                                               // 64912
+    "NS123.Net Service Ink",                                                              // 64913
+    "SecureIT Georgia",                                                                   // 64914
+    "Max Sports Analysis",                                                                // 64915
+    "Running on Nutshells Lab",                                                           // 64916
+    "AffianceTech",                                                                       // 64917
+    "Richard Munson",                                                                     // 64918
+    "SCSDC (Super Cool Software Development Company)",                                    // 64919
+    "Gaeltec Utilities Limited",                                                          // 64920
+    "MK Smart Joint Stock Company",                                                       // 64921
+    "Tianjin Yingdaxin Technology Co., Ltd.",                                             // 64922
+    "Goldcard Water Technology Co.,Ltd.",                                                 // 64923
+    "Ferdinand Porsche FERNFH",                                                           // 64924
+    "HAMEEM VENTURES",                                                                    // 64925
+    "Chongqing Hua Hong Metering Co., Ltd.",                                              // 64926
+    "齐犇科技集团有限公司 (Qiben Technology Group Co., Ltd.)",                                      // 64927
+    "Grant Gossett",                                                                      // 64928
+    "3DBackup Limited",                                                                   // 64929
+    "Beijing Noah Shield Technology Co., Ltd.",                                           // 64930
+    "Partaharjun Puutarha Oy 2061174-9",                                                  // 64931
+    "Vantageo Private Limited",                                                           // 64932
+    "Gotlandsflis Aktiebolag",                                                            // 64933
+    "Commercial Credit Adjusters Ltd.",                                                   // 64934
+    "Cooperative Computing Alliance LLC",                                                 // 64935
+    "CoralCMD Inc.",                                                                      // 64936
+    "Cilicia",                                                                            // 64937
+    "Advanzio",                                                                           // 64938
+    "Hausbetreuung Attensam GmbH",                                                        // 64939
+    "AGJ-Fachverband für Prävention und Rehabilitation in der Erzdiözese Freiburg e.V.",  // 64940
+    "First Community Bank",                                                               // 64941
+    "Gridware Technologies Inc.",                                                         // 64942
+    "TULLOCH",                                                                            // 64943
+    "Property Management People, Inc.",                                                   // 64944
+    "CBC CORPORATION INDIA PVT LTD",                                                      // 64945
+    "武汉明歌网络科技有限公司 (Wuhan Mingge Network Technology Co., Ltd.)",                           // 64946
+    "Michael Ulrich edv-beratung.net",                                                    // 64947
+    "Advita, Inc",                                                                        // 64948
+    "GLPH",                                                                               // 64949
+    "visigate Software GmbH",                                                             // 64950
+    "TRALLES GmbH",                                                                       // 64951
+    "Instituto Antártico Chileno",                                                        // 64952
+    "Juna Muca",                                                                          // 64953
+    "Patrick Boyne",                                                                      // 64954
+    "Ricardo Jaña",                                                                       // 64955
+    "Trustels GmbH",                                                                      // 64956
+    "Bywaysoft LLC"                                                                       // 64957
 };
 
 const char* global_enterprises_lookup(uint32_t value)
