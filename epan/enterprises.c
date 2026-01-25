@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2026-01-16) */
+/* (last updated 2026-01-22) */
 
 #include "config.h"
 
@@ -3366,7 +3366,7 @@ static const char * const table[] =
     "Helsinki Televisio Oy",                                                              // 3344
     "Nemetschek SE",                                                                      // 3345
     "Vocom",                                                                              // 3346
-    "Hitachi Kokusai Electric Inc.",                                                      // 3347
+    "KOKUSAI DENKI Electric Inc.",                                                        // 3347
     "Reliable Network Solutions",                                                         // 3348
     "Vogo Networks",                                                                      // 3349
     "beusen",                                                                             // 3350
@@ -64972,11 +64972,43 @@ static const char * const table[] =
     "visigate Software GmbH",                                                             // 64950
     "TRALLES GmbH",                                                                       // 64951
     "Instituto Antártico Chileno",                                                        // 64952
-    "Juna Muca",                                                                          // 64953
+    "Institute for Research Education and Social Development",                            // 64953
     "Patrick Boyne",                                                                      // 64954
     "Ricardo Jaña",                                                                       // 64955
     "Trustels GmbH",                                                                      // 64956
-    "Bywaysoft LLC"                                                                       // 64957
+    "Bywaysoft LLC",                                                                      // 64957
+    "Neural Designs Inc.",                                                                // 64958
+    "blackcorp.me",                                                                       // 64959
+    "GGO",                                                                                // 64960
+    "Mimaki Electronics Components Co., Ltd.",                                            // 64961
+    "WolfieTech",                                                                         // 64962
+    "Cybrent Technology Solutions (OPC) Pvt. Ltd.",                                       // 64963
+    "Error404Net",                                                                        // 64964
+    "kayeff",                                                                             // 64965
+    "Kaya Security LLC",                                                                  // 64966
+    "ALPHABET CAPITAL SDN. BHD.",                                                         // 64967
+    "Integrity Logic Corporation",                                                        // 64968
+    "DN-Systems Enterprise Internet Solutions GmbH",                                      // 64969
+    "Radian Generation",                                                                  // 64970
+    "Nepegnik",                                                                           // 64971
+    "Jarda Nedved",                                                                       // 64972
+    "Xeront",                                                                             // 64973
+    "Wanstorm",                                                                           // 64974
+    "ShieldWorks OT System Pvt Ltd",                                                      // 64975
+    "ev.energy",                                                                          // 64976
+    "Divyanshu Pandey",                                                                   // 64977
+    "swabian.net",                                                                        // 64978
+    "EES Clemessy AST",                                                                   // 64979
+    "Alliance Broadband",                                                                 // 64980
+    "Wecan-IT Aps",                                                                       // 64981
+    "AUMOVIO SE",                                                                         // 64982
+    "Hayden AI",                                                                          // 64983
+    "PROBECOM",                                                                           // 64984
+    "Shaanxi Probecom Microwave Technology Co., Ltd",                                     // 64985
+    "广州市森锐科技股份有限公司（Guang Zhou Sunrise Technology Co., Ltd.）",                             // 64986
+    "Telconic",                                                                           // 64987
+    "Kyrene School District",                                                             // 64988
+    "Flexmail"                                                                            // 64989
 };
 
 const char* global_enterprises_lookup(uint32_t value)
