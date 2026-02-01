@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2026-01-22) */
+/* (last updated 2026-01-30) */
 
 #include "config.h"
 
@@ -35897,7 +35897,7 @@ static const char * const table[] =
     "JX2 Technology Pty Ltd",                                                             // 35875
     "WHITECODE,.LTD",                                                                     // 35876
     "High Technology Industries B.V.",                                                    // 35877
-    "Conseil général de l'Aube",                                                          // 35878
+    "Département de l'Aube",                                                              // 35878
     "WellDoc, Inc.",                                                                      // 35879
     "JSC Mediafon",                                                                       // 35880
     "Ionis group",                                                                        // 35881
@@ -65008,7 +65008,55 @@ static const char * const table[] =
     "广州市森锐科技股份有限公司（Guang Zhou Sunrise Technology Co., Ltd.）",                             // 64986
     "Telconic",                                                                           // 64987
     "Kyrene School District",                                                             // 64988
-    "Flexmail"                                                                            // 64989
+    "Flexmail",                                                                           // 64989
+    "NextMeta co.,ltd",                                                                   // 64990
+    "Temco Controls",                                                                     // 64991
+    "Arendt Digital Services",                                                            // 64992
+    "Quantum Encryption",                                                                 // 64993
+    "SSE Gridtech Sistemas e Soluções Ltda",                                              // 64994
+    "ProNova Solutions, LLC",                                                             // 64995
+    "Meridian Digital Systems Inc.",                                                      // 64996
+    "Cattyatty Inc",                                                                      // 64997
+    "JP VY Limited",                                                                      // 64998
+    "Digito Financial Technology Group, LLC",                                             // 64999
+    "Cooler Master Co., Ltd",                                                             // 65000
+    "Tactile Metrology B.V.",                                                             // 65001
+    "ICT Rijk van Nijmegen",                                                              // 65002
+    "Blahaj Studio",                                                                      // 65003
+    "CaveFox LLC",                                                                        // 65004
+    "evroc",                                                                              // 65005
+    "Wuxi Hongsheng heat exchanger",                                                      // 65006
+    "Abhishek Kasaudhan",                                                                 // 65007
+    "Vermont Public Co.",                                                                 // 65008
+    "LUNEXTLABS GmbH",                                                                    // 65009
+    "Caesar Chen",                                                                        // 65010
+    "Acenes Immobilien GmbH",                                                             // 65011
+    "Silver Bay Seafoods",                                                                // 65012
+    "QDynamics Pty Ltd",                                                                  // 65013
+    "Arslooper",                                                                          // 65014
+    "Ash network",                                                                        // 65015
+    "Ishtiaque Ahmed Rafin",                                                              // 65016
+    "Intuitive Machines, LLC",                                                            // 65017
+    "Evergreen Labs",                                                                     // 65018
+    "Authentic, Inc.",                                                                    // 65019
+    "SUNSYNK AUSTRALIA PTY LTD",                                                          // 65020
+    "thice",                                                                              // 65021
+    "Bravilor Bonamat BV",                                                                // 65022
+    "iJack",                                                                              // 65023
+    "CloudSecure Ltd",                                                                    // 65024
+    "miela",                                                                              // 65025
+    "Bürgerspital Wertheim gGmbH",                                                        // 65026
+    "Truora INC",                                                                         // 65027
+    "Stromnetz Berlin GmbH",                                                              // 65028
+    "TRIPLE-STONE TECHNOLOGY CO.,LTD.",                                                   // 65029
+    "visuaFUSION Systems Solutions",                                                      // 65030
+    "The Skupper Project",                                                                // 65031
+    "Speco Technologies",                                                                 // 65032
+    "CrossBar, Inc.",                                                                     // 65033
+    "CyGO Entrepreneurs",                                                                 // 65034
+    "Yuldi.io",                                                                           // 65035
+    "ZERO TO N",                                                                          // 65036
+    "Schweizerische Südostbahn AG"                                                        // 65037
 };
 
 const char* global_enterprises_lookup(uint32_t value)
