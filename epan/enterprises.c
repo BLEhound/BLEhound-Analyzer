@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2026-01-30) */
+/* (last updated 2026-02-07) */
 
 #include "config.h"
 
@@ -18949,7 +18949,7 @@ static const char * const table[] =
     "tandav enterprises",                                                                 // 18927
     "Areca Technology Corporation",                                                       // 18928
     "Interwise, Inc.",                                                                    // 18929
-    "OXW",                                                                                // 18930
+    "NEFA.IO",                                                                            // 18930
     "cybersekkin",                                                                        // 18931
     "Naeilnet Inc.",                                                                      // 18932
     "ActivNetworks",                                                                      // 18933
@@ -29362,7 +29362,7 @@ static const char * const table[] =
     "joncaves.com",                                                                       // 29340
     "Ingenieurbuero Schmid",                                                              // 29341
     "Browave Inc.",                                                                       // 29342
-    "Grundig SAT-Systems GmbH",                                                           // 29343
+    "GSS Smart Solutions GmbH",                                                           // 29343
     "ShangHai HuaBo Taifu Internet Technology Co.,Ltd",                                   // 29344
     "Softing AG",                                                                         // 29345
     "UKN Group Limited",                                                                  // 29346
@@ -57289,7 +57289,7 @@ static const char * const table[] =
     "Bravas Sistemas Ltda",                                                               // 57267
     "Unitac Technology Ltd.",                                                             // 57268
     "Energy Queensland",                                                                  // 57269
-    "JRC Mobility Inc.",                                                                  // 57270
+    "JRC Mobility, Inc.",                                                                 // 57270
     "Open SDN & NFV Lab (OSNL)",                                                          // 57271
     "highstreet technologies USA Corp.",                                                  // 57272
     "highstreet technologies GmbH",                                                       // 57273
@@ -60324,7 +60324,7 @@ static const char * const table[] =
     "ev-lution-charger",                                                                  // 60302
     "ev-lution-chargeur",                                                                 // 60303
     "Metaverse Multiverse",                                                               // 60304
-    "Tendaworld",                                                                         // 60305
+    "Tendaworld Ltd.",                                                                    // 60305
     "Christopher Spivey",                                                                 // 60306
     "Entrack AS",                                                                         // 60307
     "Alder Holdings LLC",                                                                 // 60308
@@ -61105,7 +61105,7 @@ static const char * const table[] =
     "Marcel Metzen",                                                                      // 61083
     "Cleverbase",                                                                         // 61084
     "Terra Sound",                                                                        // 61085
-    "Chengdu BeiZhongWangXin Technology Co.Ltd",                                          // 61086
+    "Chengdu NorthLink Technology Co., Ltd.",                                             // 61086
     "shenzhen real linkShenzhen Real Link Technology Co.,Ltd",                            // 61087
     "MTNSAT",                                                                             // 61088
     "Lighthouse Credit Union",                                                            // 61089
@@ -65056,7 +65056,52 @@ static const char * const table[] =
     "CyGO Entrepreneurs",                                                                 // 65034
     "Yuldi.io",                                                                           // 65035
     "ZERO TO N",                                                                          // 65036
-    "Schweizerische Südostbahn AG"                                                        // 65037
+    "Schweizerische Südostbahn AG",                                                       // 65037
+    "Ferenc Matyas",                                                                      // 65038
+    "Hanse- und Universitätsstadt Rostock",                                               // 65039
+    "Kraken",                                                                             // 65040
+    "ITS Business Lab",                                                                   // 65041
+    "Fibervision Networks",                                                               // 65042
+    "Ulverston Victoria High School",                                                     // 65043
+    "DEBUGALIA S.L.",                                                                     // 65044
+    "NyaLake",                                                                            // 65045
+    "Quiot Security Inc.",                                                                // 65046
+    "Tamara Alana Barber",                                                                // 65047
+    "Jiaxun Yang",                                                                        // 65048
+    "Bruno Briante",                                                                      // 65049
+    "Vedmaster",                                                                          // 65050
+    "Elizabeth Peraza Slator",                                                            // 65051
+    "DMEGC RENEWABLE ENERGY AUSTRALIA PTY LTD",                                           // 65052
+    "Shanwei BYD Auto Co., Ltd.",                                                         // 65053
+    "Relcom, Ltd.",                                                                       // 65054
+    "COSMIKAL",                                                                           // 65055
+    "Myto Limited",                                                                       // 65056
+    "CrosSystems MX",                                                                     // 65057
+    "Pantherx Rare Pharmacy",                                                             // 65058
+    "Prisma Technologies SRL",                                                            // 65059
+    "ECI Networks",                                                                       // 65060
+    "Banque Centrale Luxembourg",                                                         // 65061
+    "Université de Picardie Jules Verne",                                                 // 65062
+    "Essendant Co.",                                                                      // 65063
+    "WestJet Airline Ltd.",                                                               // 65064
+    "Kelco Industries",                                                                   // 65065
+    "yamanju LLC",                                                                        // 65066
+    "Alpha Software Dienstleistungs ASD GmbH",                                            // 65067
+    "Institut Dr. Foerster GmbH & Co. KG",                                                // 65068
+    "Meestgroup",                                                                         // 65069
+    "Tida Skogsvård",                                                                     // 65070
+    "Physical Security Interoperability Alliance",                                        // 65071
+    "Keyfactor Federal",                                                                  // 65072
+    "GCVE",                                                                               // 65073
+    "Writerslogic Inc",                                                                   // 65074
+    "Beijing Loong Network Technology Co., Ltd.",                                         // 65075
+    "Tonghua Dongchang Superzhao Information Technology Consulting Studio",               // 65076
+    "Polytec GmbH",                                                                       // 65077
+    "SATELCOM TELEKOMÜNİKASYON, BİLGİ VE İLETİŞİM TEKNOLOJİLERİ İTHALAT İHRACAT SANAYİ ANONİM ŞİRKETİ",// 65078
+    "BeVoiceAI",                                                                          // 65079
+    "RAFI Group",                                                                         // 65080
+    "PCS Elektronik d.o.o.",                                                              // 65081
+    "Akademischer Verein an der TU Darmstadt"                                             // 65082
 };
 
 const char* global_enterprises_lookup(uint32_t value)
