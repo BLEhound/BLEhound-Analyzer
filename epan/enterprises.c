@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2026-02-07) */
+/* (last updated 2026-02-14) */
 
 #include "config.h"
 
@@ -22304,7 +22304,7 @@ static const char * const table[] =
     "Qualys, Inc.",                                                                       // 22282
     "Gutemberg Medeiros Ltda",                                                            // 22283
     "Dimensao Digital Desenvolvimento Ltd.",                                              // 22284
-    "Teracue",                                                                            // 22285
+    "GSS Smart Solutions GmbH",                                                           // 22285
     "SYSTEMA",                                                                            // 22286
     "TRS SpA",                                                                            // 22287
     "EXTIS GmbH",                                                                         // 22288
@@ -22905,7 +22905,7 @@ static const char * const table[] =
     "OPENLiMiT SignCubes GmbH",                                                           // 22883
     "Western Gas Resources, Inc.",                                                        // 22884
     "GIP CPAGE",                                                                          // 22885
-    "Astro Strobel Kommunikationssysteme GmbH",                                           // 22886
+    "Astro Bit GmbH",                                                                     // 22886
     "PC-Ware Information Technologies AG",                                                // 22887
     "Interface Business GmbH",                                                            // 22888
     "Zenprise, Inc.",                                                                     // 22889
@@ -34110,7 +34110,7 @@ static const char * const table[] =
     "Visioneer Inc",                                                                      // 34088
     "Newport Electronics, Inc.",                                                          // 34089
     "TFB Technology Ltd.",                                                                // 34090
-    "Benchlabs Limited",                                                                  // 34091
+    "CW Business Group Limited",                                                          // 34091
     "MyMail PLC",                                                                         // 34092
     "UAB Profimus",                                                                       // 34093
     "Fanamoj (JSC)",                                                                      // 34094
@@ -38118,7 +38118,7 @@ static const char * const table[] =
     "CyclopusCAD s.r.l.",                                                                 // 38096
     "Universidade Estadual de Goiás",                                                     // 38097
     "Rostov region office of Federal service of state registration cadaster and cartography",// 38098
-    "Transglobal Secure Collaboration Participation Inc. (TSCP)",                         // 38099
+    "TSCP LLC",                                                                           // 38099
     "CAMI Research Inc.",                                                                 // 38100
     "Roalter International",                                                              // 38101
     "Szechenyi Istvan University",                                                        // 38102
@@ -65101,7 +65101,52 @@ static const char * const table[] =
     "BeVoiceAI",                                                                          // 65079
     "RAFI Group",                                                                         // 65080
     "PCS Elektronik d.o.o.",                                                              // 65081
-    "Akademischer Verein an der TU Darmstadt"                                             // 65082
+    "Akademischer Verein an der TU Darmstadt",                                            // 65082
+    "LIMITED LIABILITY COMPANY ALTSIGHT",                                                 // 65083
+    "Aria Barak",                                                                         // 65084
+    "ZTX6D Studio",                                                                       // 65085
+    "Evolution Tool",                                                                     // 65086
+    "doll 41666",                                                                         // 65087
+    "CreeperNET Consulting",                                                              // 65088
+    "Instituto de Administração da Saúde, IP-RAM",                                        // 65089
+    "SLAL",                                                                               // 65090
+    "Asapien",                                                                            // 65091
+    "LUPUS-Electronics GmbH",                                                             // 65092
+    "Ondarea Holding",                                                                    // 65093
+    "Kva Indústria e Comércio Ltda",                                                      // 65094
+    "Madriam Services",                                                                   // 65095
+    "Aunalytics",                                                                         // 65096
+    "天津星诺信息科技有限公司 (Tianjin Xingnuo Information Technology Co., Ltd.)",                    // 65097
+    "NorthC Schweiz AG",                                                                  // 65098
+    "Brown Rook",                                                                         // 65099
+    "Aumayr GmbH",                                                                        // 65100
+    "Stefeli OÜ",                                                                         // 65101
+    "Derek Bond",                                                                         // 65102
+    "PCI Private Limited",                                                                // 65103
+    "Ooredoo Tunisie",                                                                    // 65104
+    "Neniel",                                                                             // 65105
+    "Bolsa de Valores Nacional, S.A.",                                                    // 65106
+    "Sintegradas, S.A.",                                                                  // 65107
+    "Open Industry 4.0 Alliance Implementation GmbH",                                     // 65108
+    "Teamly Digital",                                                                     // 65109
+    "Stellar Science Ltd Co",                                                             // 65110
+    "Alfred Weirich",                                                                     // 65111
+    "Tobias Boge",                                                                        // 65112
+    "Astronomer, inc.",                                                                   // 65113
+    "HAND - The Universal Talent Identifier, Inc.",                                       // 65114
+    "QBit Labs Private Limited",                                                          // 65115
+    "ARBOE",                                                                              // 65116
+    "DEEPNOID Inc.",                                                                      // 65117
+    "Tyson Grangers",                                                                     // 65118
+    "Dark Grant",                                                                         // 65119
+    "Healthcode LTD",                                                                     // 65120
+    "Nils Neurath",                                                                       // 65121
+    "Jason Shiflet",                                                                      // 65122
+    "BrainQuant Ltd",                                                                     // 65123
+    "Silicon Valley Power",                                                               // 65124
+    "Mindskill Software AB",                                                              // 65125
+    "Causality Check AB",                                                                 // 65126
+    "C. Rudolf Salfer GmbH"                                                               // 65127
 };
 
 const char* global_enterprises_lookup(uint32_t value)
