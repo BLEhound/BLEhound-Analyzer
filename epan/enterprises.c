@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2026-02-14) */
+/* (last updated 2026-02-20) */
 
 #include "config.h"
 
@@ -38079,7 +38079,7 @@ static const char * const table[] =
     "D&B Germany GmbH",                                                                   // 38057
     "Cyanide Studio",                                                                     // 38058
     "Banking production center",                                                          // 38059
-    "Sempla Srl",                                                                         // 38060
+    NULL,                                                                                 // 38060
     "Edistar Srl",                                                                        // 38061
     "Marathon Oil Corporation",                                                           // 38062
     "Suomen Asiakastieto Oy",                                                             // 38063
@@ -40505,7 +40505,7 @@ static const char * const table[] =
     "Volta electronics srl",                                                              // 40483
     "Auroville Foundation",                                                               // 40484
     "Online.net",                                                                         // 40485
-    "State of Nevada Dept of Employment Training and Rehabilitation",                     // 40486
+    "State of Nevada, Dept of Employment Training and Rehabilitation",                    // 40486
     "Timesafer Inc.",                                                                     // 40487
     "Staiger, Schwald & Partner AG",                                                      // 40488
     "Mintlab B.V.",                                                                       // 40489
@@ -48085,7 +48085,7 @@ static const char * const table[] =
     "Anna Jaques Cancer Center",                                                          // 48063
     "Grupo MSA S.A.",                                                                     // 48064
     "Talentnet Corporation",                                                              // 48065
-    "Linkforce Engineering",                                                              // 48066
+    "Linkforce",                                                                          // 48066
     "UnifyID, Inc.",                                                                      // 48067
     "CSE Transtel",                                                                       // 48068
     "Demmich IT Service",                                                                 // 48069
@@ -57289,7 +57289,7 @@ static const char * const table[] =
     "Bravas Sistemas Ltda",                                                               // 57267
     "Unitac Technology Ltd.",                                                             // 57268
     "Energy Queensland",                                                                  // 57269
-    "JRC Mobility, Inc.",                                                                 // 57270
+    NULL,                                                                                 // 57270
     "Open SDN & NFV Lab (OSNL)",                                                          // 57271
     "highstreet technologies USA Corp.",                                                  // 57272
     "highstreet technologies GmbH",                                                       // 57273
@@ -61165,7 +61165,7 @@ static const char * const table[] =
     "STN BANK",                                                                           // 61143
     "Shenzhen Xijia Medical Technology Co., Ltd.",                                        // 61144
     "Steadfast Financial LP",                                                             // 61145
-    "Puzzle ITC GmbH",                                                                    // 61146
+    "Puzzle ITC",                                                                         // 61146
     "Telefónica IoT & Big Data Tech, S.A.U.",                                             // 61147
     "Indorama Ventures Mobility Obernburg GmbH",                                          // 61148
     "SevenTrust Zrt.",                                                                    // 61149
@@ -65146,7 +65146,58 @@ static const char * const table[] =
     "Silicon Valley Power",                                                               // 65124
     "Mindskill Software AB",                                                              // 65125
     "Causality Check AB",                                                                 // 65126
-    "C. Rudolf Salfer GmbH"                                                               // 65127
+    "C. Rudolf Salfer GmbH",                                                              // 65127
+    "WISITH TUN-YHONG",                                                                   // 65128
+    "Falcon Watch Group",                                                                 // 65129
+    "Huawei FANO group",                                                                  // 65130
+    "Huawei FANO group",                                                                  // 65131
+    "ProvenRun",                                                                          // 65132
+    "FITFAK",                                                                             // 65133
+    "TechRunes",                                                                          // 65134
+    "Sygnature Discovery Canada",                                                         // 65135
+    "TECHSQUARE SOFTWARE SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ",                        // 65136
+    "Entertainment Identifier Registry (EIDR)",                                           // 65137
+    "Ruvion Robotics",                                                                    // 65138
+    "Wolters Kluwer Tax & Accounting Deutschland GmbH",                                   // 65139
+    "intive GmbH",                                                                        // 65140
+    "Admiral Packaging In.",                                                              // 65141
+    "Bertie County Schools",                                                              // 65142
+    "SMART",                                                                              // 65143
+    "LTD Technology Solutions, Inc",                                                      // 65144
+    "Dark Bio AG",                                                                        // 65145
+    "IOWIS GmbH",                                                                         // 65146
+    "Solör Bioenergi Pellets AB",                                                         // 65147
+    "BILGE TOPLULUK YAZILIM BILISIM TELEKOMUNIKASYON SANAYI TICARET LIMITED SIRKETI",     // 65148
+    "Champaign-Urbana Mass Transit District (MTD)",                                       // 65149
+    "Monitoreal Ltd",                                                                     // 65150
+    "STC PIK, Ltd",                                                                       // 65151
+    "Advanced Drone Technology",                                                          // 65152
+    "Dennis Graiani",                                                                     // 65153
+    "EnVayo Systems LTD",                                                                 // 65154
+    "ZS1-Wankowicz-Blonie",                                                               // 65155
+    "NovaVanguard (Tianjin) Technology Co., Ltd.",                                        // 65156
+    "上海钜安协程科技有限公司 (Shanghai Ju'an Xiecheng Technology Co., Ltd.)",                        // 65157
+    "UCS IT Solutions AB",                                                                // 65158
+    "Roland Kistler",                                                                     // 65159
+    "Aretiico, Inc.",                                                                     // 65160
+    "Aveira Security Research",                                                           // 65161
+    "Povodi Moravy, statni podnik (Vltava river basin, state enterprise)",                // 65162
+    "ToolsOnAir Broadcast Engineering GmbH",                                              // 65163
+    "Sorbus ursina",                                                                      // 65164
+    "Family Farm and Home, Inc.",                                                         // 65165
+    "Secure Tech Cards (Pvt) Ltd",                                                        // 65166
+    "The Durable Slate Co.",                                                              // 65167
+    "Vaughan Williams",                                                                   // 65168
+    "Holy Spirit Roman Catholic School Division",                                         // 65169
+    "CONISKING SA",                                                                       // 65170
+    "Shielded Site",                                                                      // 65171
+    "Ufone",                                                                              // 65172
+    "HaPy Schul-IT",                                                                      // 65173
+    "Latvaenergia Oy",                                                                    // 65174
+    "Scrive AB",                                                                          // 65175
+    "DokiSpace",                                                                          // 65176
+    "Secure Element Solutions, LLC",                                                      // 65177
+    "TruPoint Technology Services Ltd."                                                   // 65178
 };
 
 const char* global_enterprises_lookup(uint32_t value)
