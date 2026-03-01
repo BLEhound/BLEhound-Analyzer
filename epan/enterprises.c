@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2026-02-20) */
+/* (last updated 2026-02-27) */
 
 #include "config.h"
 
@@ -42900,7 +42900,7 @@ static const char * const table[] =
     "Credit-Moscow Bank",                                                                 // 42878
     "Sielaff GmbH & Co. KG",                                                              // 42879
     "Uwe Disch",                                                                          // 42880
-    "No Limit Network",                                                                   // 42881
+    "B2 Network",                                                                         // 42881
     "Jiangsu Fablesoft Co.,Ltd",                                                          // 42882
     "CARC (C-DOT Alcatel-Lucent Research Centre Pvt Ltd)",                                // 42883
     "Anderson Morgan Kelowna Inc.",                                                       // 42884
@@ -65181,7 +65181,7 @@ static const char * const table[] =
     "Roland Kistler",                                                                     // 65159
     "Aretiico, Inc.",                                                                     // 65160
     "Aveira Security Research",                                                           // 65161
-    "Povodi Moravy, statni podnik (Vltava river basin, state enterprise)",                // 65162
+    "Povodi Moravy, statni podnik (Morava river basin, state enterprise)",                // 65162
     "ToolsOnAir Broadcast Engineering GmbH",                                              // 65163
     "Sorbus ursina",                                                                      // 65164
     "Family Farm and Home, Inc.",                                                         // 65165
@@ -65197,7 +65197,64 @@ static const char * const table[] =
     "Scrive AB",                                                                          // 65175
     "DokiSpace",                                                                          // 65176
     "Secure Element Solutions, LLC",                                                      // 65177
-    "TruPoint Technology Services Ltd."                                                   // 65178
+    "TruPoint Technology Services Ltd.",                                                  // 65178
+    "Juan Ros Florenza",                                                                  // 65179
+    "Куприяшин Михаил Андреевич (Kupriyashin Mikhail Andreevich)",                        // 65180
+    "Kimble",                                                                             // 65181
+    "Nectek",                                                                             // 65182
+    "PRIVATECH Inc.",                                                                     // 65183
+    "Full Doors",                                                                         // 65184
+    "Vibeish Analytics",                                                                  // 65185
+    "Nissay Information Technology Cybersecurity Central Project",                        // 65186
+    "HARBOR HUMANITY TRUST",                                                              // 65187
+    "MAUSS BAU GmbH & Co. KG",                                                            // 65188
+    "Avenkor",                                                                            // 65189
+    "MiWire Group ApS",                                                                   // 65190
+    "Vakka-Suomen Puhelin Oy",                                                            // 65191
+    "Fredrik Wahlgren",                                                                   // 65192
+    "Куприяшин Михаил Андреевич (Kupriyashin Mikhail Andreevich)",                        // 65193
+    "Nexphoton",                                                                          // 65194
+    "IT:U interdisciplinary transformation university austria",                           // 65195
+    "Sage Networks",                                                                      // 65196
+    "Simsalasim Germany GmbH",                                                            // 65197
+    "VADES, LLC",                                                                         // 65198
+    "Hanåsa Sågverk Aktiebolag",                                                          // 65199
+    "coresdev, LLC",                                                                      // 65200
+    "LMI Technologies",                                                                   // 65201
+    "Dane",                                                                               // 65202
+    "楠泰科技（深圳）有限公司 (Nantech Technology (Shenzhen) Co., Ltd.)",                             // 65203
+    "JoLo Software",                                                                      // 65204
+    "Telepeer AB",                                                                        // 65205
+    "SkifteCentralen ApS",                                                                // 65206
+    "Seralto Bilgi Teknolojileri ve Guvenligi Ltd.",                                      // 65207
+    "Privatbrauerei Zwettl",                                                              // 65208
+    "Kenneth Mørch",                                                                      // 65209
+    "Monadnock Community Hospital",                                                       // 65210
+    "Saronic Technologies",                                                               // 65211
+    "KENTECH SECURITY LLC",                                                               // 65212
+    "TransItServiceLLC",                                                                  // 65213
+    "TAURON Obsługa Klienta sp. z o.o.",                                                  // 65214
+    "MIS Security LLC",                                                                   // 65215
+    "Twisted Ceptors Corporation",                                                        // 65216
+    "Pond IoT",                                                                           // 65217
+    "Savannah Informatics Limited",                                                       // 65218
+    "Center for Ecological Research",                                                     // 65219
+    "ProSafety d.o.o.",                                                                   // 65220
+    "Universidade da Beira Interior",                                                     // 65221
+    "RT Medical Systems LTDA.",                                                           // 65222
+    "HAZON TECHNOLOGIES LIMITED",                                                         // 65223
+    "Metadata, SL",                                                                       // 65224
+    "K. N. Toosi University of Technology,",                                              // 65225
+    "Marquis Companies",                                                                  // 65226
+    "Uone Infotech Co.,LTD",                                                              // 65227
+    "Municipio de Juárez, Nuevo León",                                                    // 65228
+    "Univerzitná nemocnica Nemocnica svätého Michala, a.s.",                              // 65229
+    "Privasys Ltd",                                                                       // 65230
+    "Institut für Wissenschaft und Weisheit (IWW)",                                       // 65231
+    "Vital Tech Industria e Comercio Ltda",                                               // 65232
+    "Rip City Refrigeration",                                                             // 65233
+    "Seattle School District",                                                            // 65234
+    "Hudson River Trading"                                                                // 65235
 };
 
 const char* global_enterprises_lookup(uint32_t value)
