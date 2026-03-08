@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2026-02-27) */
+/* (last updated 2026-03-05) */
 
 #include "config.h"
 
@@ -126,7 +126,7 @@ static const char * const table[] =
     "Micro Technology",                                                                   // 104
     "Process Software Corporation",                                                       // 105
     "EMC Data General Division",                                                          // 106
-    "Bull Company",                                                                       // 107
+    "Bull S.A.S.",                                                                        // 107
     "Broadcom Emulex Connectivity Division",                                              // 108
     "Warwick University Computing Services",                                              // 109
     "NetScout Systems, Inc.",                                                             // 110
@@ -59796,7 +59796,7 @@ static const char * const table[] =
     "Teyf Pardazan Spadana (TPS) Co.",                                                    // 59774
     "AB Gyllsjö Träindustri",                                                             // 59775
     "Webloom S.r.l.",                                                                     // 59776
-    "Martin Johansson",                                                                   // 59777
+    "Tidaholms kommun",                                                                   // 59777
     "Tiến Trần",                                                                          // 59778
     "INBOH DOOEL Skopje",                                                                 // 59779
     "PFALZKOM GmbH",                                                                      // 59780
@@ -65254,7 +65254,54 @@ static const char * const table[] =
     "Vital Tech Industria e Comercio Ltda",                                               // 65232
     "Rip City Refrigeration",                                                             // 65233
     "Seattle School District",                                                            // 65234
-    "Hudson River Trading"                                                                // 65235
+    "Hudson River Trading",                                                               // 65235
+    "TSCP LLC",                                                                           // 65236
+    "Noser Engineering AG",                                                               // 65237
+    "LMD HITECH INDIA PRIVATE LIMITED",                                                   // 65238
+    "Hans-Joachim Knobloch",                                                              // 65239
+    "iSYS Software GmbH",                                                                 // 65240
+    "Arberlandkliniken Kommunalunternehmen",                                              // 65241
+    "NEPKI",                                                                              // 65242
+    "QFJ Home Network",                                                                   // 65243
+    "SC Smart Office SRL",                                                                // 65244
+    "Athena Networks",                                                                    // 65245
+    "Guardant Health",                                                                    // 65246
+    "Evorit",                                                                             // 65247
+    "William Harrison",                                                                   // 65248
+    "SZ Grid",                                                                            // 65249
+    "Christian Zietz",                                                                    // 65250
+    "SAXONIA Edelmetalle GmbH",                                                           // 65251
+    "Henke-Sass, Wolf GmbH",                                                              // 65252
+    "Advanced Fiber Resources Milan srl",                                                 // 65253
+    "Paceline Services",                                                                  // 65254
+    "北京泰斯汀通信技术有限公司 (Beijing Testing Technology Co., Ltd.)",                               // 65255
+    "Codibly S.A.",                                                                       // 65256
+    "Sheffield Children's NHS Foundation Trust",                                          // 65257
+    "11:11 Systems Inc.",                                                                 // 65258
+    "Bayer Radiology",                                                                    // 65259
+    "Base Power, Inc.",                                                                   // 65260
+    "Keeper Security, Inc",                                                               // 65261
+    "B&G Digital Services GmbH",                                                          // 65262
+    "Alfred Hochleithner e. U.",                                                          // 65263
+    "Shenzhen Enjoy Technology Co.,Ltd.",                                                 // 65264
+    "Jeremy Jay",                                                                         // 65265
+    "olstenwood logistic AB",                                                             // 65266
+    "XPC Corporation",                                                                    // 65267
+    "SHENZHEN FOCUSCOM TECHNOLOGIES CO.,LTD",                                             // 65268
+    "Autobahn Tank u Rast",                                                               // 65269
+    "extocode GmbH",                                                                      // 65270
+    "Convey Health Solutions",                                                            // 65271
+    "Philippine Society for Digital Health",                                              // 65272
+    "IMSENZ",                                                                             // 65273
+    "Projekt IP, sodobne IP komunikacije d.o.o.",                                         // 65274
+    "Hiab",                                                                               // 65275
+    "B2B Solutions Zrt.",                                                                 // 65276
+    "CORPORACIÓN EMPRESARIAL ALTRA S.L.",                                                 // 65277
+    "DANEXiS AG",                                                                         // 65278
+    "it@business GmbH & Co. KG",                                                          // 65279
+    "Juha mielonen",                                                                      // 65280
+    "Supertrace",                                                                         // 65281
+    "CHRISTIE OWEN & DAVIES LIMITED"                                                      // 65282
 };
 
 const char* global_enterprises_lookup(uint32_t value)
