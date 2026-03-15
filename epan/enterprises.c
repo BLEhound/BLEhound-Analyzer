@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2026-03-05) */
+/* (last updated 2026-03-13) */
 
 #include "config.h"
 
@@ -26555,7 +26555,7 @@ static const char * const table[] =
     "Nurun inc.",                                                                         // 26533
     "think project! International",                                                       // 26534
     "OMNEX Control Systems ULC",                                                          // 26535
-    "Ringland Consulting LLC",                                                            // 26536
+    "Jim Ringland",                                                                       // 26536
     "Riorey Inc.",                                                                        // 26537
     "Duaxes Corporation",                                                                 // 26538
     "Ionoscape Associates",                                                               // 26539
@@ -36833,7 +36833,7 @@ static const char * const table[] =
     "Consendo Systems A/S",                                                               // 36811
     "CSP, Inc.",                                                                          // 36812
     "SafeTek USA, LLC",                                                                   // 36813
-    "DEFFAYET",                                                                           // 36814
+    NULL,                                                                                 // 36814
     "Savings Society Inc",                                                                // 36815
     "Beijing Abloomy Technologies Co., Ltd",                                              // 36816
     "Bohemia Interactive Simulations",                                                    // 36817
@@ -65086,7 +65086,7 @@ static const char * const table[] =
     "WestJet Airline Ltd.",                                                               // 65064
     "Kelco Industries",                                                                   // 65065
     "yamanju LLC",                                                                        // 65066
-    "Alpha Software Dienstleistungs ASD GmbH",                                            // 65067
+    "Netcetera Software Services GmbH",                                                   // 65067
     "Institut Dr. Foerster GmbH & Co. KG",                                                // 65068
     "Meestgroup",                                                                         // 65069
     "Tida Skogsvård",                                                                     // 65070
@@ -65232,7 +65232,7 @@ static const char * const table[] =
     "Monadnock Community Hospital",                                                       // 65210
     "Saronic Technologies",                                                               // 65211
     "KENTECH SECURITY LLC",                                                               // 65212
-    "TransItServiceLLC",                                                                  // 65213
+    "TransItServiceLLC.com",                                                              // 65213
     "TAURON Obsługa Klienta sp. z o.o.",                                                  // 65214
     "MIS Security LLC",                                                                   // 65215
     "Twisted Ceptors Corporation",                                                        // 65216
@@ -65301,7 +65301,61 @@ static const char * const table[] =
     "it@business GmbH & Co. KG",                                                          // 65279
     "Juha mielonen",                                                                      // 65280
     "Supertrace",                                                                         // 65281
-    "CHRISTIE OWEN & DAVIES LIMITED"                                                      // 65282
+    "CHRISTIE OWEN & DAVIES LIMITED",                                                     // 65282
+    "Cantrell Cloud ES",                                                                  // 65283
+    "ram krishnan",                                                                       // 65284
+    "Altos Computing Inc.",                                                               // 65285
+    "Phison Electronics Corp.",                                                           // 65286
+    "Akarui Networks Private Limited",                                                    // 65287
+    "Suzhou Langkong Post-Quantum Technology Co., Ltd.（LK Quantum）",                      // 65288
+    "ZPPP-Blonie",                                                                        // 65289
+    "LaunchWindow Software Inc.",                                                         // 65290
+    "Konduit KYA",                                                                        // 65291
+    "Aleph Cloud (Aleph.im SAS)",                                                         // 65292
+    "SSC-Services GmbH",                                                                  // 65293
+    "Novatronic LLC",                                                                     // 65294
+    "Innovoris Labs IT srl",                                                              // 65295
+    "Netvio",                                                                             // 65296
+    "CAITEK for Information Systems",                                                     // 65297
+    "Exian Systems Limited",                                                              // 65298
+    "Grumpy Bastards",                                                                    // 65299
+    "LikeDotAudio",                                                                       // 65300
+    "Null Grid Ltd",                                                                      // 65301
+    "Linneman Labs",                                                                      // 65302
+    "Simgenet",                                                                           // 65303
+    "Institut Mallorqui Afers Socials",                                                   // 65304
+    "MIOS ELETTRONICA",                                                                   // 65305
+    "Tetranetics Private Limited",                                                        // 65306
+    "nfiniity GmbH",                                                                      // 65307
+    "Insky Communications Private Limited",                                               // 65308
+    "IHX(Thailand) Co., Ltd.",                                                            // 65309
+    "David Keller",                                                                       // 65310
+    "UANATACA ECUADOR S.A.",                                                              // 65311
+    "Persona Identities",                                                                 // 65312
+    "Zhongrui Green Energy Technology (Shenzhen) Co., Ltd.",                              // 65313
+    "IsoFind",                                                                            // 65314
+    "Transas Navigator Ltd.",                                                             // 65315
+    "CTHINGS.CO Sp. z o.o.",                                                              // 65316
+    "Foxway AB",                                                                          // 65317
+    "Chengdu Newglee Technology Co., LTD.",                                               // 65318
+    "Vardaan Electronics Industries Pvt. Ltd.",                                           // 65319
+    "Seminole County Public Schools",                                                     // 65320
+    "Exavision",                                                                          // 65321
+    "ServerForge LLC",                                                                    // 65322
+    "GCH Technologies Inc.",                                                              // 65323
+    "Kern County Sheriff's Office",                                                       // 65324
+    "NetCuras",                                                                           // 65325
+    "Azerconnect Group",                                                                  // 65326
+    "ATSN Ltd",                                                                           // 65327
+    "Multrees Investor Services",                                                         // 65328
+    "Hunt Electric",                                                                      // 65329
+    "Voltra",                                                                             // 65330
+    "XIPE Networks LLC",                                                                  // 65331
+    "Cohesive Database Synoptics",                                                        // 65332
+    "Sisgarbe - Solucoes De Informatica Lda",                                             // 65333
+    "easier.digital",                                                                     // 65334
+    "MEK, Inc",                                                                           // 65335
+    "AVISIA"                                                                              // 65336
 };
 
 const char* global_enterprises_lookup(uint32_t value)
