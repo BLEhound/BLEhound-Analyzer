@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2026-03-13) */
+/* (last updated 2026-03-20) */
 
 #include "config.h"
 
@@ -19567,7 +19567,7 @@ static const char * const table[] =
     "Sony CISC",                                                                          // 19545
     "MELENTANE",                                                                          // 19546
     "Oplink Communications, Inc.",                                                        // 19547
-    "FROX communication",                                                                 // 19548
+    "FROX AG",                                                                            // 19548
     "Uni-Q Systems",                                                                      // 19549
     "an Academic Network at Sao Paulo (ANSP)",                                            // 19550
     "Thales Naval France",                                                                // 19551
@@ -53210,7 +53210,7 @@ static const char * const table[] =
     "Queen Margaret's School",                                                            // 53188
     "Share IT Limited",                                                                   // 53189
     "LittleMouseCloud",                                                                   // 53190
-    "Telmex Colombia S.A.",                                                               // 53191
+    "Comcel S.A.",                                                                        // 53191
     "Socially Determined, Inc.",                                                          // 53192
     "UVEX WINTER HOLDING GmbH & Co. KG",                                                  // 53193
     "Goodbaby International",                                                             // 53194
@@ -65355,7 +65355,26 @@ static const char * const table[] =
     "Sisgarbe - Solucoes De Informatica Lda",                                             // 65333
     "easier.digital",                                                                     // 65334
     "MEK, Inc",                                                                           // 65335
-    "AVISIA"                                                                              // 65336
+    "AVISIA",                                                                             // 65336
+    "Stephan Harrer",                                                                     // 65337
+    "HPELab",                                                                             // 65338
+    "LotusFlare Inc",                                                                     // 65339
+    "New Use Energy Solutions",                                                           // 65340
+    "Claiborne County School District",                                                   // 65341
+    "Haerang Energy",                                                                     // 65342
+    "FLDG Holding SASU",                                                                  // 65343
+    "Dustin Ward",                                                                        // 65344
+    "Communications Regulatory Authority of Namibia",                                     // 65345
+    "Yaskawa America Inc.",                                                               // 65346
+    "Beijing Unihannto Technology Co., Ltd.",                                             // 65347
+    "Florian Sluiter",                                                                    // 65348
+    "Microgrid Energy Pty Ltd",                                                           // 65349
+    "Ruchi Telecom Private Limited",                                                      // 65350
+    "Sigalion",                                                                           // 65351
+    "Space-Tech LLC",                                                                     // 65352
+    "CEDIA",                                                                              // 65353
+    "TRAC Intermodal",                                                                    // 65354
+    "Apache Corporation"                                                                  // 65355
 };
 
 const char* global_enterprises_lookup(uint32_t value)
