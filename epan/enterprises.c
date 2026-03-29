@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2026-03-20) */
+/* (last updated 2026-03-27) */
 
 #include "config.h"
 
@@ -41315,7 +41315,7 @@ static const char * const table[] =
     "Taylor Innovations, LLC",                                                            // 41293
     "Datafrog",                                                                           // 41294
     "Andalusia Group",                                                                    // 41295
-    "E-Gate Communications Inc.",                                                         // 41296
+    "EGATE Networks Inc.",                                                                // 41296
     "Nextech Co.,Ltd",                                                                    // 41297
     "BRGFrauengasse",                                                                     // 41298
     "Infodom d.o.o.",                                                                     // 41299
@@ -50052,7 +50052,7 @@ static const char * const table[] =
     "BENTELER Business Services GmbH",                                                    // 50030
     "Ring Central, Inc",                                                                  // 50031
     "City of Edmond",                                                                     // 50032
-    "IT-Solutions Nuernberg",                                                             // 50033
+    "AKITN Consulting",                                                                   // 50033
     "AR24 SAS",                                                                           // 50034
     "Identinetics IT-Services GmbH",                                                      // 50035
     "Cancer South Institute",                                                             // 50036
@@ -61852,7 +61852,7 @@ static const char * const table[] =
     "Tinh Van Technologies JSC.",                                                         // 61830
     "MFK Burny",                                                                          // 61831
     "Alfavit",                                                                            // 61832
-    "Xiaojun Ben",                                                                        // 61833
+    "StarCharge",                                                                         // 61833
     "Venturus Centro de Inovacao Tecnologica",                                            // 61834
     "Otheda Limited",                                                                     // 61835
     "AtFocus",                                                                            // 61836
@@ -63188,7 +63188,7 @@ static const char * const table[] =
     "Scanvaegt Systems AB",                                                               // 63166
     "FUNDACIÓN CIVITANA",                                                                 // 63167
     "UnipartRail",                                                                        // 63168
-    "TEXAS DEPARTMENT OF DEVELOPMENT",                                                    // 63169
+    "Dev Recon Inc",                                                                      // 63169
     "XYC INDUSTRY CO.,LIMITED",                                                           // 63170
     "C4 Energi AB",                                                                       // 63171
     "Brueterei Weser-Ems GmbH & Co. KG",                                                  // 63172
@@ -65374,7 +65374,79 @@ static const char * const table[] =
     "Space-Tech LLC",                                                                     // 65352
     "CEDIA",                                                                              // 65353
     "TRAC Intermodal",                                                                    // 65354
-    "Apache Corporation"                                                                  // 65355
+    "Apache Corporation",                                                                 // 65355
+    "Julian Pawlowski",                                                                   // 65356
+    "José Eliécer Loaiza Duque",                                                          // 65357
+    "Mark Nolan",                                                                         // 65358
+    "Rainer W. Gerling",                                                                  // 65359
+    "Point And Click Solutions, Inc",                                                     // 65360
+    "xSyLent",                                                                            // 65361
+    "Liujiacheng",                                                                        // 65362
+    "MerkleCerts",                                                                        // 65363
+    "Verific Design Automation, Inc.",                                                    // 65364
+    "SOI Asia",                                                                           // 65365
+    "Fast Module",                                                                        // 65366
+    "Numeracle, Inc.",                                                                    // 65367
+    "Jacobs.Tech",                                                                        // 65368
+    "Affinda Group",                                                                      // 65369
+    "Nexiom",                                                                             // 65370
+    "VietCA Technology JSC",                                                              // 65371
+    "Electron do Brasil Tecnologia Digital Ltda",                                         // 65372
+    "BK Tech Group AB",                                                                   // 65373
+    "Ampaura Australia",                                                                  // 65374
+    "PRZEDSIEBIORSTWO WIELOBRANZOWE CASTON SPOLKA Z OGRANICZONA ODPOWIEDZIALNOSCIA (Caston Multi-Branch Enterprise Limited Liability Company)",// 65375
+    "Famoco",                                                                             // 65376
+    "Compass Group North America",                                                        // 65377
+    "芯昇科技有限公司 Xinsheng Technology Co., Ltd",                                              // 65378
+    "LLC PF STIS",                                                                        // 65379
+    "Mark Mackenzie",                                                                     // 65380
+    "Michael Kirkpatrick",                                                                // 65381
+    "Water & Wastewater Technic WWT GmbH",                                                // 65382
+    "Endrit’s Digital Solutions e.K.",                                                    // 65383
+    "Association of Azerbaijani British Professionals",                                   // 65384
+    "FORITECH",                                                                           // 65385
+    "DAPsystems",                                                                         // 65386
+    "BEQ Manufacturier",                                                                  // 65387
+    "Viridi Parente, Inc.",                                                               // 65388
+    "Romagnole Produtos Elétricos SA (Filial Juiz de Fora)",                              // 65389
+    "Md Shahab Uddin",                                                                    // 65390
+    "Gouvernement du Togo",                                                               // 65391
+    "HALE electronic GmbH.",                                                              // 65392
+    "National Gas",                                                                       // 65393
+    "XIVAuth Project",                                                                    // 65394
+    "Indonesia Research and Education Network",                                           // 65395
+    "220NET",                                                                             // 65396
+    "Crosstech Solutions Group LLC",                                                      // 65397
+    "Altalink",                                                                           // 65398
+    "Honeywell Aerospace",                                                                // 65399
+    "Construction Company Facade Systems LLC",                                            // 65400
+    "Mosproject",                                                                         // 65401
+    "Yannick Schneider",                                                                  // 65402
+    "Starlink",                                                                           // 65403
+    "Horizon Credit Union",                                                               // 65404
+    "Console Now Inc.",                                                                   // 65405
+    "OpConnect Inc.",                                                                     // 65406
+    "Niklights",                                                                          // 65407
+    "AEWIN Technologies Co., Ltd.",                                                       // 65408
+    "Uniserv GmbH",                                                                       // 65409
+    "Defidev",                                                                            // 65410
+    "Salience Labs",                                                                      // 65411
+    "Chaos1",                                                                             // 65412
+    "DragonWave Technologies",                                                            // 65413
+    "福州高新区蔚蓝网络有限公司 (Fuzhou High-tech Zone Weilan Network Co., Ltd.)",                     // 65414
+    "Bergslagets Egendomar AB",                                                           // 65415
+    "After Hours Audio",                                                                  // 65416
+    "Pippin Technical Service",                                                           // 65417
+    "HIPOINT TECHNOLOGY CO., LTD",                                                        // 65418
+    "Serhii Parshyn",                                                                     // 65419
+    "Haoren Hu",                                                                          // 65420
+    "Pfano Kate",                                                                         // 65421
+    "SigmaMD",                                                                            // 65422
+    "Transumption Pte Ltd",                                                               // 65423
+    "Dermavision Solutions SL",                                                           // 65424
+    "Municipal institution City Institute",                                               // 65425
+    "SXarc",                                                                              // 65426
+    "Yu Energy"                                                                           // 65427
 };
 
 const char* global_enterprises_lookup(uint32_t value)
