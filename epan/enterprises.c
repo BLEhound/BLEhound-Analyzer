@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2026-03-27) */
+/* (last updated 2026-04-03) */
 
 #include "config.h"
 
@@ -4017,7 +4017,7 @@ static const char * const table[] =
     "VASCO Data Security International, Inc.",                                            // 3995
     "Open Systems AG",                                                                    // 3996
     "ImproWare AG",                                                                       // 3997
-    "Mediagroup Vtoroy",                                                                  // 3998
+    "VTOROY",                                                                             // 3998
     "dydx",                                                                               // 3999
     "Hi-net Research Group",                                                              // 4000
     "KADAK Products Ltd.",                                                                // 4001
@@ -65446,7 +65446,56 @@ static const char * const table[] =
     "Dermavision Solutions SL",                                                           // 65424
     "Municipal institution City Institute",                                               // 65425
     "SXarc",                                                                              // 65426
-    "Yu Energy"                                                                           // 65427
+    "Yu Energy",                                                                          // 65427
+    "m3g yazilim danismanlik tic. ltd. sti.",                                             // 65428
+    "Duix Tecnologia Industria e Comercio LTDA",                                          // 65429
+    "Carnival Corporation & PLC",                                                         // 65430
+    "Logipix",                                                                            // 65431
+    "LukuID Oy",                                                                          // 65432
+    "City of Orem, Utah",                                                                 // 65433
+    "Mark Purcell",                                                                       // 65434
+    "Paul Robinson",                                                                      // 65435
+    "MdProSoft",                                                                          // 65436
+    "Mikael Hansson Åkeri AB",                                                            // 65437
+    "Ram Jee Aryal (Independent Developer)",                                              // 65438
+    "Sherpa-IRS",                                                                         // 65439
+    "Signal24 LLC",                                                                       // 65440
+    "Wendy Labs, Inc.",                                                                   // 65441
+    "CV BİLİŞİM TEKNOLOJİ TİCARET LİMİTED ŞİRKETİ",                                       // 65442
+    "Horry County Government",                                                            // 65443
+    "ShenZhen Action Technologies Co., Ltd.",                                             // 65444
+    "Sirraya Labs",                                                                       // 65445
+    "OnLogic Inc",                                                                        // 65446
+    "Core Concept Collective",                                                            // 65447
+    "Augeral Pty Ltd",                                                                    // 65448
+    "ISTREAMS SOLUTIONS FZE",                                                             // 65449
+    "Devops-DB",                                                                          // 65450
+    "Stadtverwaltung Borken",                                                             // 65451
+    "Sallan yhteismetsä",                                                                 // 65452
+    "Weinholt Consulting AB",                                                             // 65453
+    "Swarco Futurit Verkehrssignalsysteme Ges.m.b.H.",                                    // 65454
+    "Denny Thomas",                                                                       // 65455
+    "SHI Lili",                                                                           // 65456
+    "SECORO INC",                                                                         // 65457
+    "Starnitzke Consulting GmbH",                                                         // 65458
+    "Salt Group",                                                                         // 65459
+    "d-Matrix",                                                                           // 65460
+    "Universidad Autónoma de Nayarit",                                                    // 65461
+    "Nymölla Skog AB",                                                                    // 65462
+    "PANTHEON.tech",                                                                      // 65463
+    "Granite Telecommunications LLC.",                                                    // 65464
+    "bosloven",                                                                           // 65465
+    "TELENICK",                                                                           // 65466
+    "nekohaxx",                                                                           // 65467
+    "SRNE Solar Co.,Ltd",                                                                 // 65468
+    "ArtSanEnerji",                                                                       // 65469
+    "TriCore Engineering UG (haftungsbeschränkt)",                                        // 65470
+    "Mobi Acquisition LLC",                                                               // 65471
+    "BYD Finland Oy",                                                                     // 65472
+    "DS Soft Olomouc, spol. s r.o.",                                                      // 65473
+    "CedarDB GmbH",                                                                       // 65474
+    "DESKO GmbH",                                                                         // 65475
+    "Ducati Motor Holding S.p.A"                                                          // 65476
 };
 
 const char* global_enterprises_lookup(uint32_t value)
