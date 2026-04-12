@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2026-04-03) */
+/* (last updated 2026-04-10) */
 
 #include "config.h"
 
@@ -11098,7 +11098,7 @@ static const char * const table[] =
     "Banesto S.A.",                                                                       // 11076
     "Andrej Ota",                                                                         // 11077
     "Centralworks LLC",                                                                   // 11078
-    "EIT Ltd",                                                                            // 11079
+    "Greg Malewski",                                                                      // 11079
     "Airwide Solutions",                                                                  // 11080
     "Hydrogen Line, Inc.",                                                                // 11081
     "Illinois Central College",                                                           // 11082
@@ -25554,7 +25554,7 @@ static const char * const table[] =
     "BCA Services Ltd.",                                                                  // 25532
     "IdentityForge, LLC.",                                                                // 25533
     "Lusan Systems",                                                                      // 25534
-    "Klas Ltd.",                                                                          // 25535
+    "Anduril Voyager",                                                                    // 25535
     "Probaris Technologies, Inc.",                                                        // 25536
     "Thomas Friedl",                                                                      // 25537
     "GNU Telephony",                                                                      // 25538
@@ -30034,7 +30034,7 @@ static const char * const table[] =
     "ipoque GmbH",                                                                        // 30012
     "Den selvejende institution Paul Bargsøe Kollegiet",                                  // 30013
     "Pecsi Tudomanyegyetem Klinikai Kozpont",                                             // 30014
-    "KBC Bank",                                                                           // 30015
+    "KBC Global Services",                                                                // 30015
     "Anel-Elektronik AG",                                                                 // 30016
     "TAG Aviation",                                                                       // 30017
     "FusionIO",                                                                           // 30018
@@ -52351,7 +52351,7 @@ static const char * const table[] =
     "DSI DGAC",                                                                           // 52329
     "Chubb Systems Ltd",                                                                  // 52330
     "learntotechsolutions Limited",                                                       // 52331
-    "INTEGRITY Security Services LLC",                                                    // 52332
+    "OmniTrust Security LLC",                                                             // 52332
     "Banco de Credito del Peru",                                                          // 52333
     "Systematic Inc",                                                                     // 52334
     "Alignment Healthcare",                                                               // 52335
@@ -65495,7 +65495,59 @@ static const char * const table[] =
     "DS Soft Olomouc, spol. s r.o.",                                                      // 65473
     "CedarDB GmbH",                                                                       // 65474
     "DESKO GmbH",                                                                         // 65475
-    "Ducati Motor Holding S.p.A"                                                          // 65476
+    "Ducati Motor Holding S.p.A",                                                         // 65476
+    "厦门汉印股份有限公司 (Xiamen Hanin Co., Ltd.)",                                                // 65477
+    "Rune Vikestad",                                                                      // 65478
+    "SmartSolo",                                                                          // 65479
+    "BitKiva",                                                                            // 65480
+    "FIRMA INTERSVYAZ LIMITED TRADE DEVELOPMENT",                                         // 65481
+    "Conekt.ai, Inc.",                                                                    // 65482
+    "天津外国语大学(Tianjin Foreign Studies University), TJFSU, TFSU",                           // 65483
+    "Nimbis Services, Inc.",                                                              // 65484
+    "LSW tech",                                                                           // 65485
+    "Sky Digital Co., Ltd.",                                                              // 65486
+    "Maryland Benefits DHS CJAMS",                                                        // 65487
+    "MIROSLAV VASILEV TZONKOV",                                                           // 65488
+    "Jerome Freeman",                                                                     // 65489
+    "AUTONOMY OF ZALESK TRUST",                                                           // 65490
+    "DABify Ltd",                                                                         // 65491
+    "ABPS Radio Network",                                                                 // 65492
+    "States of Jersey Police (SOJP)",                                                     // 65493
+    "KOEN Inc",                                                                           // 65494
+    "Nimbus Hrvatska d.o.o.",                                                             // 65495
+    "LAYER1",                                                                             // 65496
+    "GK FUTURE Inc.",                                                                     // 65497
+    "Vecto",                                                                              // 65498
+    "Gildas Le Drogoff",                                                                  // 65499
+    "Wolf Rosewood Media",                                                                // 65500
+    "Mpirical",                                                                           // 65501
+    "Techielab.ch",                                                                       // 65502
+    "Artsan Enerji static voltage stabilizer",                                            // 65503
+    "VWFNDR  CAMERA",                                                                     // 65504
+    "Tumee",                                                                              // 65505
+    "DOBE COMPUTING Co., Ltd.",                                                           // 65506
+    "Midwest Fastener Corp",                                                              // 65507
+    "Oregonians Credit Union",                                                            // 65508
+    "Santa Casa de Marilia",                                                              // 65509
+    "GIP RECIA",                                                                          // 65510
+    "James L Baker",                                                                      // 65511
+    "北京东方京海电子科技有限公司 (Beijing Dongfang Jinghai Electronic Technology Co., Ltd.)",          // 65512
+    "Alyiah Samara",                                                                      // 65513
+    "Premkumar Prithivirajan",                                                            // 65514
+    "TeX Users Group",                                                                    // 65515
+    "Bribus B.V.",                                                                        // 65516
+    "Construmart S.A.",                                                                   // 65517
+    "Pumatronix Equipamentos Eletronicos Ltda",                                           // 65518
+    "Informationsverarbeitung Leverkusen GmbH",                                           // 65519
+    "李刚 (Li Gang)",                                                                       // 65520
+    "Biobot Surgical Pte. Ltd.",                                                          // 65521
+    "CVC Co.,Ltd.",                                                                       // 65522
+    "惠州市博实结科技有限公司 (Huizhou Boshijie Technology Co., Ltd.)",                               // 65523
+    "Information Accessibility Institute",                                                // 65524
+    "SONACA S.A.",                                                                        // 65525
+    "Delos Cloud GmbH",                                                                   // 65526
+    "Zodiac",                                                                             // 65527
+    "CleverEnable"                                                                        // 65528
 };
 
 const char* global_enterprises_lookup(uint32_t value)
