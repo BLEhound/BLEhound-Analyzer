@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2026-04-17) */
+/* (last updated 2026-04-24) */
 
 #include "config.h"
 
@@ -15691,7 +15691,7 @@ static const char * const table[] =
     "Lifecycle Software",                                                                 // 15669
     "The Internet Marketing Center",                                                      // 15670
     "Wardega Consulting",                                                                 // 15671
-    "Javno preduzece Posta Srbije",                                                       // 15672
+    "Posta Srbije d.o.o.",                                                                // 15672
     "Codeangels Solutions",                                                               // 15673
     "Valente CC",                                                                         // 15674
     "StoneDonut, LLC",                                                                    // 15675
@@ -65624,7 +65624,56 @@ static const char * const table[] =
     "ATMOCE Australia PTY LTD",                                                           // 65602
     "Trexcel Corporation",                                                                // 65603
     "Ericsson - IT Managed Services",                                                     // 65604
-    "OneWiseTech"                                                                         // 65605
+    "OneWiseTech",                                                                        // 65605
+    "Gavin John",                                                                         // 65606
+    "Seaal",                                                                              // 65607
+    "NodeX",                                                                              // 65608
+    "NodeAI Diagnostics Corp.",                                                           // 65609
+    "Rootist, LLC",                                                                       // 65610
+    "Turaco Labs Ltd",                                                                    // 65611
+    "ZK-PKI",                                                                             // 65612
+    "SYSBRAN",                                                                            // 65613
+    "Eric Carrozzo",                                                                      // 65614
+    "Guangdong CASSTK Co., Ltd.",                                                         // 65615
+    "XDISC SA",                                                                           // 65616
+    "XIPE",                                                                               // 65617
+    "Carmentis SAS",                                                                      // 65618
+    "Opsens Solutions Inc",                                                               // 65619
+    "Spectronic Denmark A/S",                                                             // 65620
+    "Clever Cloud",                                                                       // 65621
+    "Axians HR",                                                                          // 65622
+    "PC-Wolf EDV-Service & -Notdienst",                                                   // 65623
+    "Ordr, Inc",                                                                          // 65624
+    "Valkyrie Bioscience",                                                                // 65625
+    "Vaunix Technology Corporation",                                                      // 65626
+    "Anthropic, PBC.",                                                                    // 65627
+    "Decentralized Quantum Key Management Infrastructure",                                // 65628
+    "xHSM",                                                                               // 65629
+    "Shenzhen Tocloud-iot technology Co.,Ltd",                                            // 65630
+    "Shenzhen Qin'an Technology Co., Ltd.",                                               // 65631
+    "Grupo Computación Modular Avanzada S.A.",                                            // 65632
+    "HBA International",                                                                  // 65633
+    "Swen Scholz",                                                                        // 65634
+    "Aplus Power Technology (Hangzhou) Co., Ltd.",                                        // 65635
+    "IOTRONICS",                                                                          // 65636
+    "Polska Agencja Rozwoju Przedsiębiorczości",                                          // 65637
+    "Port of Antwerp-Bruges",                                                             // 65638
+    "KatBox GmbH",                                                                        // 65639
+    "Sicoob Credicaf",                                                                    // 65640
+    "DENQEN engineering SRL",                                                             // 65641
+    "Stellar Quanta Labs",                                                                // 65642
+    "Tours-événements",                                                                   // 65643
+    "LeSecure",                                                                           // 65644
+    "American ID Group",                                                                  // 65645
+    "Desistec ingeniería y servicios Ltda.",                                              // 65646
+    "Hagbergs Skogstransport AB",                                                         // 65647
+    "City of Highland Village",                                                           // 65648
+    "CMCC OTT-CDN",                                                                       // 65649
+    "WORKBASE JOINT STOCK COMPANY",                                                       // 65650
+    "ITALGRANITI GROUP S.P.A.",                                                           // 65651
+    "SurrealDB Ltd",                                                                      // 65652
+    "ADK Hospital",                                                                       // 65653
+    "Georgia Farm Bureau Mutual Insurance Company"                                        // 65654
 };
 
 const char* global_enterprises_lookup(uint32_t value)
