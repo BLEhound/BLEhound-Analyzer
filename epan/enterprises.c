@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2026-05-01) */
+/* (last updated 2026-05-09) */
 
 #include "config.h"
 
@@ -65729,7 +65729,69 @@ static const char * const table[] =
     "Fidelity International",                                                             // 65707
     "FIL Fondsbank GmbH",                                                                 // 65708
     "qonduit GmbH",                                                                       // 65709
-    "Sharonview Federal Credit Union"                                                     // 65710
+    "Sharonview Federal Credit Union",                                                    // 65710
+    "Intalio",                                                                            // 65711
+    "INNO LOTUS PTY LTD",                                                                 // 65712
+    "Athena Cybersecurity Pty Ltd",                                                       // 65713
+    "Lab Acacia Open Source",                                                             // 65714
+    "Neuro Protocol Suites Committee",                                                    // 65715
+    "Clinical Science Systems",                                                           // 65716
+    "EZMA GmbH",                                                                          // 65717
+    "Foam Design, Inc.",                                                                  // 65718
+    "Techinova AB",                                                                       // 65719
+    "Shaanxi Zhongke Lixing Intelligent Technology Co., Ltd.",                            // 65720
+    "SAKO Brno, a.s.",                                                                    // 65721
+    "Markgraf Consulting",                                                                // 65722
+    "Firma Chile",                                                                        // 65723
+    "Ace Power Works",                                                                    // 65724
+    "Zeev Lazarev",                                                                       // 65725
+    "The CORE Group",                                                                     // 65726
+    "Narayana OÜ",                                                                        // 65727
+    "Xygeni Security",                                                                    // 65728
+    "Medizinischer Dienst Westfalen-Lippe",                                               // 65729
+    "F/G/M Mettchen Müller GmbH & Co. KG",                                                // 65730
+    "ldaldx+ml",                                                                          // 65731
+    "Qrypt Inc",                                                                          // 65732
+    "Moultbase",                                                                          // 65733
+    "PicoKeys",                                                                           // 65734
+    "vossic",                                                                             // 65735
+    "AceBIT GmbH",                                                                        // 65736
+    "Zomputer Kft.",                                                                      // 65737
+    "netcosystems GmbH",                                                                  // 65738
+    "ARZ Haan AG Unternehmensgruppe",                                                     // 65739
+    "SAIC MOTOR Overseas Intelligent Mobility Technology Co., Ltd.",                      // 65740
+    "Maxworks Systems LLC",                                                               // 65741
+    "Li lilingyi",                                                                        // 65742
+    "LeSoluzioni scarl",                                                                  // 65743
+    "Inspakt Teknoloji A.Ş.",                                                             // 65744
+    "MOKA",                                                                               // 65745
+    "ShenZhen HCAILink Technology Co.,Ltd",                                               // 65746
+    "Harrison Lee",                                                                       // 65747
+    "wattsonic",                                                                          // 65748
+    "iWave Global",                                                                       // 65749
+    "Kuvik",                                                                              // 65750
+    "Wavera Health, Inc.",                                                                // 65751
+    "Kared Sp. z o.o.",                                                                   // 65752
+    "Prologin",                                                                           // 65753
+    "Veranet B.V.",                                                                       // 65754
+    "Timber Group Oy",                                                                    // 65755
+    "Iver AB",                                                                            // 65756
+    "kematek.com",                                                                        // 65757
+    "Hochschule fuer Musik und Darstellende Kunst Frankfurt am Main",                     // 65758
+    "Devix Portugal, Lda",                                                                // 65759
+    "Maestranza Diesel",                                                                  // 65760
+    "MeediaLabs SpA",                                                                     // 65761
+    "IKnowICT",                                                                           // 65762
+    "China Hualu Panasonic AVC Networks Co.,Ltd.",                                        // 65763
+    "Gravity8",                                                                           // 65764
+    "NetSense CyberSecurity Private Limited",                                             // 65765
+    "Zambia Information and Communications Technology Authority",                         // 65766
+    "BOTWORX",                                                                            // 65767
+    "JSC Ural Factories",                                                                 // 65768
+    "Sekom Iletisim Sistemleri A.S.",                                                     // 65769
+    "Wireskop",                                                                           // 65770
+    "LYNX VISION",                                                                        // 65771
+    "Web Lite Solutions Corp."                                                            // 65772
 };
 
 const char* global_enterprises_lookup(uint32_t value)
