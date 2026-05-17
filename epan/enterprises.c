@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2026-05-09) */
+/* (last updated 2026-05-13) */
 
 #include "config.h"
 
@@ -20865,7 +20865,7 @@ static const char * const table[] =
     "Philipp Strozyk",                                                                    // 20843
     "L'OREAL",                                                                            // 20844
     "Linux Information Systems AG",                                                       // 20845
-    "SURFsara",                                                                           // 20846
+    "SURF B.V.",                                                                          // 20846
     "Atlas Development Corporation",                                                      // 20847
     "Zope Corporation",                                                                   // 20848
     "OMT Systems (Shenzhen) Limited",                                                     // 20849
@@ -31146,7 +31146,7 @@ static const char * const table[] =
     "ABF Baltic AS",                                                                      // 31124
     "Ressources Informatiques",                                                           // 31125
     "ASTELLIA",                                                                           // 31126
-    "Emerson Process Management",                                                         // 31127
+    "Emerson",                                                                            // 31127
     "Lead Tech Design",                                                                   // 31128
     "Alaska Satellite Facility",                                                          // 31129
     "Basho Technologies, Inc.",                                                           // 31130
@@ -65791,7 +65791,40 @@ static const char * const table[] =
     "Sekom Iletisim Sistemleri A.S.",                                                     // 65769
     "Wireskop",                                                                           // 65770
     "LYNX VISION",                                                                        // 65771
-    "Web Lite Solutions Corp."                                                            // 65772
+    "Web Lite Solutions Corp.",                                                           // 65772
+    "AGROWAY TECNOLOGIA",                                                                 // 65773
+    "Kimber Mfg., Inc.",                                                                  // 65774
+    "SIRECOM S.A.R.L",                                                                    // 65775
+    "Mapsted Corp",                                                                       // 65776
+    "Nemzeti Üzleti Szolgáltató Zrt.",                                                    // 65777
+    "Business Opportunity Management",                                                    // 65778
+    "TransWorld Scribes Limited",                                                         // 65779
+    "FGDConsulting AB",                                                                   // 65780
+    "Sun Electronics Co., Ltd.",                                                          // 65781
+    "Resonance Health",                                                                   // 65782
+    "Taifun Tofu GmbH",                                                                   // 65783
+    "ENFASYS INGENIERIA SL",                                                              // 65784
+    "Insightexus",                                                                        // 65785
+    "Simple Sign",                                                                        // 65786
+    "CANOPY",                                                                             // 65787
+    "Airiam",                                                                             // 65788
+    "Thessia s.r.o.",                                                                     // 65789
+    "SevenLayerTea",                                                                      // 65790
+    "Hasil Technologies Inc.",                                                            // 65791
+    "Lampyris Factory LLC",                                                               // 65792
+    "CELLCON BIOMEDICAL TECH. CO., LTD.",                                                 // 65793
+    "Gospower",                                                                           // 65794
+    "homelabsdx",                                                                         // 65795
+    "Niklas Vlach",                                                                       // 65796
+    "STORYBEL",                                                                           // 65797
+    "Be-ys Health Solutions France",                                                      // 65798
+    "TLI",                                                                                // 65799
+    "Keynua Peru S.A.C.",                                                                 // 65800
+    "CNS-LINK",                                                                           // 65801
+    "Configura",                                                                          // 65802
+    "John Michael Kane",                                                                  // 65803
+    "Sintela, Inc.",                                                                      // 65804
+    "HIT Systempartner GmbH (PC-SPEZIALIST Hannover)"                                     // 65805
 };
 
 const char* global_enterprises_lookup(uint32_t value)
