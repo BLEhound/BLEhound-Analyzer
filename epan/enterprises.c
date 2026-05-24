@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2026-05-13) */
+/* (last updated 2026-05-22) */
 
 #include "config.h"
 
@@ -20772,7 +20772,7 @@ static const char * const table[] =
     "Technolution BV",                                                                    // 20750
     "PERAX",                                                                              // 20751
     "SA Polyclinique de Courlancy",                                                       // 20752
-    "Pharos Consulting (Pty) Ltd.",                                                       // 20753
+    "Pharos Avantgard (Pty) Ltd.",                                                        // 20753
     "Universitätsklinikum Aachen",                                                        // 20754
     "WestGlobal Ltd.",                                                                    // 20755
     "het Concertgebouw NV",                                                               // 20756
@@ -22561,7 +22561,7 @@ static const char * const table[] =
     "Champion Computer Technologies",                                                     // 22539
     "Oulun Lyseon lukio",                                                                 // 22540
     "Open Acuity LLC",                                                                    // 22541
-    "Lex Persona",                                                                        // 22542
+    "Goodflag",                                                                           // 22542
     "GOUNOT",                                                                             // 22543
     "Host Collective Inc.",                                                               // 22544
     "Daudt Consulting",                                                                   // 22545
@@ -35429,7 +35429,7 @@ static const char * const table[] =
     "BOUYGUES IMMOBILIER",                                                                // 35407
     "Ing. Roman Těšík",                                                                   // 35408
     "AccelOps, Inc.",                                                                     // 35409
-    "SOLIS - Cooperativa de Soluções Livres Ltda",                                        // 35410
+    "SOLIS - Soluções Livres Ltda",                                                       // 35410
     "Fortium Technologies Ltd",                                                           // 35411
     "CZ-MAN s.r.o.",                                                                      // 35412
     "GlideAround LLC",                                                                    // 35413
@@ -65824,7 +65824,62 @@ static const char * const table[] =
     "Configura",                                                                          // 65802
     "John Michael Kane",                                                                  // 65803
     "Sintela, Inc.",                                                                      // 65804
-    "HIT Systempartner GmbH (PC-SPEZIALIST Hannover)"                                     // 65805
+    "HIT Systempartner GmbH (PC-SPEZIALIST Hannover)",                                    // 65805
+    "BubbleFish Technologies, Inc",                                                       // 65806
+    "Tronic",                                                                             // 65807
+    "奥铂特医疗科技（深圳）有限公司 (AIBRT Medical Technology (Shenzhen) Co., Ltd.)",                    // 65808
+    "深圳市昱达医疗器械有限公司 (Shenzhen Yuda Medical Instruments Co., Ltd.)",                        // 65809
+    "ZHUO YI TECHNOLOGY CO., LTD.",                                                       // 65810
+    "In the Cloud (Thailand) Co., Ltd.",                                                  // 65811
+    "ingeek",                                                                             // 65812
+    "Triangle Products Co., Ltd.",                                                        // 65813
+    "Black Horse Pike Regional School District",                                          // 65814
+    "via donau - Österreichische Wasserstraßen-Gesellschaft mbH",                         // 65815
+    "Flatiron Health",                                                                    // 65816
+    "KIT",                                                                                // 65817
+    "E-Consilium Pty. Ltd.",                                                              // 65818
+    "Vasolytics LLC",                                                                     // 65819
+    "Synop Inc",                                                                          // 65820
+    "Trisula Medika Teknologi",                                                           // 65821
+    "Martin Daur",                                                                        // 65822
+    "General Reasoning",                                                                  // 65823
+    "Quantum Logic Corporation",                                                          // 65824
+    "MATVIS GmbH",                                                                        // 65825
+    "Micro Ocean Technologies",                                                           // 65826
+    "Pateon Network Technology",                                                          // 65827
+    "GHESAR",                                                                             // 65828
+    "ECMC Shared Services Co LLC",                                                        // 65829
+    "University of Nottingham",                                                           // 65830
+    "Bristol Foundation Trust",                                                           // 65831
+    "Convergent Solutions Group, LLC",                                                    // 65832
+    "AyaTech LTD",                                                                        // 65833
+    "Lukasz Rzepecki",                                                                    // 65834
+    "Information Processing Society of Japan",                                            // 65835
+    "F.R.S.-FNRS",                                                                        // 65836
+    "Shenzhen smarten electric Co.,Ltd",                                                  // 65837
+    "China Unicom Global Ltd",                                                            // 65838
+    "DotNet Internals AS",                                                                // 65839
+    "AUTO BECORO SRL",                                                                    // 65840
+    "EQ2",                                                                                // 65841
+    "SoftMate GmbH Intelligent Software Solutions",                                       // 65842
+    "ALTES Informatique",                                                                 // 65843
+    "University of Nevada, Reno",                                                         // 65844
+    "Medivis",                                                                            // 65845
+    "ReadyStackGo",                                                                       // 65846
+    "Actalis S.p.A.",                                                                     // 65847
+    "Stadler Signalling Deutschland GmbH - MOFIS",                                        // 65848
+    "LLC “InSoft”",                                                                       // 65849
+    "SCOPI",                                                                              // 65850
+    "PT Indonesia Digital Security",                                                      // 65851
+    "スターシーズデジタル株式会社 (Star Seeds Digital Co., Ltd.)",                                      // 65852
+    "Maxiglobal",                                                                         // 65853
+    "UFO",                                                                                // 65854
+    "TP-Link Systems Inc",                                                                // 65855
+    "Gemeinde Moehlin",                                                                   // 65856
+    "HaveYa PTY LTD",                                                                     // 65857
+    "PCS Software e Serviços Ltda",                                                       // 65858
+    "Blockbit",                                                                           // 65859
+    "Hematology Oncology Associates of the Treasure Coast PA"                             // 65860
 };
 
 const char* global_enterprises_lookup(uint32_t value)
