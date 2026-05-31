@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2026-05-22) */
+/* (last updated 2026-05-29) */
 
 #include "config.h"
 
@@ -6208,7 +6208,7 @@ static const char * const table[] =
     "Space CyberLink Inc.",                                                               // 6186
     "Dartmouth-Hitchcock Medical Center",                                                 // 6187
     "University of Massachusetts Lowell",                                                 // 6188
-    "Eviden Germany GmbH - Trustcenter",                                                  // 6189
+    "Atos Secure Digital GmbH - Trustcenter",                                             // 6189
     "Network365 Ltd",                                                                     // 6190
     "Plasmon, Inc.",                                                                      // 6191
     "Environmental Monitoring Solutions",                                                 // 6192
@@ -19154,7 +19154,7 @@ static const char * const table[] =
     "The Cheshire Web Mill",                                                              // 19132
     "Baycom Opoto-Electronics Technology Co., Ltd.",                                      // 19133
     "Texocom Inc",                                                                        // 19134
-    "Darkerhosting.net",                                                                  // 19135
+    "spike.cx",                                                                           // 19135
     "Trichord, Inc.",                                                                     // 19136
     "Sebastian Staiger Computer  Services",                                               // 19137
     "Bright Prospects LLC",                                                               // 19138
@@ -43461,7 +43461,7 @@ static const char * const table[] =
     "J.J. Downs Industrial Plastics Inc.",                                                // 43439
     "royal holloway, university of london",                                               // 43440
     "royal holloway, university of london",                                               // 43441
-    "Niles Radio Communications",                                                         // 43442
+    "BanditForge, LLC",                                                                   // 43442
     "Transacciones y Servicios Mobile",                                                   // 43443
     "Inspire Living, Inc.",                                                               // 43444
     "4th Layer Integrated Solutions S.r.l.",                                              // 43445
@@ -64894,7 +64894,7 @@ static const char * const table[] =
     "Elemenik",                                                                           // 64872
     "Kendal College",                                                                     // 64873
     "Shanghai Hema Optical Co., Ltd.",                                                    // 64874
-    "BJL13 Enterprise Solutions, LLC d/b/a BES",                                          // 64875
+    "BJL13 Enterprise Solutions, LLC d/b/a CivicBrands",                                  // 64875
     "Nestor cv",                                                                          // 64876
     "Beacon Link Inc.",                                                                   // 64877
     "Prima Vista Solusi",                                                                 // 64878
@@ -65879,7 +65879,73 @@ static const char * const table[] =
     "HaveYa PTY LTD",                                                                     // 65857
     "PCS Software e Serviços Ltda",                                                       // 65858
     "Blockbit",                                                                           // 65859
-    "Hematology Oncology Associates of the Treasure Coast PA"                             // 65860
+    "Hematology Oncology Associates of the Treasure Coast PA",                            // 65860
+    "Secast",                                                                             // 65861
+    "COLEGIO DE ABOGADOS Y NOTARIOS DE GUATEMALA",                                        // 65862
+    "delphi.dev",                                                                         // 65863
+    "Alex Simon",                                                                         // 65864
+    "Solo.io",                                                                            // 65865
+    "Provincial Electricity Authority",                                                   // 65866
+    "REDNET",                                                                             // 65867
+    "Unitek A/S",                                                                         // 65868
+    "Jorge Alegre Vilches",                                                               // 65869
+    "Cubitel",                                                                            // 65870
+    "Bunge Canada Inc.",                                                                  // 65871
+    "Universal Strategy Group, Inc",                                                      // 65872
+    "N NEAT SOLUTION",                                                                    // 65873
+    "QuickSolutions Media pty ltd",                                                       // 65874
+    "Elevenware Limited",                                                                 // 65875
+    "Green Recursive Utility Service LLC",                                                // 65876
+    "Pixel AI SARLU",                                                                     // 65877
+    "Honoré DEMBÉLÉ (BAZURU)",                                                            // 65878
+    "Shenzhen ENERGY CONTROL CLOUD Technology Co., Ltd.",                                 // 65879
+    "Digital Matter",                                                                     // 65880
+    "Hofstädtler I. E. GmbH",                                                             // 65881
+    "Justin Michael Harris",                                                              // 65882
+    "iPotisEdge Co., Ltd.",                                                               // 65883
+    "Directhealth Tecnologias em Sistemas e Serviços do Brasil",                          // 65884
+    "Beijing Yiyuan Information Technology Co., Ltd.",                                    // 65885
+    "MARSTEK",                                                                            // 65886
+    "3ForceIT",                                                                           // 65887
+    "Innlights GmbH",                                                                     // 65888
+    "Trinidad Area Health Association",                                                   // 65889
+    "OptraSCAN INC",                                                                      // 65890
+    "SMARTMON",                                                                           // 65891
+    "Trebide (IKUSI S.L)",                                                                // 65892
+    "Fabory Netherlands",                                                                 // 65893
+    "Henan Junyu Technologies co., Ltd.",                                                 // 65894
+    "Tilman S.A.",                                                                        // 65895
+    "Xinjiang Ying Sheng Information Technology Co., Ltd.",                               // 65896
+    "TERRA-0",                                                                            // 65897
+    "TRAVAILLEUR-0",                                                                      // 65898
+    "MangoBoost, Inc.",                                                                   // 65899
+    "Elevate",                                                                            // 65900
+    "openwisp",                                                                           // 65901
+    "Universidad Pedagogica Veracruzana",                                                 // 65902
+    "Grupo Portfolio",                                                                    // 65903
+    "OOO 'NPO Dvina'",                                                                    // 65904
+    "广州石斧世纪软件有限公司 (Guangzhou zaxsoft Century Software Co., Ltd.)",                        // 65905
+    "PhysioLogic Softworks Corp.",                                                        // 65906
+    "OTOKO GmbH",                                                                         // 65907
+    "Yumankind OÜ",                                                                       // 65908
+    "Plexus Parc, LLC",                                                                   // 65909
+    "ONDO",                                                                               // 65910
+    "Max Weishaupt SE",                                                                   // 65911
+    "Shenzhen ConceMed Medical Technology Co., Ltd.",                                     // 65912
+    "IPD Group LLC",                                                                      // 65913
+    "VtSoftware",                                                                         // 65914
+    "medsky",                                                                             // 65915
+    "NCSE NETWORK LTD",                                                                   // 65916
+    "Taiwan Digital Streaming Co.",                                                       // 65917
+    "Dolphitech AS",                                                                      // 65918
+    "Independence Bank",                                                                  // 65919
+    "Mid-Continent Public Library",                                                       // 65920
+    "X Management Pro",                                                                   // 65921
+    "Selector Software, Inc.",                                                            // 65922
+    "Prh-tech",                                                                           // 65923
+    "SEATBELT CONSULTING S.R.L.",                                                         // 65924
+    "Multicase Norge AS",                                                                 // 65925
+    "East of England Coop"                                                                // 65926
 };
 
 const char* global_enterprises_lookup(uint32_t value)
