@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2026-05-29) */
+/* (last updated 2026-06-05) */
 
 #include "config.h"
 
@@ -14270,7 +14270,7 @@ static const char * const table[] =
     "Gemini Security Solutions, Inc.",                                                    // 14248
     "Centre Hospitalier Henri Laborit",                                                   // 14249
     "Conseil General de la Vienne",                                                       // 14250
-    "Stellar Craft Inc.",                                                                 // 14251
+    "Stellar Craft, Inc.",                                                                // 14251
     "Prime Solutions Ltd.",                                                               // 14252
     "GridXpert",                                                                          // 14253
     "enhansiv",                                                                           // 14254
@@ -14836,7 +14836,7 @@ static const char * const table[] =
     "CaroTechnology BV",                                                                  // 14814
     "Datasul S.A.",                                                                       // 14815
     "Thomas Polnik",                                                                      // 14816
-    "4RF Communications Ltd.",                                                            // 14817
+    "4RF",                                                                                // 14817
     "Voice Mobility, Inc.",                                                               // 14818
     "University of Cyprus",                                                               // 14819
     "net outremer caledonie",                                                             // 14820
@@ -39984,7 +39984,7 @@ static const char * const table[] =
     "Kern Scientific Co.",                                                                // 39962
     "AGCO Corporation",                                                                   // 39963
     "EIDEN Co,Ltd",                                                                       // 39964
-    "Trans Sped",                                                                         // 39965
+    "Trans Sped SA",                                                                      // 39965
     "Luminoso, LLC",                                                                      // 39966
     "Ethersex Project",                                                                   // 39967
     "Toya Technologies Inc.",                                                             // 39968
@@ -52161,7 +52161,7 @@ static const char * const table[] =
     "Old Republic Title",                                                                 // 52139
     "CardPlus Sverige AB",                                                                // 52140
     "CardPlus Oy",                                                                        // 52141
-    "TRANS SPED LTD",                                                                     // 52142
+    NULL,                                                                                 // 52142
     "RCCA MD LLC - Center for Cancer & Blood Disorders",                                  // 52143
     "Applied Video Solutions",                                                            // 52144
     "CRSG Deutschland GmbH",                                                              // 52145
@@ -63766,7 +63766,7 @@ static const char * const table[] =
     "Moya",                                                                               // 63744
     "Vyskumny ustav vodneho hospodarstva",                                                // 63745
     "Noshaq",                                                                             // 63746
-    "EAJ Global",                                                                         // 63747
+    "EAJ Group",                                                                          // 63747
     "HEQA Security",                                                                      // 63748
     "MATTERS (Winb Estrategia)",                                                          // 63749
     "Vincent Nic",                                                                        // 63750
@@ -65313,7 +65313,7 @@ static const char * const table[] =
     "Konduit KYA",                                                                        // 65291
     "Aleph Cloud (Aleph.im SAS)",                                                         // 65292
     "SSC-Services GmbH",                                                                  // 65293
-    "Novatronic LLC",                                                                     // 65294
+    "Novatronic DOO",                                                                     // 65294
     "Innovoris Labs IT srl",                                                              // 65295
     "Netvio",                                                                             // 65296
     "CAITEK for Information Systems",                                                     // 65297
@@ -65856,7 +65856,7 @@ static const char * const table[] =
     "Lukasz Rzepecki",                                                                    // 65834
     "Information Processing Society of Japan",                                            // 65835
     "F.R.S.-FNRS",                                                                        // 65836
-    "Shenzhen smarten electric Co.,Ltd",                                                  // 65837
+    "Shenzhen widenedge electric co.,ltd",                                                // 65837
     "China Unicom Global Ltd",                                                            // 65838
     "DotNet Internals AS",                                                                // 65839
     "AUTO BECORO SRL",                                                                    // 65840
@@ -65945,7 +65945,57 @@ static const char * const table[] =
     "Prh-tech",                                                                           // 65923
     "SEATBELT CONSULTING S.R.L.",                                                         // 65924
     "Multicase Norge AS",                                                                 // 65925
-    "East of England Coop"                                                                // 65926
+    "East of England Coop",                                                               // 65926
+    "Stadt Kaufbeuren",                                                                   // 65927
+    "Vallions Tecnologia",                                                                // 65928
+    "SITS Group AG",                                                                      // 65929
+    "Jason Revello",                                                                      // 65930
+    "Junto Identity",                                                                     // 65931
+    "VERIFYTECH INC",                                                                     // 65932
+    "Dollar Tree",                                                                        // 65933
+    "BYOND Technologies Inc",                                                             // 65934
+    "Tranter Engineering",                                                                // 65935
+    "Joshua Winter",                                                                      // 65936
+    "GoverByte",                                                                          // 65937
+    "Scalair",                                                                            // 65938
+    "Oxydian",                                                                            // 65939
+    "Telecom Egypt",                                                                      // 65940
+    "Maytana, Inc dba Formal",                                                            // 65941
+    "Marvaus Technologies Private Limited",                                               // 65942
+    "Raspberrypi Sht31d Snmp",                                                            // 65943
+    "Gregory Hildstrom",                                                                  // 65944
+    "Desktop Alert Inc",                                                                  // 65945
+    "Atheer Connectivity",                                                                // 65946
+    "Telekomunikacije Republike Srpske a.d. Banja Luka",                                  // 65947
+    "Weave Grid, Inc.",                                                                   // 65948
+    "Nikita Ledenev",                                                                     // 65949
+    "Afore New Energy Technology (Shanghai) Co., Ltd.",                                   // 65950
+    "Airly sp. z o.o.",                                                                   // 65951
+    "Kearfott Corporation, Guidance & Navigation Division",                               // 65952
+    "Sanctum SecOps LLC",                                                                 // 65953
+    "Await Godot",                                                                        // 65954
+    "smlx",                                                                               // 65955
+    "Daniel Smith",                                                                       // 65956
+    "KBE Srl",                                                                            // 65957
+    "EPC Power Corp.",                                                                    // 65958
+    "Ellipse World, Inc.",                                                                // 65959
+    "Kyle Evans",                                                                         // 65960
+    "ABLECOM TECHNOLOGY INC.",                                                            // 65961
+    "Standart AG, LLC",                                                                   // 65962
+    "Technicalfellow Holding B.V.",                                                       // 65963
+    "Xtractor UG (haftungsbeschraenkt)",                                                  // 65964
+    "zerohash LLC",                                                                       // 65965
+    "武汉恩智电子科技有限公司 (Wuhan Enzhi Electronic Technology Co., Ltd.)",                         // 65966
+    "GMB",                                                                                // 65967
+    "IIT Research Institute",                                                             // 65968
+    "e-BO Enteprises",                                                                    // 65969
+    "GA Technologies",                                                                    // 65970
+    "Xiamen Tonmind Technology Co., Ltd.",                                                // 65971
+    "Dixit Srl",                                                                          // 65972
+    "Eccellenza Technologies Ltd",                                                        // 65973
+    "Ellisys",                                                                            // 65974
+    "POS Solutions GmbH",                                                                 // 65975
+    "VerAvanti, Inc"                                                                      // 65976
 };
 
 const char* global_enterprises_lookup(uint32_t value)
