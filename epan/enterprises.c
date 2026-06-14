@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2026-06-05) */
+/* (last updated 2026-06-12) */
 
 #include "config.h"
 
@@ -3736,7 +3736,7 @@ static const char * const table[] =
     "BellSouth Wireless Data, L.P.",                                                      // 3714
     "Teleste Corporation",                                                                // 3715
     "Brand Communications Limited",                                                       // 3716
-    "GeNUA mbH",                                                                          // 3717
+    "genua GmbH",                                                                         // 3717
     "Philips Broadband Networks",                                                         // 3718
     "Exmicro",                                                                            // 3719
     "Visiqn",                                                                             // 3720
@@ -7233,7 +7233,7 @@ static const char * const table[] =
     "Raiffeisen Schweiz",                                                                 // 7211
     "Raiffeisen Schweiz",                                                                 // 7212
     "Datria Systems",                                                                     // 7213
-    "Virginia-Meryland Regional College of Veterinary Medicine",                          // 7214
+    "Virginia-Maryland College of Veterinary Medicine",                                   // 7214
     "ABN AMRO",                                                                           // 7215
     "Institut National de la Recherche Agronomique",                                      // 7216
     "The University of Memphis",                                                          // 7217
@@ -61987,7 +61987,7 @@ static const char * const table[] =
     "Knoxville Utilities Board",                                                          // 61965
     "MythicalKitten",                                                                     // 61966
     "SCM Insurance Services",                                                             // 61967
-    "Wojciech Teichert (6961405014)",                                                     // 61968
+    "Wojciech Teichert (9522207207)",                                                     // 61968
     "TCIIT",                                                                              // 61969
     "Kinder.Bildung.Zukunft e.V.",                                                        // 61970
     "Teleradiologia Avanzada SL",                                                         // 61971
@@ -65995,7 +65995,61 @@ static const char * const table[] =
     "Eccellenza Technologies Ltd",                                                        // 65973
     "Ellisys",                                                                            // 65974
     "POS Solutions GmbH",                                                                 // 65975
-    "VerAvanti, Inc"                                                                      // 65976
+    "VerAvanti, Inc",                                                                     // 65976
+    "Jiangsu Koyoe Energy Technology Co., Ltd.",                                          // 65977
+    "National Digital Transformation Infrastructure Office",                              // 65978
+    "Bleistahl Brasil Metalurgia Ltda.",                                                  // 65979
+    "SPIFFE",                                                                             // 65980
+    "De Technische Jongens B.V.",                                                         // 65981
+    "Counties Energy Limited",                                                            // 65982
+    "Integrated Operations, LLC.",                                                        // 65983
+    "Astrobit SpA",                                                                       // 65984
+    "VoxyWatch",                                                                          // 65985
+    "Hôpital Universitaire de Bruxelles",                                                 // 65986
+    "CONVIDA",                                                                            // 65987
+    "uni-assist e.V.",                                                                    // 65988
+    "Leandro Felipe Castilhos",                                                           // 65989
+    "Lakshcore Technologies Private Limited",                                             // 65990
+    "Jeff Welsh",                                                                         // 65991
+    "Hangzhou Gold Electronic Equipment Co., Ltd.",                                       // 65992
+    "TAS",                                                                                // 65993
+    "Evoked",                                                                             // 65994
+    "Universal Protocol Research Fundation",                                              // 65995
+    "Identity Consortium d.o.o.",                                                         // 65996
+    "Reprodrive Center For Innovation Limited",                                           // 65997
+    "Reclaim Protocol",                                                                   // 65998
+    "SYL (Ningbo) Battery Co., Ltd.",                                                     // 65999
+    "Nuclear Power Institute of China",                                                   // 66000
+    "COSLINK DIGITAL ENERGY TECHNOLOGY CO., LTD",                                         // 66001
+    "DaDaCon GmbH",                                                                       // 66002
+    "Brabantia",                                                                          // 66003
+    "Serviços Partilhados do Ministério da Saúde, E.P.E.",                                // 66004
+    "Secure Radio Communications Limited",                                                // 66005
+    "Städtische Werke Magdeburg GmbH & Co. KG",                                           // 66006
+    "CEA Technologies Pty Limited",                                                       // 66007
+    "LumenaDx Inc.",                                                                      // 66008
+    "CRYPTOSIGN S.A.S.",                                                                  // 66009
+    "Materosava AB",                                                                      // 66010
+    "Hero Imaging AB",                                                                    // 66011
+    "Theo End Computing (Nanjing) Technology Co., Ltd",                                   // 66012
+    "Tierra S.p.A.",                                                                      // 66013
+    "Lightware Zrt.",                                                                     // 66014
+    "zhutangdata",                                                                        // 66015
+    "MORPON Technology Co., Ltd.",                                                        // 66016
+    "Magnetica Limited",                                                                  // 66017
+    "SentryLabs Private Limited",                                                         // 66018
+    "VOORTMANN GmbH & Co. KG Steuerungstechnik",                                          // 66019
+    "Select Mechanical Services",                                                         // 66020
+    "Comité Unicef España",                                                               // 66021
+    "Samlex Europe BV",                                                                   // 66022
+    "Encrypia Labs",                                                                      // 66023
+    "QOS.CH Sarl",                                                                        // 66024
+    "Datasoro",                                                                           // 66025
+    "Enginsight GmbH",                                                                    // 66026
+    "Timmergruppen i Norr AB",                                                            // 66027
+    "Diehl Aviation Gilching GmbH",                                                       // 66028
+    "ICB S.A.",                                                                           // 66029
+    "Heinrich Klöcker GmbH & Co. KG"                                                      // 66030
 };
 
 const char* global_enterprises_lookup(uint32_t value)
