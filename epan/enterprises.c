@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2026-06-12) */
+/* (last updated 2026-06-17) */
 
 #include "config.h"
 
@@ -66014,7 +66014,7 @@ static const char * const table[] =
     "Hangzhou Gold Electronic Equipment Co., Ltd.",                                       // 65992
     "TAS",                                                                                // 65993
     "Evoked",                                                                             // 65994
-    "Universal Protocol Research Fundation",                                              // 65995
+    "AI Universal Protocol Research Foundation",                                          // 65995
     "Identity Consortium d.o.o.",                                                         // 65996
     "Reprodrive Center For Innovation Limited",                                           // 65997
     "Reclaim Protocol",                                                                   // 65998
@@ -66049,7 +66049,41 @@ static const char * const table[] =
     "Timmergruppen i Norr AB",                                                            // 66027
     "Diehl Aviation Gilching GmbH",                                                       // 66028
     "ICB S.A.",                                                                           // 66029
-    "Heinrich Klöcker GmbH & Co. KG"                                                      // 66030
+    "Heinrich Klöcker GmbH & Co. KG",                                                     // 66030
+    "cadiros",                                                                            // 66031
+    "MaxxKonnect",                                                                        // 66032
+    "Abdal Security Group",                                                               // 66033
+    "78ResearchLab",                                                                      // 66034
+    "Yucca Technology Co., LTD",                                                          // 66035
+    "City of Davenport, IA",                                                              // 66036
+    "ESTA",                                                                               // 66037
+    "Wathiqa PQC",                                                                        // 66038
+    "Joshua Cox",                                                                         // 66039
+    "Barkov Alexey Fedorovich",                                                           // 66040
+    "HENAN JIUYU TENGLONG INFORMATION ENGINEERING CO.,LTD.",                              // 66041
+    "Potin (Beijing) Technology Co., Ltd.",                                               // 66042
+    "imsoftware",                                                                         // 66043
+    "GEODIS",                                                                             // 66044
+    "AlbertiGroup",                                                                       // 66045
+    "Technix S.p.A.",                                                                     // 66046
+    "Marian, Inc.",                                                                       // 66047
+    "SPOT Imaging dba Diagnostic Instruments, Inc.",                                      // 66048
+    "Arpnex Technologies",                                                                // 66049
+    "Vistra Netherlands",                                                                 // 66050
+    "GHQ systems s.r.o.",                                                                 // 66051
+    "Wireless Supply, LLC",                                                               // 66052
+    "Bill Farmer, Jr.",                                                                   // 66053
+    "PetaBit S.r.l.",                                                                     // 66054
+    "Moultbase CAD for Code Signing",                                                     // 66055
+    "Fablaja",                                                                            // 66056
+    "Aman Afzar Nahaanbin",                                                               // 66057
+    "Deepak Kumar",                                                                       // 66058
+    "VYRTY Corporation d/b/a Sync.MD",                                                    // 66059
+    "Chane Terminals",                                                                    // 66060
+    "ConnectPoint Sp. z o. o.",                                                           // 66061
+    "Realworld",                                                                          // 66062
+    "Easy Telecom Law Firm S.L.",                                                         // 66063
+    "Black & Veatch"                                                                      // 66064
 };
 
 const char* global_enterprises_lookup(uint32_t value)
