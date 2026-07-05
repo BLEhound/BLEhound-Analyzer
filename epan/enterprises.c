@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2026-06-26) */
+/* (last updated 2026-07-02) */
 
 #include "config.h"
 
@@ -23962,7 +23962,7 @@ static const char * const table[] =
     "Sysco S.p.A.",                                                                       // 23940
     "Opentaskforce",                                                                      // 23941
     "Intelligent Mobile Solutions, Inc.",                                                 // 23942
-    "Cendres+Métaux Holding SA",                                                          // 23943
+    "CMSA Holding SA",                                                                    // 23943
     "DENIC eG",                                                                           // 23944
     "Institute of Journalism, University Dortmund",                                       // 23945
     "MINISTERO DELL'INTERNO - DIREZIONE CENTRALE POLIZIA CRIMINALE",                      // 23946
@@ -39011,7 +39011,7 @@ static const char * const table[] =
     "Qtree BVBA",                                                                         // 38989
     "Nova World International, LLC dba Nova Shipping",                                    // 38990
     "Innoforma E-learning Technologies",                                                  // 38991
-    "SCCT, Wilhelm Wimmreuter",                                                           // 38992
+    "Wilhelm Wimmreuter",                                                                 // 38992
     "South Jersey Healthcare",                                                            // 38993
     "San Juan Software",                                                                  // 38994
     "Connexon Telecom Inc.",                                                              // 38995
@@ -66144,7 +66144,31 @@ static const char * const table[] =
     "RauchSystems",                                                                       // 66122
     "YJC POWER AUSTRALIA PTY LTD",                                                        // 66123
     "Henrik levinsson AB",                                                                // 66124
-    "PRAIMTECH, LIMITED LIABILITY COMPANY"                                                // 66125
+    "PRAIMTECH, LIMITED LIABILITY COMPANY",                                               // 66125
+    "Perinet GmbH",                                                                       // 66126
+    "ANF AC DOMINICANA",                                                                  // 66127
+    "PharmaProspective LLC",                                                              // 66128
+    "Ontario School District",                                                            // 66129
+    "Wreckedkernel",                                                                      // 66130
+    "China Broadnet",                                                                     // 66131
+    "HaysMac LLP",                                                                        // 66132
+    "THINGS4NUVA SL",                                                                     // 66133
+    "AIRNITY",                                                                            // 66134
+    "Telonic Systems Inc.",                                                               // 66135
+    "OOO NPO MIR",                                                                        // 66136
+    "Natalka",                                                                            // 66137
+    "Civic Hacker LLC",                                                                   // 66138
+    "slvk",                                                                               // 66139
+    "Viaflux",                                                                            // 66140
+    "extr3m IT",                                                                          // 66141
+    "NBSN Telecom Limited",                                                               // 66142
+    "Bergkvist Siljan Insjön AB",                                                         // 66143
+    "Arexico",                                                                            // 66144
+    "Reuniwatt SAS",                                                                      // 66145
+    "Hmi Muhendislik Otomatik Kontrol Sistemleri",                                        // 66146
+    "TAKE IT GmbH & Co. KG",                                                              // 66147
+    "Cambodian Network Exchange",                                                         // 66148
+    "FOM Hochschule für Oekonomie und Management"                                         // 66149
 };
 
 const char* global_enterprises_lookup(uint32_t value)
