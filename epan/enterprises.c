@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2026-07-02) */
+/* (last updated 2026-07-10) */
 
 #include "config.h"
 
@@ -51457,7 +51457,7 @@ static const char * const table[] =
     "SCLE SFE",                                                                           // 51435
     "Opendigitalradio",                                                                   // 51436
     "Razberi Technologies, Inc.",                                                         // 51437
-    "Unshare",                                                                            // 51438
+    "unshare",                                                                            // 51438
     "Videotec S.P.A.",                                                                    // 51439
     "smart-edge.com",                                                                     // 51440
     "InfraNet AG",                                                                        // 51441
@@ -57745,7 +57745,7 @@ static const char * const table[] =
     "Christian Financial Resources",                                                      // 57723
     "SEPI Engineering & Construction",                                                    // 57724
     "Xage Security, Inc.",                                                                // 57725
-    "VivoKey Technologies",                                                               // 57726
+    "VivoKey Inc.",                                                                       // 57726
     "Calspan",                                                                            // 57727
     "InsidePacket Inc",                                                                   // 57728
     "Foundry Health - an IQVIA business",                                                 // 57729
@@ -64894,7 +64894,7 @@ static const char * const table[] =
     "Elemenik",                                                                           // 64872
     "Kendal College",                                                                     // 64873
     "Shanghai Hema Optical Co., Ltd.",                                                    // 64874
-    "BJL13 Enterprise Solutions, LLC d/b/a CivicBrands",                                  // 64875
+    "CivicBrands",                                                                        // 64875
     "Nestor cv",                                                                          // 64876
     "Beacon Link Inc.",                                                                   // 64877
     "Prima Vista Solusi",                                                                 // 64878
@@ -66168,7 +66168,123 @@ static const char * const table[] =
     "Hmi Muhendislik Otomatik Kontrol Sistemleri",                                        // 66146
     "TAKE IT GmbH & Co. KG",                                                              // 66147
     "Cambodian Network Exchange",                                                         // 66148
-    "FOM Hochschule für Oekonomie und Management"                                         // 66149
+    "FOM Hochschule für Oekonomie und Management",                                        // 66149
+    "Global Reach Technology EMEA Limited",                                               // 66150
+    "Signater",                                                                           // 66151
+    "Diatrend Corporation",                                                               // 66152
+    "Transcom (Shanghai) Technologies Co., Ltd.",                                         // 66153
+    "Forged Networks",                                                                    // 66154
+    "Belikin Roman",                                                                      // 66155
+    "FIRMATIC S.A",                                                                       // 66156
+    "Marueng",                                                                            // 66157
+    "RDP Innovation",                                                                     // 66158
+    "Scorpio IT d.o.o.",                                                                  // 66159
+    "Netvyn",                                                                             // 66160
+    "Mysterion",                                                                          // 66161
+    "AlphaTrading SpA",                                                                   // 66162
+    "FunnelCloud Inc.",                                                                   // 66163
+    "Nordstam AB. (Namn på Bolagsverket Skog & Virke Nordstam AB) 559586-3449",           // 66164
+    "Adam Grazioli",                                                                      // 66165
+    "Narodna banka Srbije",                                                               // 66166
+    "NetCon IT-Security GmbH",                                                            // 66167
+    "EsyTech Pty Ltd",                                                                    // 66168
+    "CLEMAR ENGENHARIA LTDA",                                                             // 66169
+    "BT Equipamentos Eletrônicos LTDA",                                                   // 66170
+    "New Jersey Resources",                                                               // 66171
+    "Netralux",                                                                           // 66172
+    "Digital Cinema Network Pty Ltd",                                                     // 66173
+    "emplohouse spółka z ograniczoną odpowiedzialnością",                                 // 66174
+    "Siemens Mobility GmbH (OT)",                                                         // 66175
+    "SHENZHEN JIUZHOU ELECTRIC CO.,LTD.",                                                 // 66176
+    "Lars Kohnert",                                                                       // 66177
+    "Quantum B",                                                                          // 66178
+    "Edwin L. Heim Company",                                                              // 66179
+    "Rubrix.lat",                                                                         // 66180
+    "Ranidae Aquaculture & Herpetoculture",                                               // 66181
+    "Tom Internet Research Office",                                                       // 66182
+    "ZHOU YUTAO",                                                                         // 66183
+    "Oliver Aruväli",                                                                     // 66184
+    "NULL Pointers",                                                                      // 66185
+    "Hilscher Gesellschaft für Systemautomation mbH",                                     // 66186
+    "UNIVERSITI MALAYSIA KELANTAN",                                                       // 66187
+    "SECUDOCX",                                                                           // 66188
+    "Banca Transilvania",                                                                 // 66189
+    "XCENA Inc.",                                                                         // 66190
+    "Stadt Angermünde",                                                                   // 66191
+    "GIGAMEDIA",                                                                          // 66192
+    "Kayten GmbH",                                                                        // 66193
+    "Romer Technologies, Inc",                                                            // 66194
+    "NQNET",                                                                              // 66195
+    "Depth Development",                                                                  // 66196
+    "Coreason AI",                                                                        // 66197
+    "secbits private limited",                                                            // 66198
+    "汉中市龙岗高级中学 (Hanzhong Longgang Senior High School)",                                   // 66199
+    "Devling",                                                                            // 66200
+    "RAB Services LLC",                                                                   // 66201
+    "cisowscyEU",                                                                         // 66202
+    "Elshan M. Huseynov",                                                                 // 66203
+    "STRATAON EQUIPAMENTOS ELETRONICOS LTDA",                                             // 66204
+    "Auspex Labs Inc.",                                                                   // 66205
+    "LSE Group Corporation",                                                              // 66206
+    "FreeDSx",                                                                            // 66207
+    "PathWarden",                                                                         // 66208
+    "SentinelSec Studios",                                                                // 66209
+    "CÔNG TY TNHH CÔNG NGHỆ MÁY CHỦ 365",                                                 // 66210
+    "Ryan T. Dean",                                                                       // 66211
+    "DEVTYPED sp. z o.o.",                                                                // 66212
+    "Zeus Project Services Pty Ltd",                                                      // 66213
+    "Viktor Gurgenidze",                                                                  // 66214
+    "Outlier Engineering Group LLC",                                                      // 66215
+    "Shyam Electronics & Magnetics",                                                      // 66216
+    "Rolf Ganser",                                                                        // 66217
+    "Sherief Farouk",                                                                     // 66218
+    "Atrius Healthcare Private Limited",                                                  // 66219
+    "Hazelesque",                                                                         // 66220
+    "Rhiannon AI, LLC",                                                                   // 66221
+    "Sumauma Computadores e Telecomunicações S.A.",                                       // 66222
+    "Xinuo Information Technology (Xiamen) Corp.,Ltd",                                    // 66223
+    "iVeriTech",                                                                          // 66224
+    "nexos",                                                                              // 66225
+    "enia",                                                                               // 66226
+    "iDM Energiesysteme GmbH",                                                            // 66227
+    "Northern Ireland Ambulance Service",                                                 // 66228
+    "See All AI Inc.",                                                                    // 66229
+    "Brüel & Kjær Vibro GmbH",                                                            // 66230
+    "Thomas Huppertz",                                                                    // 66231
+    "CyberMyte, LLC",                                                                     // 66232
+    "ServerJanitor",                                                                      // 66233
+    "biobedded systems GmbH",                                                             // 66234
+    "Clutterbot Inc.",                                                                    // 66235
+    "SYNKEE",                                                                             // 66236
+    "IT Works",                                                                           // 66237
+    "FoxESS Australia Pty Ltd",                                                           // 66238
+    "AnyRF Kft.",                                                                         // 66239
+    "Altyma Pty Ltd",                                                                     // 66240
+    "Massive Beams GmbH",                                                                 // 66241
+    "La Famosa",                                                                          // 66242
+    "Università degli Studi di Salerno",                                                  // 66243
+    "DefenXee Private Limited",                                                           // 66244
+    "Emma Paki",                                                                          // 66245
+    "Shanghai Xiongzhan Information Technology Co., Ltd.",                                // 66246
+    "smuPweb Ltda",                                                                       // 66247
+    "MUST ENERGY (GUANGDONG) TECHNOLOGY CO.,LTD",                                         // 66248
+    "PLEIN SUD IT",                                                                       // 66249
+    "Doxee S.p.A.",                                                                       // 66250
+    "Radtech Systems L.L.C.",                                                             // 66251
+    "Geomys",                                                                             // 66252
+    "Softonic",                                                                           // 66253
+    "F6",                                                                                 // 66254
+    "DATAKEEN",                                                                           // 66255
+    "Philippine Army",                                                                    // 66256
+    "Varwof PKI",                                                                         // 66257
+    "Universal Quantum Ltd",                                                              // 66258
+    "ComTRUST CyberSecurity LLC",                                                         // 66259
+    "Anlix",                                                                              // 66260
+    "Rivian and Volkswagen Group Technologies, LLC",                                      // 66261
+    "Synaxiom Inc",                                                                       // 66262
+    "Network 23 LLC",                                                                     // 66263
+    "MASSPOINT",                                                                          // 66264
+    "Seven Fortunas"                                                                      // 66265
 };
 
 const char* global_enterprises_lookup(uint32_t value)
