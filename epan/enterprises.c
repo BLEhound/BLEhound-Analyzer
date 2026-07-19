@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* (last updated 2026-07-10) */
+/* (last updated 2026-07-17) */
 
 #include "config.h"
 
@@ -33442,7 +33442,7 @@ static const char * const table[] =
     "Voalte, Inc",                                                                        // 33420
     "South Gloucestershire Council CYP ICT",                                              // 33421
     "Com-Ned Netwerken B.V.",                                                             // 33422
-    "Safran Passenger Innovations Germany GmbH",                                          // 33423
+    "RAVE Aerospace GmbH",                                                                // 33423
     "ITXTEND LLC",                                                                        // 33424
     "Fortisbank NL NV",                                                                   // 33425
     "Mirae Ikorn company",                                                                // 33426
@@ -34578,7 +34578,7 @@ static const char * const table[] =
     "EDAN INSTRUMENTS CO., LTD.",                                                         // 34556
     "Ministerio de Justicia",                                                             // 34557
     NULL,                                                                                 // 34558
-    "Maschinenfabrik Reinhausen GmbH",                                                    // 34559
+    "Reinhausen GmbH",                                                                    // 34559
     "Marquise Technologies",                                                              // 34560
     "VITALATIV, s.r.o.",                                                                  // 34561
     "FUHST MEHRENS",                                                                      // 34562
@@ -65219,7 +65219,7 @@ static const char * const table[] =
     "Simsalasim Germany GmbH",                                                            // 65197
     "VADES, LLC",                                                                         // 65198
     "Hanåsa Sågverk Aktiebolag",                                                          // 65199
-    "coresdev, LLC",                                                                      // 65200
+    "Wavelet Systems Ltd",                                                                // 65200
     "LMI Technologies",                                                                   // 65201
     "Dane",                                                                               // 65202
     "楠泰科技（深圳）有限公司 (Nantech Technology (Shenzhen) Co., Ltd.)",                             // 65203
@@ -66215,7 +66215,7 @@ static const char * const table[] =
     "Kayten GmbH",                                                                        // 66193
     "Romer Technologies, Inc",                                                            // 66194
     "NQNET",                                                                              // 66195
-    "Depth Development",                                                                  // 66196
+    "Depth Development, Inc.",                                                            // 66196
     "Coreason AI",                                                                        // 66197
     "secbits private limited",                                                            // 66198
     "汉中市龙岗高级中学 (Hanzhong Longgang Senior High School)",                                   // 66199
@@ -66284,7 +66284,59 @@ static const char * const table[] =
     "Synaxiom Inc",                                                                       // 66262
     "Network 23 LLC",                                                                     // 66263
     "MASSPOINT",                                                                          // 66264
-    "Seven Fortunas"                                                                      // 66265
+    "Seven Fortunas",                                                                     // 66265
+    "GROUPE-SOINS",                                                                       // 66266
+    "RaoLabs, LLC",                                                                       // 66267
+    "Stadt Marl",                                                                         // 66268
+    "DYTECH CORP",                                                                        // 66269
+    "Allfunds Digital Solutions, SL",                                                     // 66270
+    "PT Inti Muda Teknologi",                                                             // 66271
+    "Tone Hellström",                                                                     // 66272
+    "Ciklo Industria e Comercio de Geradores LTDA",                                       // 66273
+    "Professional Systems Management Co., Ltd.",                                          // 66274
+    "Dekatron Sp. z o.o.",                                                                // 66275
+    "Beeker Tech GmbH & Co. KG",                                                          // 66276
+    "The San-in Godo Bank, Ltd.",                                                         // 66277
+    "GaardTech",                                                                          // 66278
+    "EYKON AG",                                                                           // 66279
+    "Davosys",                                                                            // 66280
+    "Moehrke Research LLC",                                                               // 66281
+    "Adiumentum GmbH",                                                                    // 66282
+    "Wolfgang Mitterbucher",                                                              // 66283
+    "California State University, Fresno",                                                // 66284
+    "Fidalia Networks Inc",                                                               // 66285
+    "William Dy Aymãn Francisco Rodrigues Costa",                                         // 66286
+    "Questel",                                                                            // 66287
+    "Cades Schutte LLP",                                                                  // 66288
+    "Distribuidora Diceltecsa S.A.",                                                      // 66289
+    "yerendian.com",                                                                      // 66290
+    "Sololc",                                                                             // 66291
+    "Diti",                                                                               // 66292
+    "Abhishek Jain",                                                                      // 66293
+    "OPTILINK NETWORKS PVR LTD",                                                          // 66294
+    "AUNDE Achter & Ebels GmbH",                                                          // 66295
+    "Stream Checker",                                                                     // 66296
+    "AddendAI",                                                                           // 66297
+    "Umano Medical",                                                                      // 66298
+    "shen zhen vetoo Medical company",                                                    // 66299
+    "TIFLEX",                                                                             // 66300
+    "WoodsNET",                                                                           // 66301
+    "Lembaga Akreditasi Mandiri Sains Alam dan Ilmu Formal (LAMSAMA)",                    // 66302
+    "ARMAND DE BEER",                                                                     // 66303
+    "Willamette Education Service District",                                              // 66304
+    "Servicio de Administración Tributaria",                                              // 66305
+    "National information Technology Authority - Uganda (NITA-U)",                        // 66306
+    "Yeswanth Sappa",                                                                     // 66307
+    "Airlinq Inc",                                                                        // 66308
+    "NANOSYSTEMS SRL",                                                                    // 66309
+    "RME Sensors",                                                                        // 66310
+    "CSIRT Infrastruktura",                                                               // 66311
+    "Alessandro De Carne",                                                                // 66312
+    "Solvegia",                                                                           // 66313
+    "Gabriel Gutiérrez Fuentes",                                                          // 66314
+    "MinebeaMitsumi Inc.",                                                                // 66315
+    "scemtec Transponder Technology GmbH",                                                // 66316
+    "Bitron Electronics LAB srl"                                                          // 66317
 };
 
 const char* global_enterprises_lookup(uint32_t value)
