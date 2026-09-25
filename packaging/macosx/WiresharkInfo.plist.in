@@ -7,9 +7,13 @@
 	<key>CFBundleExecutable</key>
 	<string>Wireshark</string>
 	<key>CFBundleIconFile</key>
-	<string>Wireshark.icns</string>
+	<string>@WS_BUNDLE_ICON@</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.wireshark.Wireshark</string>
+	<string>@WS_BUNDLE_IDENTIFIER@</string>
+	<key>CFBundleName</key>
+	<string>@WS_BUNDLE_NAME@</string>
+	<key>CFBundleDisplayName</key>
+	<string>@WS_BUNDLE_NAME@</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -259,7 +263,7 @@
 	<key>CFBundleVersion</key>
 	<string>@PROJECT_VERSION@</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright 1998-2026 the Wireshark developer community</string>
+	<string>@WS_BUNDLE_COPYRIGHT@</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>NSHighResolutionCapable</key>
@@ -272,7 +276,7 @@
 
 	<!-- Sparkle settings https://sparkle-project.org/documentation/customization/ -->
 	<key>SUFeedURL</key>
-	<string>https://www.wireshark.org/update/0/Wireshark/@PROJECT_MAJOR_VERSION@.@PROJECT_MINOR_VERSION@.@PROJECT_PATCH_VERSION@/macOS/arm64/en-US/stable.xml</string>
+	<string>@WS_SPARKLE_FEED_URL@</string>
 	<key>SUEnableAutomaticChecks</key>
 	<false/>
 	<key>SUPublicEDKey</key>

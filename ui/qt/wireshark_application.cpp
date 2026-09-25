@@ -8,6 +8,7 @@
  */
 
 #include "wireshark_application.h"
+#include "blehound/blehound_brand.h"
 
 WiresharkApplication *wsApp;
 
@@ -20,8 +21,13 @@ WiresharkApplication::WiresharkApplication(int &argc,  char **argv) :
 #else
     Q_INIT_RESOURCE(wsicon);
 #endif
+#ifdef BLEHOUND_BRANDING
+    setApplicationName(BLEHOUND_NAME_PROPER);
+    setDesktopFileName(QStringLiteral(BLEHOUND_DESKTOP_ID));
+#else
     setApplicationName("Wireshark");
     setDesktopFileName(QStringLiteral("org.wireshark.Wireshark"));
+#endif
 }
 
 WiresharkApplication::~WiresharkApplication()

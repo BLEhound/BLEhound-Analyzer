@@ -77,6 +77,31 @@ WS_DLL_PUBLIC bool application_flavor_is_wireshark(void);
  */
 WS_DLL_PUBLIC bool application_flavor_is_stratoshark(void);
 
+/**
+ * @brief Set an optional product brand layered on top of the flavor.
+ *
+ * A brand keeps the flavor's behavior (e.g. packet analysis for
+ * APPLICATION_FLAVOR_WIRESHARK) but changes the user-visible name and the
+ * personal configuration directory. Used by BLEhound Analyzer.
+ * Must be called before any configuration path is resolved.
+ *
+ * @param name_proper Display name, e.g. "BLEhound Analyzer".
+ * @param name_lower  Lower-case config namespace, e.g. "blehound-analyzer".
+ */
+WS_DLL_PUBLIC void set_application_brand(const char *name_proper, const char *name_lower);
+
+/**
+ * @brief Check whether a product brand has been set.
+ * @return true if set_application_brand() was called.
+ */
+WS_DLL_PUBLIC bool application_has_brand(void);
+
+/**
+ * @brief Lower-case name used for the personal configuration directory.
+ * @return The brand's lower-case name if set, otherwise the flavor's.
+ */
+WS_DLL_PUBLIC const char *application_config_name_lower(void);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

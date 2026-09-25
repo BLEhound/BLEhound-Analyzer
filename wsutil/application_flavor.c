@@ -14,6 +14,8 @@
 #include "application_flavor.h"
 
 static enum application_flavor_e application_flavor = APPLICATION_FLAVOR_WIRESHARK;
+static const char *brand_name_proper;
+static const char *brand_name_lower;
 
 void set_application_flavor(enum application_flavor_e flavor)
 {
@@ -26,6 +28,9 @@ enum application_flavor_e get_application_flavor(void)
 }
 
 const char *application_flavor_name_proper(void) {
+    if (brand_name_proper) {
+        return brand_name_proper;
+    }
     switch (get_application_flavor()) {
     case APPLICATION_FLAVOR_WIRESHARK:
         return "Wireshark";
@@ -77,3 +82,19 @@ bool application_flavor_is_stratoshark(void)
  * ex: set shiftwidth=4 tabstop=8 expandtab:
  * :indentSize=4:tabSize=8:noTabs=true:
  */
+
+void set_application_brand(const char *name_proper, const char *name_lower)
+{
+    brand_name_proper = name_proper;
+    brand_name_lower = name_lower;
+}
+
+bool application_has_brand(void)
+{
+    return brand_name_proper != NULL;
+}
+
+const char *application_config_name_lower(void)
+{
+    return brand_name_lower ? brand_name_lower : application_flavor_name_lower();
+}

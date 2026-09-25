@@ -21,6 +21,8 @@
 #endif
 
 #include <ws_exit_codes.h>
+#include <wsutil/application_flavor.h>
+#include "blehound/blehound_brand.h"
 #include <wsutil/clopts_common.h>
 #include <wsutil/cmdarg_err.h>
 #include <ui/urls.h>
@@ -484,6 +486,11 @@ int main(int argc, char *qt_argv[])
 #endif
     /* Start time in microseconds */
     uint64_t start_time = g_get_monotonic_time();
+
+#ifdef BLEHOUND_BRANDING
+    /* Must precede any configuration path lookup. */
+    set_application_brand(BLEHOUND_NAME_PROPER, BLEHOUND_NAME_LOWER);
+#endif
 
     /* Set the program name. */
     g_set_prgname("wireshark");

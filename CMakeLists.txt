@@ -2026,6 +2026,22 @@ if(BUILD_stratoshark)
 	)
 endif()
 
+# macOS bundle identity (WiresharkInfo.plist.in)
+if(BLEHOUND_BRANDING)
+	set(WS_BUNDLE_NAME "BLEhound Analyzer")
+	set(WS_BUNDLE_IDENTIFIER "io.github.blehound.Analyzer")
+	set(WS_BUNDLE_ICON "BLEhound.icns")
+	set(WS_BUNDLE_COPYRIGHT "Copyright 2026 the BLEhound developers. Based on Wireshark, copyright 1998-2026 the Wireshark developer community")
+	# Never offer upstream Wireshark updates to BLEhound Analyzer users.
+	set(WS_SPARKLE_FEED_URL "")
+else()
+	set(WS_BUNDLE_NAME "Wireshark")
+	set(WS_BUNDLE_IDENTIFIER "org.wireshark.Wireshark")
+	set(WS_BUNDLE_ICON "Wireshark.icns")
+	set(WS_BUNDLE_COPYRIGHT "Copyright 1998-2026 the Wireshark developer community")
+	set(WS_SPARKLE_FEED_URL "https://www.wireshark.org/update/0/Wireshark/${PROJECT_MAJOR_VERSION}.${PROJECT_MINOR_VERSION}.${PROJECT_PATCH_VERSION}/macOS/arm64/en-US/stable.xml")
+endif()
+
 foreach( _cfg_file ${CFG_OUT_FILES} )
 	configure_file( ${CMAKE_SOURCE_DIR}/${_cfg_file}.in ${CMAKE_BINARY_DIR}/${_cfg_file} @ONLY )
 endforeach()
@@ -2861,6 +2877,9 @@ if(ENABLE_APPLICATION_BUNDLE)
 		${CMAKE_SOURCE_DIR}/packaging/macosx/Wireshark.icns
 		${CMAKE_SOURCE_DIR}/packaging/macosx/Wiresharkdoc.icns
 	)
+	if(BLEHOUND_BRANDING)
+		list(APPEND WIRESHARK_BUNDLE_RESOURCE_FILES ${CMAKE_SOURCE_DIR}/packaging/macosx/BLEhound.icns)
+	endif()
 	set_source_files_properties(${WIRESHARK_BUNDLE_RESOURCE_FILES} PROPERTIES
 		MACOSX_PACKAGE_LOCATION Resources
 	)
