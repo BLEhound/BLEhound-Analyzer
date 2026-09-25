@@ -38,12 +38,24 @@ static void appendExtraInterfaces(void)
     }
 }
 
+/* BLEhound Analyzer lists only its dongles, so skip asking dumpcap for
+ * network interfaces entirely. */
+static GList *noSystemInterfaces(int *err, char **err_str)
+{
+    *err = 0;
+    if (err_str) {
+        *err_str = NULL;
+    }
+    return NULL;
+}
+
 void DeviceManager::install()
 {
     if (manager_instance) {
         return;
     }
     manager_instance = new DeviceManager(mainApp);
+    global_capture_opts.get_iface_list = noSystemInterfaces;
     set_extra_interfaces_fn(appendExtraInterfaces);
 }
 
@@ -144,13 +156,17 @@ void DeviceManager::appendInterfaces()
         device.hidden = false;
         device.selected = false;
         device.local = true;
-        device.pmode = global_capture_opts.default_options.promisc_mode;
+        device.pmode = false;
         device.has_snaplen = global_capture_opts.default_options.has_snaplen;
         device.snaplen = global_capture_opts.default_options.snaplen;
         device.cfilter = g_strdup(global_capture_opts.default_options.cfilter);
         device.timestamp_type = g_strdup(global_capture_opts.default_options.timestamp_type);
         device.buffer = DEFAULT_CAPTURE_BUFFER_SIZE;
-        device.active_dlt = -1;
+        link_row *link = g_new(link_row, 1);
+        link->name = g_strdup("Bluetooth LE LL");
+        link->dlt = BH_DLT_BTLE_LL_WITH_PHDR;
+        device.links = g_list_append(NULL, link);
+        device.active_dlt = BH_DLT_BTLE_LL_WITH_PHDR;
         device.if_info.name = g_strdup(name.constData());
         device.if_info.friendly_name = g_strdup(display.constData());
         device.if_info.vendor_description = g_strdup(BH_USB_PRODUCT);

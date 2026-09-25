@@ -765,6 +765,10 @@ int main(int argc, char *qt_argv[])
     /* Set the initial values in the capture options. This might be overwritten
        by preference settings and then again by the command line parameters. */
     capture_opts_init(&global_capture_opts, capture_opts_get_interface_list);
+#ifdef BLEHOUND_NATIVE_CAPTURE
+    /* Replaces the interface source before anything queries it. */
+    BLEhound::DeviceManager::install();
+#endif
 #endif
 
     /*
@@ -967,11 +971,6 @@ int main(int argc, char *qt_argv[])
     ws_log(LOG_DOMAIN_MAIN, LOG_LEVEL_INFO, "Calling fill_in_local_interfaces, elapsed time %" PRIu64 " us \n", g_get_monotonic_time() - start_time);
 #endif
     splash_update(RA_INTERFACES, NULL, NULL);
-
-#ifdef BLEHOUND_NATIVE_CAPTURE
-    /* Before the first scan so connected dongles are listed right away. */
-    BLEhound::DeviceManager::install();
-#endif
 
     if (cf_name.isEmpty() && !prefs.capture_no_interface_load) {
         wsApp->scanLocalInterfaces(nullptr);

@@ -220,11 +220,14 @@ void InterfaceFrame::scanLocalInterfaces(GList *filter_list)
 {
     GList *if_list = NULL;
     if (scan_mutex.tryLock()) {
+#ifndef BLEHOUND_NATIVE_CAPTURE
+        // BLEhound dongles have no traffic statistics; do not spawn dumpcap for them.
         if (isVisible()) {
             source_model_.stopStatistic();
             if_stat_cache_t * stat_cache = capture_interface_stat_start(&global_capture_opts, &if_list);
             source_model_.setCache(stat_cache);
         }
+#endif
         mainApp->setInterfaceList(if_list);
         free_interface_list(if_list);
         scan_local_interfaces_filtered(filter_list, main_window_update);
@@ -378,6 +381,9 @@ void InterfaceFrame::resetInterfaceTreeDisplay()
         if (prefs.capture_no_interface_load) {
             ui->warningLabel->setText(tr("Interfaces not loaded (due to preference). Go to Capture " UTF8_RIGHTWARDS_ARROW " Refresh Interfaces to load."));
         }
+#ifdef BLEHOUND_NATIVE_CAPTURE
+        ui->warningLabel->setText(tr("No BLEhound dongle found. Plug one in and it will appear here."));
+#endif
     }
 
     // XXX Should we have a separate recent pref for each message?

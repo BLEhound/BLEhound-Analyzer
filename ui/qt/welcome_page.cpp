@@ -71,6 +71,14 @@ WelcomePage::WelcomePage(QWidget *parent) :
 
     welcome_ui_->mainWelcomeBanner->setText(tr("Welcome to %1").arg(mainApp->applicationName()));
 
+#ifdef BLEHOUND_NATIVE_CAPTURE
+    // Only BLEhound dongles are listed: no interface-type filter, and BPF
+    // capture filters do not apply to Bluetooth LE link-layer captures.
+    welcome_ui_->btnInterfaceType->hide();
+    welcome_ui_->captureSectionFilterLabel->hide();
+    welcome_ui_->captureFilterComboBox->hide();
+#endif
+
     updateStyleSheets();
     applySidebarPreferences();
 
@@ -203,6 +211,10 @@ void WelcomePage::applySidebarPreferences()
     // Hide the entire sidebar container when all sidebar widgets are disabled,
     // so the main content area can expand to fill the full window width.
     bool sidebar_visible = slidesAreVisible || recent.gui_welcome_page_sidebar_learn_visible;
+#ifdef BLEHOUND_BRANDING
+    // Wireshark sponsor, event and community cards do not belong here.
+    sidebar_visible = false;
+#endif
     welcome_ui_->sidebarContainer->setVisible(sidebar_visible);
 }
 

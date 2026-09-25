@@ -1164,6 +1164,11 @@ _e_prefs *MainApplication::readConfigurationFiles(bool reset)
     /* Load libwireshark settings from the current profile. */
     prefs_p = epan_load_settings();
 
+#ifdef BLEHOUND_NATIVE_CAPTURE
+    /* BLEhound Analyzer captures only from its own dongles. */
+    prefs.capture_no_extcap = true;
+#endif
+
     return prefs_p;
 }
 
