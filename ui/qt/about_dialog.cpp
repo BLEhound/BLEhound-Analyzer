@@ -305,6 +305,19 @@ AboutDialog::AboutDialog(QWidget *parent) :
         ui->label_title->setText(tr("<h3>System Call and Event Log Analyzer</h3>"));
     }
 
+#ifdef BLEHOUND_BRANDING
+    setWindowTitle(tr("About %1").arg(application_flavor_name_proper()));
+    ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tab_wireshark), application_flavor_name_proper());
+    ui->label_title->setText(tr("<h3>Bluetooth LE Protocol Analyzer</h3><p>Based on Wireshark</p>"));
+    if (mainApp->devicePixelRatio() > 1.0) {
+        QPixmap pm = QPixmap(":/blehound/splash@2x.png");
+        pm.setDevicePixelRatio(2.0);
+        ui->label_logo->setPixmap(pm);
+    } else {
+        ui->label_logo->setPixmap(QPixmap(":/blehound/splash.png"));
+    }
+#endif
+
     /* Wireshark tab */
     updateWiresharkText();
 

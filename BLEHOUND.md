@@ -12,6 +12,10 @@ Wireshark v4.6.9). It is licensed GPL-2.0-or-later like Wireshark itself.
   (`~/.config/blehound-analyzer`, `%APPDATA%\BLEhound Analyzer`).
 - Branding is controlled by the CMake option `BLEHOUND_BRANDING` (default `ON`);
   turning it off builds stock Wireshark.
+- With branding on, the generic extcap tools (ciscodump, sshdump, wifidump, ...)
+  are not built, the shark-fin toolbar icons are replaced, and the app / dock /
+  About icons come from `resources/icons/blehound/` (regenerate with
+  `resources/icons/blehound/make-icons.sh` from `mark.svg`).
 - BLEhound-specific code lives in its own directories (`ui/qt/blehound/`,
   `resources/icons/blehound/`) so rebasing onto new 4.6.x releases stays cheap.
 

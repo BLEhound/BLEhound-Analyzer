@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 640 640">
+  <defs>
+    <radialGradient id="g2" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#5FD07C" stop-opacity="0.32"/>
+      <stop offset="55%" stop-color="#5FD07C" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#5FD07C" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="grnV" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8CE6A2"/>
+      <stop offset="100%" stop-color="#37B85E"/>
+    </linearGradient>
+  </defs>
+
+  <!-- full-bleed dark background (GitHub applies its own rounding) -->
+  <rect width="640" height="640" fill="#0B0F16"/>
+  <rect width="640" height="640" fill="url(#g2)"/>
+
+  <!-- radar rings, center (320,320) -->
+  <g fill="none" stroke="#5FD07C">
+    <circle cx="320" cy="320" r="238" stroke-opacity="0.12" stroke-width="4"/>
+    <circle cx="320" cy="320" r="176" stroke-opacity="0.18" stroke-width="4"/>
+    <circle cx="320" cy="320" r="190" stroke-opacity="0.9" stroke-width="9" stroke-dasharray="7 30" stroke-linecap="round"/>
+  </g>
+  <!-- reticle ticks -->
+  <g stroke="#5FD07C" stroke-width="9" stroke-linecap="round" stroke-opacity="0.9">
+    <line x1="320" y1="96"  x2="320" y2="132"/>
+    <line x1="320" y1="508" x2="320" y2="544"/>
+    <line x1="96"  y1="320" x2="132" y2="320"/>
+    <line x1="508" y1="320" x2="544" y2="320"/>
+  </g>
+  <!-- target blip on ring (upper-right ~45deg) -->
+  <circle cx="454" cy="186" r="15" fill="#8CE6A2"/>
+
+  <!-- Bluetooth rune centered (320,320), scale 12 from 24-box -->
+  <g stroke="url(#grnV)" stroke-width="21" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M254 254 L386 353 L320 407 L320 200 L386 254 L254 353"/>
+  </g>
+</svg>

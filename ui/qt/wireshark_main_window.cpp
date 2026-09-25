@@ -76,6 +76,7 @@ DIAG_ON(frame-larger-than=)
 #include <ui/qt/utils/profile_switcher.h>
 #include <ui/qt/utils/qt_ui_utils.h>
 #include <ui/qt/utils/stock_icon.h>
+#include "blehound/blehound_branding.h"
 #include <ui/qt/utils/variant_pointer.h>
 
 #include <QAction>
@@ -2061,6 +2062,9 @@ void WiresharkMainWindow::initMainToolbarIcons()
     main_ui_->actionCaptureStop->setIcon(StockIcon("x-capture-stop"));
     main_ui_->actionCaptureRestart->setIcon(StockIcon("x-capture-restart"));
     main_ui_->actionCaptureOptions->setIcon(StockIcon("x-capture-options"));
+#ifdef BLEHOUND_BRANDING
+    BLEhound::brandMainWindow(main_ui_);
+#endif
 
     // Menu icons are disabled in wireshark_main_window.ui for these File-> items.
     main_ui_->actionFileOpen->setIcon(StockIcon("document-open"));
@@ -2548,6 +2552,9 @@ void WiresharkMainWindow::changeEvent(QEvent* event)
         {
         case QEvent::LanguageChange:
             main_ui_->retranslateUi(this);
+#ifdef BLEHOUND_BRANDING
+            BLEhound::brandMainWindow(main_ui_);
+#endif
             // make sure that the "Clear Menu" item is retranslated
             mainApp->emitAppSignal(WiresharkApplication::RecentCapturesChanged);
             // make sure that the color actions in the PacketList and ProtoTree
