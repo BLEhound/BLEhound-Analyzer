@@ -10,11 +10,19 @@
 
 #include <QLocale>
 #include <QString>
+#include <QStringList>
 
 namespace BLEhound {
 
+/* Same signal Wireshark's translator uses (QTranslator::load(locale, ...)
+ * picks from uiLanguages()), so our strings follow Wireshark's own. */
 inline bool isChinese()
 {
+    const QStringList languages = QLocale().uiLanguages();
+
+    if (!languages.isEmpty()) {
+        return languages.first().startsWith(QLatin1String("zh"), Qt::CaseInsensitive);
+    }
     return QLocale().language() == QLocale::Chinese;
 }
 
