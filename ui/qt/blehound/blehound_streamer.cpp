@@ -55,6 +55,9 @@ void onFrame(void *ctx, const uint8_t *frame, size_t len)
     sink->stats->frames++;
     sink->stats->board_id = pkt.board_id;
     sink->collector->onPacket(pkt, sink->now_us);
+    if (sink->out == nullptr) {
+        return;                                 /* idle scan: devices list only */
+    }
     if (!pkt.crc_ok && !sink->config->include_crc_errors) {
         return;
     }
@@ -81,7 +84,8 @@ Streamer::Streamer(const QString &serial_location, const QString &socket_path, D
     serial_location_(serial_location),
     socket_path_(socket_path),
     manager_(manager),
-    stop_requested_(0)
+    stop_requested_(0),
+    scan_paused_(0)
 {
 }
 
@@ -90,6 +94,26 @@ void Streamer::setTarget(const QByteArray &mac_le)
     QMutexLocker locker(&target_mutex_);
     pending_target_ = mac_le;
     has_pending_target_ = true;
+}
+
+void Streamer::reportScan(bool scanning)
+{
+    DeviceManager *manager = manager_;
+    QString location = serial_location_;
+    QMetaObject::invokeMethod(manager, [=]() { manager->reportScanState(location, scanning); },
+                              Qt::QueuedConnection);
+}
+
+void Streamer::stopScan(QSerialPort &port)
+{
+    if (!port.isOpen()) {
+        return;
+    }
+    port.close();
+    port.clearError();
+    collector_.flush();
+    reportFrames();
+    reportScan(false);
 }
 
 void Streamer::reportState(bool capturing)
@@ -122,22 +146,69 @@ void Streamer::run()
         return;
     }
 
+    /* Between captures the dongle keeps listening so the devices list is
+     * live as soon as it is plugged in; Start merely begins recording. */
+    QSerialPort port;
+    bh_deframer deframer;
+    bh_ts_mapper ts;
+    CaptureConfig scan_config;                  /* hop 37/38/39, no target, observe only */
+    FrameSink sink = { &scan_config, &ts, nullptr, &stats_, &collector_, 0 };
+    gint64 last_open_try = 0;
+    gint64 last_report = 0;
+
     while (!stopping()) {
-        int client_fd = Socket::acceptClient(listen_fd, kAcceptPollMs);
-        if (client_fd < 0) {
+        int client_fd = Socket::acceptClient(listen_fd, port.isOpen() ? 0 : kAcceptPollMs);
+        if (client_fd >= 0) {
+            stopScan(port);
+            ws_info("BLEhound capture started on %s", qUtf8Printable(serial_location_));
+            streamToClient(client_fd);
+            close(client_fd);
+            ws_info("BLEhound capture ended on %s", qUtf8Printable(serial_location_));
             continue;
         }
-        ws_info("BLEhound capture started on %s", qUtf8Printable(serial_location_));
-        streamToClient(client_fd);
-        close(client_fd);
-        ws_info("BLEhound capture ended on %s", qUtf8Printable(serial_location_));
+        if (scan_paused_.loadRelaxed()) {
+            stopScan(port);
+            msleep(kSerialWaitMs);
+            continue;
+        }
+        if (!port.isOpen()) {
+            gint64 now = g_get_monotonic_time();
+            if (now - last_open_try < (gint64)kReopenDelayMs * 1000) {
+                msleep(kSerialWaitMs);
+                continue;
+            }
+            last_open_try = now;
+            if (!openAndConfigure(port, scan_config)) {
+                continue;                       /* unplugged or busy: retry */
+            }
+            bh_deframer_init(&deframer);
+            stats_ = FrameStats();
+            reportScan(true);
+        }
+
+        if (port.waitForReadyRead(kSerialWaitMs)) {
+            QByteArray data = port.readAll();
+            sink.now_us = g_get_real_time();
+            bh_deframer_feed(&deframer, reinterpret_cast<const uint8_t *>(data.constData()),
+                             (size_t)data.size(), onFrame, &sink);
+        } else if (port.error() != QSerialPort::NoError && port.error() != QSerialPort::TimeoutError) {
+            stopScan(port);
+            continue;
+        }
+        gint64 now = g_get_monotonic_time();
+        if (now - last_report >= kReportIntervalUs) {
+            reportFrames();
+            last_report = now;
+        }
+        collector_.flushIfDue(now);
     }
 
+    stopScan(port);
     close(listen_fd);
     unlink(socket_path_.toLocal8Bit().constData());
 }
 
-bool Streamer::openAndConfigure(QSerialPort &port)
+bool Streamer::openAndConfigure(QSerialPort &port, const CaptureConfig &config)
 {
     port.setPortName(serial_location_);
     if (!port.open(QIODevice::ReadWrite)) {
@@ -146,17 +217,17 @@ bool Streamer::openAndConfigure(QSerialPort &port)
     // The firmware only streams once the host asserts DTR.
     port.setDataTerminalReady(true);
 
-    uint8_t flag = config_.hopping ? 1 : 0;
+    uint8_t flag = config.hopping ? 1 : 0;
     writeCommand(port, BH_CMD_SET_HOPPING, &flag, 1);
-    if (!config_.hopping) {
-        writeCommand(port, BH_CMD_SET_CHANNEL, &config_.channel, 1);
+    if (!config.hopping) {
+        writeCommand(port, BH_CMD_SET_CHANNEL, &config.channel, 1);
     }
     uint8_t mac[6] = { 0 };
-    if (config_.target_mac_le.size() == 6) {
-        memcpy(mac, config_.target_mac_le.constData(), sizeof(mac));
+    if (config.target_mac_le.size() == 6) {
+        memcpy(mac, config.target_mac_le.constData(), sizeof(mac));
     }
     writeCommand(port, BH_CMD_SET_TARGET, mac, sizeof(mac));
-    flag = config_.single_target ? 1 : 0;
+    flag = config.single_target ? 1 : 0;
     writeCommand(port, BH_CMD_SET_SINGLE_TARGET, &flag, 1);
     port.waitForBytesWritten(kSerialWaitMs);
 
@@ -202,7 +273,7 @@ Streamer::Result Streamer::captureLoop(int client_fd)
 
     while (!stopping()) {
         if (!port.isOpen()) {
-            if (!openAndConfigure(port)) {
+            if (!openAndConfigure(port, config_)) {
                 // Unplugged or busy: keep the capture alive and retry.
                 if (Socket::clientClosed(client_fd)) {
                     return Result::ClientGone;

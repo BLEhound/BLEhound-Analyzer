@@ -324,6 +324,11 @@ void TriStreamer::streamToClient(int client_fd)
     }
     reportState(ports, true);
     {
+        /* The idle scanners hold the ports; readers retry until they let go. */
+        DeviceManager *manager = manager_;
+        QMetaObject::invokeMethod(manager, [manager]() { manager->setScanPaused(true); }, Qt::QueuedConnection);
+    }
+    {
         const CaptureConfig config = this->config();
         QMutexLocker locker(&relay_mutex_);
         const uint8_t *target = config.target_mac_le.size() == 6 ?
@@ -397,6 +402,10 @@ void TriStreamer::streamToClient(int client_fd)
     }
     bh_aggregator_free(agg);
     reportState(ports, false);
+    {
+        DeviceManager *manager = manager_;
+        QMetaObject::invokeMethod(manager, [manager]() { manager->setScanPaused(false); }, Qt::QueuedConnection);
+    }
 }
 
 } // namespace BLEhound

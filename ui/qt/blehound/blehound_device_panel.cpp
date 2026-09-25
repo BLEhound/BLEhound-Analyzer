@@ -162,7 +162,8 @@ void DevicePanel::refreshBoards()
         if (board.board_id < 0) {
             label += localized(" (by port order)", "（按串口顺序）");
         }
-        QString status = board.capturing ? localized("Capturing", "抓包中") : localized("Idle", "空闲");
+        QString status = board.capturing ? localized("Capturing", "抓包中") :
+                         board.scanning ? localized("Scanning", "扫描中") : localized("Idle", "空闲");
 
         table_->setItem(row, ColBoard, new QTableWidgetItem(label));
         table_->setItem(row, ColPort, new QTableWidgetItem(QFileInfo(board.location).fileName()));

@@ -48,6 +48,7 @@ bool PosixSerial::open(const QString &path, QString *error)
         return false;
     }
     tcflush(fd, TCIOFLUSH);
+    ioctl(fd, TIOCEXCL);                /* like QSerialPort: one owner at a time */
     int dtr = TIOCM_DTR;
     ioctl(fd, TIOCMBIS, &dtr);
     fd_ = fd;
