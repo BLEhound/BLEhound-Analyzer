@@ -32,7 +32,10 @@ public:
     /** Main thread. Saves and emits changed(). */
     void setConfig(const CaptureConfig &config, const QString &target_mac_text);
 
-    /** Change only the target ("" = none). Main thread; saves and emits changed(). */
+    /**
+     * Change only the target ("" = none). If a stored key resolves the
+     * address its IRK comes along. Main thread; saves and emits changed().
+     */
     void setTargetMac(const QString &text);
 
 signals:

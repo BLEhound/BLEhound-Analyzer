@@ -33,6 +33,8 @@ struct Advertiser {
     quint64 requests = 0;       /**< SCAN_REQ / CONNECT_IND aimed at it */
     QString name;
     bool name_complete = false;
+    QString identity;           /**< identity address text when an IRK resolved this RPA */
+    QString key_name;           /**< label of that key */
     bool has_company = false;
     uint16_t company = 0;
     qint64 first_seen_us = 0;
@@ -71,6 +73,9 @@ public:
 
     /** User-given name for an address, kept across runs; empty if none. */
     QString aliasFor(const QByteArray &adva) const;
+
+    /** Addresses currently listed that resolved to this identity, latest seen first. */
+    QList<QByteArray> addressesForIdentity(const QString &identity) const;
     static QString formatAddress(const QByteArray &adva);
 
     /** Drop rows not seen for this many seconds (0 = keep forever). */
@@ -80,6 +85,8 @@ public slots:
     /** Fold a batch of sightings in; called (queued) from capture threads. */
     void merge(const QList<Advertiser> &batch);
     void clear();
+    /** Keys changed: resolve every listed RPA again. */
+    void reresolve();
 
 private:
     explicit AdvertiserModel(QObject *parent = nullptr);
@@ -106,7 +113,11 @@ public:
     void flush();
 
 private:
+    void resolveIdentity(Advertiser &a);
+
     QHash<QByteArray, Advertiser> pending_;
+    QHash<QByteArray, QPair<QString, QString>> resolved_;   /**< adva -> (identity, key name) */
+    int keys_version_ = 0;
     qint64 last_flush_us_ = 0;
 };
 

@@ -78,6 +78,24 @@ void onFrame(void *ctx, const uint8_t *frame, size_t len)
     sink->out->append(reinterpret_cast<const char *>(rec), (qsizetype)rec_len);
 }
 
+bool writeCommand(QSerialPort &port, uint8_t cmd, const uint8_t *arg, size_t arg_len);
+
+/* SET_TARGET followed by SET_IRK (all zero = none), the pair every configuration path sends. */
+void writeTarget(QSerialPort &port, const CaptureConfig &config)
+{
+    uint8_t mac[6] = { 0 };
+    uint8_t irk[16] = { 0 };
+
+    if (config.target_mac_le.size() == (int)sizeof(mac)) {
+        memcpy(mac, config.target_mac_le.constData(), sizeof(mac));
+    }
+    if (config.target_irk_le.size() == (int)sizeof(irk)) {
+        memcpy(irk, config.target_irk_le.constData(), sizeof(irk));
+    }
+    writeCommand(port, BH_CMD_SET_TARGET, mac, sizeof(mac));
+    writeCommand(port, BH_CMD_SET_IRK, irk, sizeof(irk));
+}
+
 bool writeCommand(QSerialPort &port, uint8_t cmd, const uint8_t *arg, size_t arg_len)
 {
     uint8_t buf[64];
@@ -97,10 +115,11 @@ Streamer::Streamer(const QString &serial_location, const QString &socket_path, D
 {
 }
 
-void Streamer::setTarget(const QByteArray &mac_le)
+void Streamer::setTarget(const QByteArray &mac_le, const QByteArray &irk_le)
 {
     QMutexLocker locker(&target_mutex_);
     pending_target_ = mac_le;
+    pending_irk_ = irk_le;
     has_pending_target_ = true;
 }
 
@@ -243,11 +262,7 @@ bool Streamer::openAndConfigure(QSerialPort &port, const CaptureConfig &config)
     if (!config.hopping) {
         writeCommand(port, BH_CMD_SET_CHANNEL, &config.channel, 1);
     }
-    uint8_t mac[6] = { 0 };
-    if (config.target_mac_le.size() == 6) {
-        memcpy(mac, config.target_mac_le.constData(), sizeof(mac));
-    }
-    writeCommand(port, BH_CMD_SET_TARGET, mac, sizeof(mac));
+    writeTarget(port, config);
     flag = config.single_target ? 1 : 0;
     writeCommand(port, BH_CMD_SET_SINGLE_TARGET, &flag, 1);
     port.waitForBytesWritten(kSerialWaitMs);
@@ -340,18 +355,16 @@ Streamer::Result Streamer::captureLoop(int client_fd)
             QMutexLocker locker(&target_mutex_);
             if (has_pending_target_) {
                 config_.target_mac_le = pending_target_;
+                config_.target_irk_le = pending_irk_;
                 has_pending_target_ = false;
                 apply_target = true;
             }
         }
         if (apply_target && port.isOpen()) {
-            uint8_t mac[6] = { 0 };
-            if (config_.target_mac_le.size() == 6) {
-                memcpy(mac, config_.target_mac_le.constData(), sizeof(mac));
-            }
-            writeCommand(port, BH_CMD_SET_TARGET, mac, sizeof(mac));
-            ws_info("BLEhound %s: target %s", qUtf8Printable(serial_location_),
-                    config_.target_mac_le.isEmpty() ? "cleared" : "set");
+            writeTarget(port, config_);
+            ws_info("BLEhound %s: target %s%s", qUtf8Printable(serial_location_),
+                    config_.target_mac_le.isEmpty() ? "cleared" : "set",
+                    config_.target_irk_le.isEmpty() ? "" : " with IRK");
         }
     }
     return Result::Stopped;

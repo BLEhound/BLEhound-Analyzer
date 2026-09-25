@@ -5,6 +5,8 @@
 
 #include "blehound_capture_settings.h"
 
+#include "blehound_key_store.h"
+
 #include <QSettings>
 
 #include <blehound/blehound.h>
@@ -55,8 +57,14 @@ void CaptureSettings::setTargetMac(const QString &text)
     CaptureConfig config = this->config();
 
     config.target_mac_le.clear();
+    config.target_irk_le.clear();
     if (bh_parse_mac(text.toUtf8().constData(), mac)) {
+        DeviceKey key;
+
         config.target_mac_le = QByteArray(reinterpret_cast<const char *>(mac), sizeof(mac));
+        if (KeyStore::instance()->resolve(config.target_mac_le, &key)) {
+            config.target_irk_le = key.irk_le;
+        }
     }
     setConfig(config, text);
 }
@@ -76,6 +84,7 @@ void CaptureSettings::load()
     if (bh_parse_mac(target_mac_text_.toUtf8().constData(), mac)) {
         config.target_mac_le = QByteArray(reinterpret_cast<const char *>(mac), sizeof(mac));
     }
+    config.target_irk_le = KeyStore::keyFromHex(settings.value(QStringLiteral("capture/targetIrk")).toString());
     config.include_crc_errors = settings.value(QStringLiteral("capture/includeCrcErrors"), false).toBool();
     config.single_target = settings.value(QStringLiteral("capture/singleTarget"), true).toBool();
     config.follow_relay = settings.value(QStringLiteral("capture/followRelay"), false).toBool();
@@ -90,6 +99,7 @@ void CaptureSettings::save() const
     settings.setValue(QStringLiteral("capture/hopping"), config_.hopping);
     settings.setValue(QStringLiteral("capture/channel"), (uint)config_.channel);
     settings.setValue(QStringLiteral("capture/targetMac"), target_mac_text_);
+    settings.setValue(QStringLiteral("capture/targetIrk"), KeyStore::hex(config_.target_irk_le));
     settings.setValue(QStringLiteral("capture/includeCrcErrors"), config_.include_crc_errors);
     settings.setValue(QStringLiteral("capture/singleTarget"), config_.single_target);
     settings.setValue(QStringLiteral("capture/followRelay"), config_.follow_relay);

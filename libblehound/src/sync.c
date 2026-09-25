@@ -197,6 +197,26 @@ void bh_follow_relay_register(bh_follow_relay *r, uint8_t board_id)
     r->registered[board_id] = true;
 }
 
+void bh_follow_relay_set_irk(bh_follow_relay *r, const uint8_t *irk_le)
+{
+    r->has_irk = irk_le != NULL;
+    if (irk_le) {
+        memcpy(r->irk, irk_le, sizeof(r->irk));
+    }
+}
+
+/* The target itself, or one of its resolvable private addresses. */
+static bool relay_target_matches(const bh_follow_relay *r, const uint8_t adva[6])
+{
+    if (!r->has_target && !r->has_irk) {
+        return true;
+    }
+    if (r->has_target && memcmp(adva, r->target, sizeof(r->target)) == 0) {
+        return true;
+    }
+    return r->has_irk && bh_rpa_matches(r->irk, adva);
+}
+
 void bh_follow_relay_observe(bh_follow_relay *r, uint8_t board_id, uint32_t sync_epoch, int64_t host_us)
 {
     bh_sync_clock_observe(&r->clock, board_id, sync_epoch, host_us);
@@ -259,7 +279,7 @@ int bh_follow_relay_maybe_relay(bh_follow_relay *r, uint8_t from_board, const bh
         return 0;
     }
     /* The firmware's own target filter does not see relayed connections. */
-    if (r->has_target && memcmp(ci.adva, r->target, sizeof(r->target)) != 0) {
+    if (!relay_target_matches(r, ci.adva)) {
         r->stats.skipped_target++;
         return 0;
     }

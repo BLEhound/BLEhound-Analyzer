@@ -53,8 +53,8 @@ public:
     /** Connected boards in port order. */
     QList<BoardInfo> boards() const;
 
-    /** Push a new target (6 bytes air order, empty = none) to every running capture. */
-    void applyTarget(const QByteArray &mac_le);
+    /** Push a new target (6 bytes air order, empty = none) and its IRK (16 bytes or empty) to every running capture. */
+    void applyTarget(const QByteArray &mac_le, const QByteArray &irk_le);
 
     /**
      * Advertising channel this board guards: from its board_id once a

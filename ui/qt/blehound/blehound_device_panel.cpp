@@ -8,6 +8,7 @@
 #include "blehound_capture_settings.h"
 #include "blehound_device_manager.h"
 #include "blehound_i18n.h"
+#include "blehound_key_store.h"
 
 #include <QAction>
 #include <QCloseEvent>
@@ -216,7 +217,12 @@ void DevicePanel::saveSettings()
     if (text.isEmpty()) {
         target_hint_->hide();
     } else if (bh_parse_mac(text.toUtf8().constData(), mac)) {
+        DeviceKey key;
+
         config.target_mac_le = QByteArray(reinterpret_cast<const char *>(mac), sizeof(mac));
+        if (KeyStore::instance()->resolve(config.target_mac_le, &key)) {
+            config.target_irk_le = key.irk_le;      /* a stored IRK follows the address */
+        }
         target_hint_->hide();
     } else {
         target_hint_->setText(localized("Not a valid address, expected AA:BB:CC:DD:EE:FF; no target filter will be used.",
