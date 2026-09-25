@@ -199,6 +199,21 @@ CaptureOptionsDialog::CaptureOptionsDialog(QWidget *parent) :
     ui->interfaceTree->setItemDelegateForColumn(col_buffer_, &interface_item_delegate_);
     ui->interfaceTree->setItemDelegateForColumn(col_filter_, &interface_item_delegate_);
 
+#ifdef BLEHOUND_NATIVE_CAPTURE
+    // Only BLEhound dongles are listed; promiscuous/monitor mode, BPF
+    // filters and user-managed pipes or remote interfaces do not apply.
+    ui->capturePromModeCheckBox->hide();
+    ui->captureMonitorModeCheckBox->hide();
+    ui->manageButton->hide();
+    ui->label_4->hide();
+    ui->captureFilterComboBox->hide();
+    ui->compileBPF->hide();
+    ui->interfaceTree->setColumnHidden(col_traffic_, true);
+    ui->interfaceTree->setColumnHidden(col_pmode_, true);
+    ui->interfaceTree->setColumnHidden(col_monitor_, true);
+    ui->interfaceTree->setColumnHidden(col_filter_, true);
+#endif
+
     interface_item_delegate_.setTree(ui->interfaceTree);
 
     ui->filenameLineEdit->setPlaceholderText(tr("Leave blank to use a temporary file"));
