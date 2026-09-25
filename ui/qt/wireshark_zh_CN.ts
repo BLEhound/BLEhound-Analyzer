@@ -1237,11 +1237,11 @@
     <name>CaptureOptionsDialog</name>
     <message>
         <source>Input</source>
-        <translation type="unfinished"></translation>
+        <translation>输入</translation>
     </message>
     <message>
         <source>Interface</source>
-        <translation type="unfinished">接口</translation>
+        <translation>接口</translation>
     </message>
     <message>
         <source>Traffic</source>
@@ -1253,23 +1253,23 @@
     </message>
     <message>
         <source>Promiscuous</source>
-        <translation type="unfinished">混杂</translation>
+        <translation>混杂</translation>
     </message>
     <message>
         <source>Snaplen (B)</source>
-        <translation type="unfinished">捕获长度 (B)</translation>
+        <translation>捕获长度 (B)</translation>
     </message>
     <message>
         <source>Buffer (MB)</source>
-        <translation type="unfinished">缓冲区 (MB)</translation>
+        <translation>缓冲区 (MB)</translation>
     </message>
     <message>
         <source>Monitor Mode</source>
-        <translation type="unfinished">监控模式</translation>
+        <translation>监控模式</translation>
     </message>
     <message>
         <source>Capture Filter</source>
-        <translation type="unfinished">捕获过滤器</translation>
+        <translation>捕获过滤器</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You probably want to enable this. Usually a network card will only capture the traffic sent to its own network address. If you want to capture all traffic that the network card can &amp;quot;see&amp;quot;, mark this option. See the FAQ for some more details of capturing packets from a switched network.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1281,19 +1281,19 @@
     </message>
     <message>
         <source>Show and hide interfaces, add comments, and manage pipes and remote interfaces.</source>
-        <translation type="unfinished"></translation>
+        <translation>显示/隐藏接口、添加备注，管理管道和远程接口。</translation>
     </message>
     <message>
         <source>Manage Interfaces…</source>
-        <translation type="unfinished"></translation>
+        <translation>管理接口…</translation>
     </message>
     <message>
         <source>Capture filter for selected interfaces:</source>
-        <translation type="unfinished"></translation>
+        <translation>所选接口的捕获过滤器：</translation>
     </message>
     <message>
         <source>Compile BPFs</source>
-        <translation type="unfinished"></translation>
+        <translation>编译 BPF</translation>
     </message>
     <message>
         <source>Output</source>
@@ -1309,27 +1309,27 @@
     </message>
     <message>
         <source>File:</source>
-        <translation type="unfinished">文件:</translation>
+        <translation>文件：</translation>
     </message>
     <message>
         <source>Browse…</source>
-        <translation type="unfinished">浏览…</translation>
+        <translation>浏览…</translation>
     </message>
     <message>
         <source>Output format:</source>
-        <translation type="unfinished"></translation>
+        <translation>输出格式：</translation>
     </message>
     <message>
         <source>pcapng</source>
-        <translation type="unfinished"></translation>
+        <translation>pcapng</translation>
     </message>
     <message>
         <source>pcap</source>
-        <translation type="unfinished"></translation>
+        <translation>pcap</translation>
     </message>
     <message>
         <source>Compression:</source>
-        <translation type="unfinished"></translation>
+        <translation>压缩：</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Instead of using a single capture file, multiple files will be created.&lt;/p&gt;&lt;p&gt;The generated file names will contain an incrementing number and the start time of the capture.&lt;/p&gt;&lt;p&gt;NOTE: If enabled, at least one of the new-file criteria MUST be selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1349,7 +1349,7 @@
     </message>
     <message>
         <source>packets</source>
-        <translation type="unfinished">分组</translation>
+        <translation>个包</translation>
     </message>
     <message>
         <source>Switch to the next file after the file size exceeds the specified file size.</source>
@@ -1373,15 +1373,15 @@
     </message>
     <message>
         <source>seconds</source>
-        <translation type="unfinished"></translation>
+        <translation>秒</translation>
     </message>
     <message>
         <source>minutes</source>
-        <translation type="unfinished"></translation>
+        <translation>分钟</translation>
     </message>
     <message>
         <source>hours</source>
-        <translation type="unfinished"></translation>
+        <translation>小时</translation>
     </message>
     <message>
         <source>when time is a multiple of</source>
@@ -1399,11 +1399,11 @@ For example, use 1 hour to have a new file created every hour on the hour.</sour
     </message>
     <message>
         <source>Enable monitor mode on all 802.11 interfaces</source>
-        <translation type="unfinished"></translation>
+        <translation>在所有 802.11 接口上启用监控模式</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished">无</translation>
+        <translation>无</translation>
     </message>
     <message>
         <source>gzip</source>
@@ -1411,11 +1411,11 @@ For example, use 1 hour to have a new file created every hour on the hour.</sour
     </message>
     <message>
         <source>LZ4</source>
-        <translation type="unfinished"></translation>
+        <translation>LZ4</translation>
     </message>
     <message>
         <source>File infix pattern</source>
-        <translation type="unfinished"></translation>
+        <translation>文件名中缀格式</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In multiple file mode, the date and time and file index number are inserted between filename template and any suffix. Select their order.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1423,7 +1423,7 @@ For example, use 1 hour to have a new file created every hour on the hour.</sour
     </message>
     <message>
         <source>YYYYmmDDHHMMSS_NNNNN</source>
-        <translation type="unfinished"></translation>
+        <translation>YYYYmmDDHHMMSS_NNNNN</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Date and time before the file index number. This causes files to sort in creation time order, and keeps files from the same batch closely ordered.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1431,7 +1431,7 @@ For example, use 1 hour to have a new file created every hour on the hour.</sour
     </message>
     <message>
         <source>NNNNN_YYYYmmDDHHMMSS</source>
-        <translation type="unfinished"></translation>
+        <translation>NNNNN_YYYYmmDDHHMMSS</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;File index number before the date and time. This is the historic Wireshark ordering.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1443,19 +1443,19 @@ For example, use 1 hour to have a new file created every hour on the hour.</sour
     </message>
     <message>
         <source>Use a ring buffer with </source>
-        <translation type="unfinished"></translation>
+        <translation>使用环形缓冲，保留 </translation>
     </message>
     <message>
         <source>files</source>
-        <translation type="unfinished"></translation>
+        <translation>个文件</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished">选项</translation>
+        <translation>选项</translation>
     </message>
     <message>
         <source>Display Options</source>
-        <translation type="unfinished"></translation>
+        <translation>显示选项</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Using this option will show the captured packets immediately on the main screen. Please note: this will slow down capturing, so increased packet drops might appear.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1463,7 +1463,7 @@ For example, use 1 hour to have a new file created every hour on the hour.</sour
     </message>
     <message>
         <source>Update list of packets in real-time</source>
-        <translation type="unfinished"></translation>
+        <translation>实时更新分组列表</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This will scroll the &amp;quot;Packet List&amp;quot; automatically to the latest captured packet, when the &amp;quot;Update list of packets in real-time&amp;quot; option is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1471,7 +1471,7 @@ For example, use 1 hour to have a new file created every hour on the hour.</sour
     </message>
     <message>
         <source>Automatically scroll during live capture</source>
-        <translation type="unfinished"></translation>
+        <translation>抓包时自动滚动</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the capture info dialog while capturing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1479,19 +1479,19 @@ For example, use 1 hour to have a new file created every hour on the hour.</sour
     </message>
     <message>
         <source>Show capture information during live capture</source>
-        <translation type="unfinished"></translation>
+        <translation>抓包时显示抓包信息</translation>
     </message>
     <message>
         <source>Name Resolution</source>
-        <translation type="unfinished"></translation>
+        <translation>名称解析</translation>
     </message>
     <message>
         <source>Perform MAC layer name resolution while capturing.</source>
-        <translation type="unfinished"></translation>
+        <translation>抓包时解析 MAC 层名称。</translation>
     </message>
     <message>
         <source>Resolve MAC addresses</source>
-        <translation type="unfinished"></translation>
+        <translation>解析 MAC 地址</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Perform network layer name resolution while capturing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1499,19 +1499,19 @@ For example, use 1 hour to have a new file created every hour on the hour.</sour
     </message>
     <message>
         <source>Resolve network names</source>
-        <translation type="unfinished"></translation>
+        <translation>解析网络名称</translation>
     </message>
     <message>
         <source>Perform transport layer name resolution while capturing.</source>
-        <translation type="unfinished"></translation>
+        <translation>抓包时解析传输层名称。</translation>
     </message>
     <message>
         <source>Resolve transport names</source>
-        <translation type="unfinished"></translation>
+        <translation>解析传输层名称</translation>
     </message>
     <message>
         <source>Stop capture automatically after…</source>
-        <translation type="unfinished"></translation>
+        <translation>满足以下条件后自动停止抓包…</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Stop capturing after the specified number of packets have been captured.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1519,7 +1519,7 @@ For example, use 1 hour to have a new file created every hour on the hour.</sour
     </message>
     <message>
         <source>Stop capturing after the specified number of packets have been captured.</source>
-        <translation type="unfinished"></translation>
+        <translation>抓到指定数量的包后停止。</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Stop capturing after the specified number of files have been created.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1527,7 +1527,7 @@ For example, use 1 hour to have a new file created every hour on the hour.</sour
     </message>
     <message>
         <source>Stop capturing after the specified number of files have been created.</source>
-        <translation type="unfinished"></translation>
+        <translation>生成指定数量的文件后停止。</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Stop capturing after the specified amount of data has been captured.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1535,11 +1535,11 @@ For example, use 1 hour to have a new file created every hour on the hour.</sour
     </message>
     <message>
         <source>Stop capturing after the specified amount of data has been captured.</source>
-        <translation type="unfinished"></translation>
+        <translation>抓到指定数据量后停止。</translation>
     </message>
     <message>
         <source>Stop capturing after the specified amount of time has passed.</source>
-        <translation type="unfinished"></translation>
+        <translation>经过指定时间后停止。</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optionally specify a temporary directory for unnamed capture files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1547,31 +1547,31 @@ For example, use 1 hour to have a new file created every hour on the hour.</sour
     </message>
     <message>
         <source>Directory for temporary files</source>
-        <translation type="unfinished"></translation>
+        <translation>临时文件目录</translation>
     </message>
     <message>
         <source>Capture Options</source>
-        <translation type="unfinished">捕获选项</translation>
+        <translation>捕获选项</translation>
     </message>
     <message>
         <source>Start</source>
-        <translation type="unfinished">开始</translation>
+        <translation>开始</translation>
     </message>
     <message>
         <source>Leave blank to use a temporary file</source>
-        <translation type="unfinished"></translation>
+        <translation>留空则使用临时文件</translation>
     </message>
     <message>
         <source>Specify a Capture File</source>
-        <translation type="unfinished"></translation>
+        <translation>指定抓包文件</translation>
     </message>
     <message>
         <source>Specify temporary directory</source>
-        <translation type="unfinished"></translation>
+        <translation>指定临时目录</translation>
     </message>
     <message>
         <source>Extcap interface settings</source>
-        <translation type="unfinished"></translation>
+        <translation>外部捕获接口设置</translation>
     </message>
     <message>
         <source>%1: %2</source>
@@ -1579,19 +1579,19 @@ For example, use 1 hour to have a new file created every hour on the hour.</sour
     </message>
     <message>
         <source>Addresses</source>
-        <translation type="unfinished">地址</translation>
+        <translation>地址</translation>
     </message>
     <message>
         <source>Address</source>
-        <translation type="unfinished">地址</translation>
+        <translation>地址</translation>
     </message>
     <message>
         <source>no addresses</source>
-        <translation type="unfinished"></translation>
+        <translation>无地址</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">错误</translation>
+        <translation>错误</translation>
     </message>
     <message>
         <source>Multiple files: Requested filesize too large. The filesize cannot be greater than 2 TB.</source>

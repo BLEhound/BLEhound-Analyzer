@@ -12,6 +12,7 @@
 
 class QAction;
 class QCheckBox;
+class QCloseEvent;
 class QComboBox;
 class QLabel;
 class QLineEdit;
@@ -27,6 +28,9 @@ class DevicePanel : public QDockWidget
 
 public:
     explicit DevicePanel(QWidget *parent = nullptr);
+
+protected:
+    void closeEvent(QCloseEvent *event) override;
 
 private slots:
     void refreshBoards();

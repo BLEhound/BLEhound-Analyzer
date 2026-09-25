@@ -10,6 +10,7 @@
 #include "blehound_i18n.h"
 
 #include <QAction>
+#include <QCloseEvent>
 #include <QCheckBox>
 #include <QComboBox>
 #include <QFileInfo>
@@ -139,6 +140,13 @@ QWidget *DevicePanel::buildSettings()
     return group;
 }
 
+void DevicePanel::closeEvent(QCloseEvent *event)
+{
+    QSettings settings(QStringLiteral("BLEhound"), QStringLiteral("Analyzer"));
+    settings.setValue(QStringLiteral("ui/devicePanelVisible"), false);
+    QDockWidget::closeEvent(event);
+}
+
 void DevicePanel::refreshBoards()
 {
     DeviceManager *manager = DeviceManager::instance();
@@ -223,7 +231,9 @@ void installDevicePanel(QMainWindow *window, QMenu *view_menu, QAction *before)
     toggle->setObjectName(QStringLiteral("actionBlehoundDevicePanel"));
     toggle->setText(localized("BLEhound Devices", "BLEhound 设备"));
     view_menu->insertAction(before, toggle);
-    QObject::connect(toggle, &QAction::toggled, panel, [](bool visible) {
+    // triggered() fires only for the user's clicks; toggled() also fires when
+    // Qt hides the dock at shutdown, which would remember "closed".
+    QObject::connect(toggle, &QAction::triggered, panel, [](bool visible) {
         QSettings s(QStringLiteral("BLEhound"), QStringLiteral("Analyzer"));
         s.setValue(QStringLiteral("ui/devicePanelVisible"), visible);
     });
