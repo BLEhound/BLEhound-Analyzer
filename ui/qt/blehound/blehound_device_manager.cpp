@@ -17,6 +17,7 @@
 #include <wsutil/wslog.h>
 
 #include "ui/capture_globals.h"
+#include "ui/capture_opts.h"
 #include "ui/iface_lists.h"
 
 #include "main_application.h"
@@ -24,6 +25,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QSerialPortInfo>
+#include <QSet>
 
 #include <blehound/blehound.h>
 
@@ -166,11 +168,51 @@ void DeviceManager::ensureInterface(const QByteArray &name, const QByteArray &di
     g_array_append_val(global_capture_opts.all_ifaces, device);
 }
 
+/* Wireshark's interface scan drops local devices it no longer finds, but
+ * keeps pipes forever. Dongles that re-enumerate get new port names, so
+ * remove our pipes whose socket is no longer served. */
+void DeviceManager::removeStaleInterfaces(const QSet<QString> &valid_names)
+{
+    QByteArray prefix = (socket_dir_ + QStringLiteral("/")).toUtf8();
+
+    for (int i = (int)global_capture_opts.all_ifaces->len - 1; i >= 0; i--) {
+        interface_t device = g_array_index(global_capture_opts.all_ifaces, interface_t, i);
+        if (!g_str_has_prefix(device.name, prefix.constData()) ||
+                valid_names.contains(QString::fromUtf8(device.name))) {
+            continue;
+        }
+        ws_info("BLEhound: dropping stale interface %s", device.name);
+        global_capture_opts.all_ifaces = g_array_remove_index(global_capture_opts.all_ifaces, i);
+        if (device.selected) {
+            global_capture_opts.num_selected--;
+        }
+        capture_opts_free_interface_t(&device);
+    }
+    // A selected stale pipe would otherwise be re-added by the next scan.
+    for (int i = (int)global_capture_opts.ifaces->len - 1; i >= 0; i--) {
+        interface_options *opts = &g_array_index(global_capture_opts.ifaces, interface_options, i);
+        if (g_str_has_prefix(opts->name, prefix.constData()) &&
+                !valid_names.contains(QString::fromUtf8(opts->name))) {
+            capture_opts_del_iface(&global_capture_opts, (unsigned)i);
+        }
+    }
+}
+
 void DeviceManager::appendInterfaces()
 {
     QStringList ports = connectedPorts();
+    QSet<QString> valid_names;
+
     syncStreamers(ports);
     known_ports_ = ports;
+
+    foreach (const QString &location, ports) {
+        valid_names.insert(socketPathFor(location));
+    }
+    if (ports.size() >= 2) {
+        valid_names.insert(tri_streamer_->socketPath());
+    }
+    removeStaleInterfaces(valid_names);
 
     foreach (const QString &location, ports) {
         ensureInterface(socketPathFor(location).toUtf8(),
