@@ -2063,7 +2063,7 @@ void WiresharkMainWindow::initMainToolbarIcons()
     main_ui_->actionCaptureRestart->setIcon(StockIcon("x-capture-restart"));
     main_ui_->actionCaptureOptions->setIcon(StockIcon("x-capture-options"));
 #ifdef BLEHOUND_BRANDING
-    BLEhound::brandMainWindow(main_ui_);
+    BLEhound::brandMainWindow(this, main_ui_);
 #endif
 
     // Menu icons are disabled in wireshark_main_window.ui for these File-> items.
@@ -2553,7 +2553,7 @@ void WiresharkMainWindow::changeEvent(QEvent* event)
         case QEvent::LanguageChange:
             main_ui_->retranslateUi(this);
 #ifdef BLEHOUND_BRANDING
-            BLEhound::brandMainWindow(main_ui_);
+            BLEhound::brandMainWindow(this, main_ui_);
 #endif
             // make sure that the "Clear Menu" item is retranslated
             mainApp->emitAppSignal(WiresharkApplication::RecentCapturesChanged);
