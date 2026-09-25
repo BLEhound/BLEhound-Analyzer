@@ -19,4 +19,19 @@
         <file>splash.png</file>
         <file>splash@2x.png</file>
     </qresource>
+    <!-- Toolbar capture icons replacing the shark-fin ones. -->
+    <qresource prefix="/stock_icons">
+        <file alias="16x16/blehound-capture-start.png">toolbar/16x16/blehound-capture-start.png</file>
+        <file alias="16x16/blehound-capture-start@2x.png">toolbar/16x16/blehound-capture-start@2x.png</file>
+        <file alias="16x16/blehound-capture-start.on.png">toolbar/16x16/blehound-capture-start.on.png</file>
+        <file alias="16x16/blehound-capture-start.on@2x.png">toolbar/16x16/blehound-capture-start.on@2x.png</file>
+        <file alias="16x16/blehound-capture-restart.png">toolbar/16x16/blehound-capture-restart.png</file>
+        <file alias="16x16/blehound-capture-restart@2x.png">toolbar/16x16/blehound-capture-restart@2x.png</file>
+        <file alias="24x24/blehound-capture-start.png">toolbar/24x24/blehound-capture-start.png</file>
+        <file alias="24x24/blehound-capture-start@2x.png">toolbar/24x24/blehound-capture-start@2x.png</file>
+        <file alias="24x24/blehound-capture-start.on.png">toolbar/24x24/blehound-capture-start.on.png</file>
+        <file alias="24x24/blehound-capture-start.on@2x.png">toolbar/24x24/blehound-capture-start.on@2x.png</file>
+        <file alias="24x24/blehound-capture-restart.png">toolbar/24x24/blehound-capture-restart.png</file>
+        <file alias="24x24/blehound-capture-restart@2x.png">toolbar/24x24/blehound-capture-restart@2x.png</file>
+    </qresource>
 </RCC>
