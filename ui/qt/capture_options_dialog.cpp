@@ -212,6 +212,11 @@ CaptureOptionsDialog::CaptureOptionsDialog(QWidget *parent) :
     ui->interfaceTree->setColumnHidden(col_pmode_, true);
     ui->interfaceTree->setColumnHidden(col_monitor_, true);
     ui->interfaceTree->setColumnHidden(col_filter_, true);
+    // Output / Options tabs: pcapng only, and nothing that needs IP traffic.
+    ui->rbPcap->hide();
+    ui->cbExtraCaptureInfo->hide();         /* per-protocol counts: BLE has one */
+    ui->cbResolveNetworkNames->hide();
+    ui->cbResolveTransportNames->hide();
 #endif
 
     interface_item_delegate_.setTree(ui->interfaceTree);
