@@ -393,7 +393,9 @@ QString MainWindow::replaceWindowTitleVariables(QString title)
 void MainWindow::setMainWindowTitle(QString title)
 {
     if (title.isEmpty()) {
-        if (application_flavor_is_wireshark()) {
+        if (application_has_brand()) {
+            title = QStringLiteral("%1 %2 %3").arg(application_flavor_name_proper(), UTF8_EM_DASH, tr("Bluetooth LE Protocol Analyzer"));
+        } else if (application_flavor_is_wireshark()) {
             title = tr("The Wireshark Network Analyzer");
         } else {
             title = tr("The Stratoshark System Call and Log Analyzer");

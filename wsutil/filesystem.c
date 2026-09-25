@@ -1611,7 +1611,7 @@ get_persconffile_dir_no_profile(void)
      * Check if XDG_CONFIG_HOME/wireshark exists and is a directory.
      */
     xdg_path = g_build_filename(g_get_user_config_dir(),
-                                application_flavor_name_lower(), NULL);
+                                application_config_name_lower(), NULL);
     if (g_file_test(xdg_path, G_FILE_TEST_IS_DIR)) {
         persconffile_dir = xdg_path;
         return persconffile_dir;
@@ -1642,7 +1642,7 @@ get_persconffile_dir_no_profile(void)
             homedir = "/tmp";
         }
     }
-    char *dotted_app = g_strdup_printf(".%s", application_flavor_name_lower());
+    char *dotted_app = g_strdup_printf(".%s", application_config_name_lower());
     path = g_build_filename(homedir, dotted_app, NULL);
     g_free(dotted_app);
     if (g_file_test(path, G_FILE_TEST_IS_DIR)) {

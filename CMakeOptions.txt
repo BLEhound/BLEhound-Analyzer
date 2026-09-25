@@ -2,6 +2,7 @@
 
 option(BUILD_wireshark     "Build Wireshark" ON)
 option(BUILD_stratoshark   "Build Stratoshark" OFF)
+option(BLEHOUND_BRANDING   "Brand the Qt GUI as BLEhound Analyzer" ON)
 if(BUILD_wireshark OR BUILD_stratoshark)
 	option(USE_qt6     "Use Qt6 (preferred) instead of Qt5" ON)
 endif()

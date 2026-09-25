@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 640 640">
+  <defs>
+    <linearGradient id="tileA" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#E9EEEA"/>
+    </linearGradient>
+    <linearGradient id="grnA" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8CE6A2"/>
+      <stop offset="100%" stop-color="#37B85E"/>
+    </linearGradient>
+  </defs>
+  <!-- white rounded app tile, transparent margins -->
+  <rect x="40" y="40" width="560" height="560" rx="140" fill="url(#tileA)" stroke="#D7DED8" stroke-width="2"/>
+  <!-- Bluetooth rune centered at (320,300), scale 14 from 24-box -->
+  <g stroke="url(#grnA)" stroke-width="25" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M243 223 L397 349 L320 419 L320 160 L397 223 L243 349"/>
+  </g>
+  <!-- base bar -->
+  <rect x="266" y="468" width="188" height="42" rx="21" fill="url(#grnA)"/>
+</svg>

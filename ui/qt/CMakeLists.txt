@@ -931,6 +931,10 @@ target_compile_definitions(qtui
 		${QT5_COMPILE_DEFINITIONS}
 )
 
+if(BLEHOUND_BRANDING)
+	target_compile_definitions(qtui PUBLIC BLEHOUND_BRANDING)
+endif()
+
 set_target_properties(qtui PROPERTIES
 	LINK_FLAGS "${WS_LINK_FLAGS}"
 	FOLDER "UI"
