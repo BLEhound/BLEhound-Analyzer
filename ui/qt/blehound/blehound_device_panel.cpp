@@ -33,6 +33,8 @@ enum BoardColumn {
     ColBoard,
     ColPort,
     ColStatus,
+    ColSync,
+    ColFirmware,
     ColPackets,
     ColCount
 };
@@ -70,7 +72,8 @@ QWidget *DevicePanel::buildBoardList()
     table_ = new QTableWidget(0, ColCount, box);
     table_->setHorizontalHeaderLabels({
         localized("Board", "板子"), localized("Port", "串口"),
-        localized("Status", "状态"), localized("Packets", "包数"),
+        localized("Status", "状态"), QStringLiteral("SYNC"),
+        localized("Firmware", "固件"), localized("Packets", "包数"),
     });
     table_->verticalHeader()->hide();
     table_->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -165,9 +168,15 @@ void DevicePanel::refreshBoards()
         QString status = board.capturing ? localized("Capturing", "抓包中") :
                          board.scanning ? localized("Scanning", "扫描中") : localized("Idle", "空闲");
 
+        QString sync = !board.have_status ? QStringLiteral("—") :
+                       board.sync_active ? localized("ok", "正常") : localized("none", "无");
+        QString fw = board.have_status ? board.fw_version : QStringLiteral("—");
+
         table_->setItem(row, ColBoard, new QTableWidgetItem(label));
         table_->setItem(row, ColPort, new QTableWidgetItem(QFileInfo(board.location).fileName()));
         table_->setItem(row, ColStatus, new QTableWidgetItem(status));
+        table_->setItem(row, ColSync, new QTableWidgetItem(sync));
+        table_->setItem(row, ColFirmware, new QTableWidgetItem(fw));
         table_->setItem(row, ColPackets, new QTableWidgetItem(QString::number(board.packets)));
     }
     int height = table_->horizontalHeader()->height() + 4;

@@ -15,6 +15,8 @@
 #include <QStringList>
 #include <QTimer>
 
+#include <blehound/blehound.h>
+
 namespace BLEhound {
 
 class Streamer;
@@ -31,6 +33,11 @@ public:
         bool capturing = false;
         bool scanning = false;      /**< idle listening for the devices list */
         quint64 packets = 0;
+        bool have_status = false;   /**< a status frame has been received */
+        QString fw_version;
+        bool sync_active = false;
+        bool following = false;
+        quint32 connects_seen = 0;
     };
 
     /** Create the manager. Main thread, before the main window. */
@@ -61,6 +68,7 @@ public slots:
     void reportCaptureState(const QString &location, bool capturing);
     void reportScanState(const QString &location, bool scanning);
     void reportFrames(const QString &location, int board_id, quint64 packets);
+    void reportStatus(const QString &location, const bh_status &status);
 
     /** Stop/resume the idle scanners (the aggregated capture needs the ports). */
     void setScanPaused(bool paused);

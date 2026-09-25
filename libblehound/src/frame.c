@@ -71,6 +71,32 @@ bool bh_parse_frame(const uint8_t *raw, size_t len, bh_packet *pkt)
     return true;
 }
 
+bool bh_parse_status(const uint8_t *raw, size_t len, bh_status *st)
+{
+    if (len < 15 || raw[0] != BH_FRAME_STATUS) {
+        return false;
+    }
+    memset(st, 0, sizeof(*st));
+    st->status_version = raw[1];
+    st->board_id = raw[2];
+    st->guard_channel = raw[3];
+    st->flags = raw[4];
+    st->sync_count = get_le32(raw + 5);
+    st->connects_seen = get_le32(raw + 9);
+    st->active_now = raw[13];
+
+    uint8_t fw_len = raw[14];
+    if ((size_t)15 + fw_len > len) {
+        return false;
+    }
+    if (fw_len > BH_FW_VERSION_MAX - 1) {
+        fw_len = BH_FW_VERSION_MAX - 1;
+    }
+    memcpy(st->fw_version, raw + 15, fw_len);
+    st->fw_version[fw_len] = '\0';
+    return true;
+}
+
 uint8_t bh_ble_to_rf_channel(uint8_t ble_channel)
 {
     /* Advertising channels sit at the bottom, middle and top of the band. */
