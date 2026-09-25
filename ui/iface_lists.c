@@ -133,6 +133,14 @@ scan_local_interfaces(void (*update_cb)(void))
  * and set the list of "all interfaces" in *capture_opts to include
  * those interfaces.
  */
+static extra_interfaces_fn extra_interfaces;
+
+void
+set_extra_interfaces_fn(extra_interfaces_fn fn)
+{
+    extra_interfaces = fn;
+}
+
 void
 scan_local_interfaces_filtered(GList * allowed_types, void (*update_cb)(void))
 {
@@ -541,6 +549,10 @@ scan_local_interfaces_filtered(GList * allowed_types, void (*update_cb)(void))
             g_array_append_val(global_capture_opts.all_ifaces, device);
             global_capture_opts.num_selected++;
         }
+    }
+
+    if (extra_interfaces) {
+        extra_interfaces();
     }
 
     running = false;

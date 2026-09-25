@@ -42,6 +42,16 @@ extern void scan_local_interfaces(void (*update_cb)(void));
  */
 extern void scan_local_interfaces_filtered(GList * allowed_types, void (*update_cb)(void));
 
+/**
+ * Callback run at the end of every interface scan, so the GUI can append
+ * interfaces that neither dumpcap nor extcap discover (e.g. BLEhound
+ * dongles served over a local socket).
+ */
+typedef void (*extra_interfaces_fn)(void);
+
+/** Set (or clear with NULL) the extra interfaces callback. */
+extern void set_extra_interfaces_fn(extra_interfaces_fn fn);
+
 /*
  * Hide the interfaces
  */

@@ -23,6 +23,9 @@
 #include <ws_exit_codes.h>
 #include <wsutil/application_flavor.h>
 #include "blehound/blehound_brand.h"
+#ifdef BLEHOUND_NATIVE_CAPTURE
+#include "blehound/blehound_device_manager.h"
+#endif
 #include <wsutil/clopts_common.h>
 #include <wsutil/cmdarg_err.h>
 #include <ui/urls.h>
@@ -964,6 +967,11 @@ int main(int argc, char *qt_argv[])
     ws_log(LOG_DOMAIN_MAIN, LOG_LEVEL_INFO, "Calling fill_in_local_interfaces, elapsed time %" PRIu64 " us \n", g_get_monotonic_time() - start_time);
 #endif
     splash_update(RA_INTERFACES, NULL, NULL);
+
+#ifdef BLEHOUND_NATIVE_CAPTURE
+    /* Before the first scan so connected dongles are listed right away. */
+    BLEhound::DeviceManager::install();
+#endif
 
     if (cf_name.isEmpty() && !prefs.capture_no_interface_load) {
         wsApp->scanLocalInterfaces(nullptr);
