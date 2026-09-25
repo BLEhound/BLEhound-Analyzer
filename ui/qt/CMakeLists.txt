@@ -491,6 +491,7 @@ set(WIRESHARK_QT_SRC
 	main_window_layout.cpp
 	main_window_preferences_frame.cpp
 	main_window.cpp
+	blehound/blehound_branding.cpp
 	main.cpp
 	manage_interfaces_dialog.cpp
 	manuf_dialog.cpp
@@ -798,6 +799,11 @@ if (APPLE)
 else()
 	set(WS_ICON_QRC "wsicon.qrc")
 endif()
+if(BLEHOUND_BRANDING)
+	# Same file names and aliases as upstream, so Q_INIT_RESOURCE() and the
+	# :/wsicon/ paths keep working; only the artwork changes.
+	set(WS_ICON_QRC "icons/blehound/${WS_ICON_QRC}")
+endif()
 
 qt_add_resources(WIRESHARK_QT_QRC
 	../../resources/about.qrc
@@ -933,6 +939,8 @@ target_compile_definitions(qtui
 
 if(BLEHOUND_BRANDING)
 	target_compile_definitions(qtui PUBLIC BLEHOUND_BRANDING)
+	# blehound/*.cpp include ui_*.h generated from .ui files in this directory.
+	set_property(TARGET qtui APPEND PROPERTY AUTOUIC_SEARCH_PATHS ${CMAKE_CURRENT_SOURCE_DIR})
 endif()
 
 set_target_properties(qtui PROPERTIES

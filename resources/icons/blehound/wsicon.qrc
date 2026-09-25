@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/wsicon">
+        <file alias="wsiconcap16.png">cap-16.png</file>
+        <file alias="wsiconcap24.png">cap-24.png</file>
+        <file alias="wsiconcap32.png">cap-32.png</file>
+        <file alias="wsiconcap48.png">cap-48.png</file>
+        <file alias="wsiconcap64.png">cap-64.png</file>
+        <file alias="wsiconcap128.png">cap-128.png</file>
+        <file alias="wsiconcap256.png">cap-256.png</file>
+        <file alias="wsicon16.png">app-16.png</file>
+        <file alias="wsicon24.png">app-24.png</file>
+        <file alias="wsicon32.png">app-32.png</file>
+        <file alias="wsicon48.png">app-48.png</file>
+        <file alias="wsicon64.png">app-64.png</file>
+        <file alias="wsicon128.png">app-128.png</file>
+        <file alias="wsicon256.png">app-256.png</file>
+    </qresource>
+    <qresource prefix="/blehound">
+        <file>splash.png</file>
+        <file>splash@2x.png</file>
+    </qresource>
+</RCC>
