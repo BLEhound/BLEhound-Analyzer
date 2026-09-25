@@ -31,6 +31,46 @@ AdvertiserModel::AdvertiserModel(QObject *parent) :
 {
     qRegisterMetaType<QList<Advertiser>>();
     loadAliases();
+
+    QSettings settings(QStringLiteral("BLEhound"), QStringLiteral("Analyzer"));
+    setStaleTimeout(settings.value(QStringLiteral("ui/deviceStaleSeconds"), 30).toInt());
+    connect(&stale_timer_, &QTimer::timeout, this, &AdvertiserModel::dropStale);
+    stale_timer_.start(2000);
+}
+
+void AdvertiserModel::setStaleTimeout(int seconds)
+{
+    stale_us_ = (qint64)seconds * 1000000;
+    QSettings settings(QStringLiteral("BLEhound"), QStringLiteral("Analyzer"));
+    settings.setValue(QStringLiteral("ui/deviceStaleSeconds"), seconds);
+}
+
+void AdvertiserModel::reindex(int from)
+{
+    for (int i = from; i < rows_.size(); i++) {
+        index_.insert(rows_.at(i).adva, i);
+    }
+}
+
+// A rotated-away RPA stops advertising, so its row is dropped once it has
+// not been heard for the timeout; that is why one physical device seems to
+// spawn several rows (see IRK resolution to collapse them into one).
+void AdvertiserModel::dropStale()
+{
+    if (stale_us_ <= 0 || rows_.isEmpty()) {
+        return;
+    }
+    qint64 now = QDateTime::currentMSecsSinceEpoch() * 1000;
+    for (int i = rows_.size() - 1; i >= 0; i--) {
+        if (now - rows_.at(i).last_seen_us <= stale_us_) {
+            continue;
+        }
+        beginRemoveRows(QModelIndex(), i, i);
+        index_.remove(rows_.at(i).adva);
+        rows_.removeAt(i);
+        endRemoveRows();
+        reindex(i);
+    }
 }
 
 void AdvertiserModel::loadAliases()
