@@ -29,6 +29,7 @@ public:
         QString location;
         int board_id = -1;          /**< learnt from the first captured frame */
         bool capturing = false;
+        bool scanning = false;      /**< idle listening for the devices list */
         quint64 packets = 0;
     };
 
@@ -58,7 +59,11 @@ public:
 public slots:
     /* Called (queued) from the capture threads. */
     void reportCaptureState(const QString &location, bool capturing);
+    void reportScanState(const QString &location, bool scanning);
     void reportFrames(const QString &location, int board_id, quint64 packets);
+
+    /** Stop/resume the idle scanners (the aggregated capture needs the ports). */
+    void setScanPaused(bool paused);
 
 signals:
     void boardsChanged();

@@ -100,6 +100,22 @@ void DeviceManager::reportCaptureState(const QString &location, bool capturing)
     emit boardsChanged();
 }
 
+void DeviceManager::reportScanState(const QString &location, bool scanning)
+{
+    if (!boards_.contains(location)) {
+        return;
+    }
+    boards_[location].scanning = scanning;
+    emit boardsChanged();
+}
+
+void DeviceManager::setScanPaused(bool paused)
+{
+    foreach (Streamer *streamer, streamers_) {
+        streamer->setScanPaused(paused);
+    }
+}
+
 void DeviceManager::reportFrames(const QString &location, int board_id, quint64 packets)
 {
     if (!boards_.contains(location)) {

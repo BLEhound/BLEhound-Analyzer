@@ -58,6 +58,9 @@ public:
     /** Change the target while capturing (6 bytes air order, empty = none); any thread. */
     void setTarget(const QByteArray &mac_le);
 
+    /** Stop the idle scan and release the port (aggregated capture needs it); any thread. */
+    void setScanPaused(bool paused) { scan_paused_.storeRelaxed(paused ? 1 : 0); }
+
 protected:
     void run() override;
 
@@ -66,8 +69,10 @@ private:
 
     Result streamToClient(int client_fd);
     Result captureLoop(int client_fd);
-    bool openAndConfigure(QSerialPort &port);
+    bool openAndConfigure(QSerialPort &port, const CaptureConfig &config);
+    void stopScan(QSerialPort &port);
     void reportState(bool capturing);
+    void reportScan(bool scanning);
     void reportFrames();
     bool stopping() const { return stop_requested_.loadRelaxed() != 0; }
 
@@ -78,6 +83,7 @@ private:
     FrameStats stats_;
     AdvertiserCollector collector_;
     QAtomicInt stop_requested_;
+    QAtomicInt scan_paused_;
 
     QMutex target_mutex_;
     QByteArray pending_target_;
