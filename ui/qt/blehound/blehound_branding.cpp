@@ -20,8 +20,8 @@ void brandMainWindow(Ui::WiresharkMainWindow *ui)
     const QString name = QString::fromUtf8(application_flavor_name_proper());
 
     // The shark-fin icons are part of the Wireshark trademark.
-    ui->actionCaptureStart->setIcon(StockIcon("x-capture-start-circle"));
-    ui->actionCaptureRestart->setIcon(StockIcon("x-capture-restart-circle"));
+    ui->actionCaptureStart->setIcon(StockIcon("blehound-capture-start"));
+    ui->actionCaptureRestart->setIcon(StockIcon("blehound-capture-restart"));
 
     ui->actionHelpAbout->setText(QObject::tr("&About %1").arg(name));
     ui->actionFileQuit->setText(QObject::tr("Quit %1").arg(name));

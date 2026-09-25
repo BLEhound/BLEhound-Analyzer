@@ -54,3 +54,29 @@ cat > "$TMP/splash.svg" <<SVG
 SVG
 rsvg-convert -w 312 -h 128 "$TMP/splash.svg" -o splash@2x.png
 rsvg-convert -w 156 -h 64 "$TMP/splash.svg" -o splash.png
+
+# Toolbar capture icons (replace Wireshark's trademarked shark-fin icons).
+# 24-unit viewBox; rendered at 16/24 px and @2x.
+toolbar_svg() {  # $1 = ring colour, $2 = glyph
+cat <<SVG
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#8CE6A2"/><stop offset="100%" stop-color="#2FA353"/></linearGradient></defs>
+  <circle cx="12" cy="12" r="10.5" fill="url(#g)" stroke="$1" stroke-width="1"/>
+  $2
+</svg>
+SVG
+}
+BT='<path d="M8.6 9.2 L15 14.3 L12 16.8 L12 7.2 L15 9.7 L8.6 14.8" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>'
+ARROW='<path d="M16.6 10.2 A5 5 0 1 0 16.9 13.4" fill="none" stroke="#FFFFFF" stroke-width="1.7" stroke-linecap="round"/><path d="M17.4 6.9 L17 10.7 L13.3 9.9" fill="none" stroke="#FFFFFF" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>'
+toolbar_svg "#1E7A3C" "$BT"    > "$TMP/start.svg"
+toolbar_svg "#E5484D" "$BT"    > "$TMP/start.on.svg"
+toolbar_svg "#1E7A3C" "$ARROW" > "$TMP/restart.svg"
+for size in 16 24; do
+    dir="toolbar/${size}x${size}"
+    mkdir -p "$dir"
+    for v in start start.on restart; do
+        rsvg-convert -w $size -h $size "$TMP/$v.svg" -o "$dir/blehound-capture-$v.png"
+        rsvg-convert -w $((size * 2)) -h $((size * 2)) "$TMP/$v.svg" -o "$dir/blehound-capture-$v@2x.png"
+    done
+done
