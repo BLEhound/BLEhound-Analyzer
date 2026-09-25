@@ -1,0 +1,313 @@
+/* blehound_tri_streamer.cpp
+ *
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+
+#include "config.h"
+#define WS_LOG_DOMAIN LOG_DOMAIN_CAPTURE
+
+#include "blehound_tri_streamer.h"
+#include "blehound_socket.h"
+
+#include <string.h>
+#include <unistd.h>
+
+#include <glib.h>
+
+#include <wsutil/wslog.h>
+
+namespace BLEhound {
+
+static const int kAcceptPollMs = 200;
+static const int kSerialPollMs = 100;
+static const int kReopenDelayMs = 500;
+static const int kConfigSettleMs = 50;
+static const int kQueueWaitMs = 200;
+static const int kQueueMax = 10000;
+
+/* ---------------------------------------------------------- BoardReader */
+
+BoardReader::BoardReader(const QString &location, TriStreamer *owner) :
+    QThread(nullptr),
+    serial_location_(location),
+    location_(location),
+    owner_(owner),
+    stop_requested_(0)
+{
+}
+
+BoardReader::~BoardReader()
+{
+    requestStop();
+    wait();
+}
+
+bool BoardReader::sendCommand(uint8_t cmd, const uint8_t *arg, size_t arg_len)
+{
+    uint8_t framed[64];
+    size_t n = bh_cmd_build(cmd, arg, arg_len, framed, sizeof(framed));
+
+    return n > 0 && serial_.write(framed, n);
+}
+
+void BoardReader::pinGuardChannel(uint8_t board_id)
+{
+    uint8_t channel;
+
+    if (pinned_) {
+        return;
+    }
+    // The firmware may have drifted off its strap channel while following
+    // a connection, so pin it by board_id rather than trust its own state.
+    if (bh_guard_channel_for_board(board_id, &channel)) {
+        sendCommand(BH_CMD_SET_CHANNEL, &channel, 1);
+    }
+    pinned_ = true;
+}
+
+bool BoardReader::openAndConfigure()
+{
+    const CaptureConfig &config = owner_->config();
+    QString error;
+    uint8_t flag;
+    uint8_t mac[6] = { 0 };
+
+    if (!serial_.open(serial_location_, &error)) {
+        return false;
+    }
+    flag = 0;                                   /* guard one channel, no hopping */
+    sendCommand(BH_CMD_SET_HOPPING, &flag, 1);
+    if (config.target_mac_le.size() == (int)sizeof(mac)) {
+        memcpy(mac, config.target_mac_le.constData(), sizeof(mac));
+    }
+    sendCommand(BH_CMD_SET_TARGET, mac, sizeof(mac));
+    flag = config.single_target ? 1 : 0;
+    sendCommand(BH_CMD_SET_SINGLE_TARGET, &flag, 1);
+    // Frames queued before the configuration took effect are unfiltered.
+    serial_.drainInput(kConfigSettleMs);
+    pinned_ = false;
+    return true;
+}
+
+namespace {
+
+struct FrameContext {
+    BoardReader *reader;
+    int64_t host_us;
+};
+
+void onDecodedFrame(void *ctx, const uint8_t *frame, size_t len)
+{
+    FrameContext *c = static_cast<FrameContext *>(ctx);
+    bh_packet pkt;
+
+    if (!bh_parse_frame(frame, len, &pkt)) {
+        return;
+    }
+    c->reader->pinGuardChannel(pkt.board_id);
+    c->reader->owner()->onFrame(c->reader, pkt, c->host_us);
+}
+
+} // namespace
+
+void BoardReader::run()
+{
+    bh_deframer deframer;
+    uint8_t buf[4096];
+
+    bh_deframer_init(&deframer);
+    while (!stopping()) {
+        if (!serial_.isOpen()) {
+            if (!openAndConfigure()) {
+                msleep(kReopenDelayMs);         /* unplugged or busy: keep trying */
+                continue;
+            }
+            bh_deframer_init(&deframer);
+        }
+        ssize_t n = serial_.read(buf, sizeof(buf), kSerialPollMs);
+        if (n < 0) {
+            ws_info("BLEhound %s: read failed, reopening", qUtf8Printable(serial_location_));
+            serial_.close();
+            continue;
+        }
+        if (n == 0) {
+            continue;
+        }
+        FrameContext ctx = { this, g_get_real_time() };
+        bh_deframer_feed(&deframer, buf, (size_t)n, onDecodedFrame, &ctx);
+    }
+    serial_.close();
+}
+
+/* ---------------------------------------------------------- TriStreamer */
+
+TriStreamer::TriStreamer(const QString &socket_path, QObject *parent) :
+    QThread(parent),
+    socket_path_(socket_path),
+    stop_requested_(0)
+{
+    memset(&relay_, 0, sizeof(relay_));
+    memset(&ts_, 0, sizeof(ts_));
+}
+
+TriStreamer::~TriStreamer()
+{
+    requestStop();
+    wait();
+}
+
+void TriStreamer::setPorts(const QStringList &ports)
+{
+    QMutexLocker locker(&ports_mutex_);
+    ports_ = ports;
+}
+
+bool TriStreamer::relaySend(void *ctx, uint8_t board_id, const uint8_t *params, size_t params_len)
+{
+    TriStreamer *self = static_cast<TriStreamer *>(ctx);
+    BoardReader *reader = self->boards_.value(board_id);   /* relay_mutex_ held by caller */
+
+    return reader != nullptr && reader->sendCommand(BH_CMD_FOLLOW, params, params_len);
+}
+
+void TriStreamer::onFrame(BoardReader *reader, const bh_packet &pkt, int64_t host_us)
+{
+    if (config_.follow_relay) {
+        QMutexLocker locker(&relay_mutex_);
+        boards_[pkt.board_id] = reader;             /* re-registered after a reconnect */
+        bh_follow_relay_register(&relay_, pkt.board_id);
+        bh_follow_relay_observe(&relay_, pkt.board_id, pkt.sync_epoch, host_us);
+        if (pkt.crc_ok) {
+            bh_follow_relay_maybe_relay(&relay_, pkt.board_id, &pkt, host_us, relaySend, this);
+        }
+    }
+    if (!pkt.crc_ok && !config_.include_crc_errors) {
+        return;
+    }
+
+    bh_agg_packet rec;
+    bh_agg_packet_from(&rec, &pkt, host_us);
+
+    QMutexLocker locker(&queue_mutex_);
+    if (queue_.size() >= kQueueMax) {
+        dropped_++;                                 /* never block a reader on the writer */
+        return;
+    }
+    queue_.enqueue(rec);
+    queue_cond_.wakeOne();
+}
+
+void TriStreamer::emitPacket(void *ctx, const bh_agg_packet *pkt)
+{
+    TriStreamer *self = static_cast<TriStreamer *>(ctx);
+    bh_packet view;
+    uint8_t rec[BH_MAX_RECORD_LEN];
+    uint8_t hdr[BH_PCAP_RECORD_HEADER_LEN];
+
+    bh_agg_packet_view(pkt, &view);
+    size_t n = bh_btle_rf_record(&view, rec, sizeof(rec));
+    if (n == 0) {
+        return;
+    }
+    bh_pcap_record_header((uint64_t)bh_ts_mapper_map_mono(&self->ts_, pkt->key64), (uint32_t)n, hdr);
+    self->out_.append(reinterpret_cast<const char *>(hdr), sizeof(hdr));
+    self->out_.append(reinterpret_cast<const char *>(rec), (qsizetype)n);
+}
+
+void TriStreamer::run()
+{
+    int listen_fd = Socket::listenOn(socket_path_);
+
+    if (listen_fd < 0) {
+        return;
+    }
+    while (!stopping()) {
+        int client_fd = Socket::acceptClient(listen_fd, kAcceptPollMs);
+        if (client_fd < 0) {
+            continue;
+        }
+        ws_info("BLEhound aggregated capture started");
+        streamToClient(client_fd);
+        close(client_fd);
+        ws_info("BLEhound aggregated capture ended (%llu packets dropped on the way to the aggregator)",
+                (unsigned long long)dropped_);
+    }
+    close(listen_fd);
+    unlink(socket_path_.toLocal8Bit().constData());
+}
+
+void TriStreamer::streamToClient(int client_fd)
+{
+    QStringList ports;
+    QList<BoardReader *> readers;
+    uint8_t global_header[BH_PCAP_GLOBAL_HEADER_LEN];
+
+    {
+        QMutexLocker locker(&ports_mutex_);
+        ports = ports_;
+    }
+    {
+        QMutexLocker locker(&relay_mutex_);
+        const uint8_t *target = config_.target_mac_le.size() == 6 ?
+            reinterpret_cast<const uint8_t *>(config_.target_mac_le.constData()) : nullptr;
+        bh_follow_relay_init(&relay_, 0, target);
+        boards_.clear();
+    }
+    {
+        QMutexLocker locker(&queue_mutex_);
+        queue_.clear();
+        dropped_ = 0;
+    }
+    out_.clear();
+    bh_ts_mapper_init(&ts_, (uint64_t)g_get_real_time());
+    bh_aggregator *agg = bh_aggregator_new(BH_AGG_DEDUP_US, BH_AGG_REORDER_US, 0);
+    if (agg == nullptr) {
+        return;
+    }
+
+    bh_pcap_global_header(global_header);
+    if (Socket::sendAll(client_fd, QByteArray(reinterpret_cast<const char *>(global_header), sizeof(global_header)))) {
+        foreach (const QString &port, ports) {
+            BoardReader *reader = new BoardReader(port, this);
+            readers << reader;
+            reader->start();
+        }
+
+        while (!stopping()) {
+            QList<bh_agg_packet> batch;
+            {
+                QMutexLocker locker(&queue_mutex_);
+                if (queue_.isEmpty()) {
+                    queue_cond_.wait(&queue_mutex_, kQueueWaitMs);
+                }
+                while (!queue_.isEmpty()) {
+                    batch << queue_.dequeue();
+                }
+            }
+            foreach (const bh_agg_packet &pkt, batch) {
+                bh_aggregator_add(agg, &pkt, emitPacket, this);
+            }
+            if (!out_.isEmpty()) {
+                if (!Socket::sendAll(client_fd, out_)) {
+                    break;
+                }
+                out_.clear();
+            }
+            if (Socket::clientClosed(client_fd)) {
+                break;
+            }
+        }
+    }
+
+    foreach (BoardReader *reader, readers) {
+        reader->requestStop();
+    }
+    qDeleteAll(readers);                            /* waits for each thread */
+    {
+        QMutexLocker locker(&relay_mutex_);
+        boards_.clear();
+    }
+    bh_aggregator_free(agg);
+}
+
+} // namespace BLEhound

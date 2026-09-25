@@ -956,7 +956,10 @@ if(BLEHOUND_BRANDING)
 	if(Qt6SerialPort_FOUND AND NOT WIN32)
 		target_sources(qtui PRIVATE
 			blehound/blehound_device_manager.cpp
+			blehound/blehound_serial.cpp
+			blehound/blehound_socket.cpp
 			blehound/blehound_streamer.cpp
+			blehound/blehound_tri_streamer.cpp
 		)
 		target_compile_definitions(qtui PUBLIC BLEHOUND_NATIVE_CAPTURE)
 		target_link_libraries(qtui PUBLIC Qt6::SerialPort blehound)

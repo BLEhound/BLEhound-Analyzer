@@ -28,6 +28,7 @@ struct CaptureConfig {
     QByteArray target_mac_le;       /**< 6 bytes, air order; empty = no filter */
     bool single_target = true;
     bool include_crc_errors = false;
+    bool follow_relay = false;      /**< aggregated capture: hand a CONNECT_IND to the other boards */
 };
 
 class Streamer : public QThread
@@ -50,11 +51,8 @@ protected:
 private:
     enum class Result { ClientGone, Stopped };
 
-    int listen();
     Result streamToClient(int client_fd);
     bool openAndConfigure(QSerialPort &port);
-    bool sendAll(int fd, const QByteArray &data);
-    bool clientClosed(int fd);
     bool stopping() const { return stop_requested_.loadRelaxed() != 0; }
 
     const QString serial_location_;
