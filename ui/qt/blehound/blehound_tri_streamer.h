@@ -89,7 +89,7 @@ public:
     DeviceManager *manager() const { return manager_; }
 
     /** Change the target while capturing (6 bytes air order, empty = none); any thread. */
-    void setTarget(const QByteArray &mac_le);
+    void setTarget(const QByteArray &mac_le, const QByteArray &irk_le);
 
     /** Dongles to use for the next capture; any thread. */
     void setPorts(const QStringList &ports);

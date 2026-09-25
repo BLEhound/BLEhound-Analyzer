@@ -40,6 +40,9 @@ extern "C" {
 #define BH_CMD_FOLLOW               0x86
 #define BH_CMD_SET_SINGLE_TARGET    0x87    /* 1 byte: 1 = single-target (default), 0 = multi-target */
 #define BH_CMD_QUERY_STATUS         0x88    /* no args; device replies with a BH_FRAME_STATUS frame */
+#define BH_CMD_SET_IRK              0x89    /* 16 bytes: target IRK, air/SMP order (LSO first); all zero = clear.
+                                             * The device then recognises the target's rotating resolvable
+                                             * private addresses and keeps following it. */
 
 /* STATUS frame flags. */
 #define BH_STATUS_SINGLE_TARGET     (1u << 0)
@@ -47,6 +50,7 @@ extern "C" {
 #define BH_STATUS_TARGET_SET        (1u << 2)
 #define BH_STATUS_FOLLOWING         (1u << 3)
 #define BH_STATUS_SYNC_ACTIVE       (1u << 4)
+#define BH_STATUS_IRK_SET           (1u << 5)
 
 #define BH_FW_VERSION_MAX           64
 
@@ -197,6 +201,27 @@ size_t bh_cmd_build(uint8_t cmd, const uint8_t *arg, size_t arg_len,
  * @return false on malformed input.
  */
 bool bh_parse_mac(const char *text, uint8_t mac_le[6]);
+
+/**
+ * Parse @p len bytes of hex ("0A1B..." with optional ':', '-' or spaces).
+ * @return false if the text is not exactly @p len bytes.
+ */
+bool bh_parse_hex(const char *text, uint8_t *out, size_t len);
+
+/* --------------------------------------------------- privacy / crypto */
+
+/** AES-128 single block, FIPS-197 byte order; @p in and @p out may alias. */
+void bh_aes128_encrypt(const uint8_t key[16], const uint8_t in[16], uint8_t out[16]);
+
+/** Random address with the resolvable-private pattern (top two bits 01). */
+bool bh_rpa_is_resolvable(const uint8_t addr_le[6]);
+
+/**
+ * ah() check: does @p irk_le resolve @p addr_le?
+ * @param irk_le  16 bytes in air / SMP Identity Information order (LSO first)
+ * @param addr_le 6 bytes in air (little-endian) order
+ */
+bool bh_rpa_matches(const uint8_t irk_le[16], const uint8_t addr_le[6]);
 
 /* ------------------------------------------------------------------ pcap */
 
@@ -410,6 +435,8 @@ typedef struct bh_follow_relay {
     bh_sync_clock  clock;
     bool           has_target;
     uint8_t        target[6];
+    bool           has_irk;         /**< also relay the target's resolvable private addresses */
+    uint8_t        irk[16];
     bool           registered[BH_MAX_BOARDS];
     struct {
         bool     used;
@@ -422,6 +449,8 @@ typedef struct bh_follow_relay {
 /** @p target_le: 6-byte AdvA in air order to relay only that device, or NULL. */
 void bh_follow_relay_init(bh_follow_relay *r, uint8_t ref_board, const uint8_t *target_le);
 void bh_follow_relay_register(bh_follow_relay *r, uint8_t board_id);
+/** @p irk_le: the target's IRK (air order) so rotated addresses still count, or NULL to clear. */
+void bh_follow_relay_set_irk(bh_follow_relay *r, const uint8_t *irk_le);
 void bh_follow_relay_observe(bh_follow_relay *r, uint8_t board_id, uint32_t sync_epoch, int64_t host_us);
 
 /**

@@ -31,6 +31,8 @@ struct CaptureConfig {
     bool hopping = true;            /**< hop 37/38/39; otherwise stay on channel */
     quint8 channel = 37;
     QByteArray target_mac_le;       /**< 6 bytes, air order; empty = no filter */
+    QByteArray target_irk_le;       /**< 16 bytes, air order; empty = none. With it the dongle keeps
+                                         following the target across its rotating private addresses */
     bool single_target = true;
     bool include_crc_errors = false;
     bool follow_relay = false;      /**< aggregated capture: hand a CONNECT_IND to the other boards */
@@ -58,8 +60,8 @@ public:
     /** Report a parsed status frame to the device manager (queued). */
     void reportStatus(const bh_status &status);
 
-    /** Change the target while capturing (6 bytes air order, empty = none); any thread. */
-    void setTarget(const QByteArray &mac_le);
+    /** Change the target while capturing (6 bytes air order, empty = none) and its IRK (16 bytes or empty); any thread. */
+    void setTarget(const QByteArray &mac_le, const QByteArray &irk_le);
 
     /** Stop the idle scan and release the port (aggregated capture needs it); any thread. */
     void setScanPaused(bool paused) { scan_paused_.storeRelaxed(paused ? 1 : 0); }
@@ -90,6 +92,7 @@ private:
 
     QMutex target_mutex_;
     QByteArray pending_target_;
+    QByteArray pending_irk_;
     bool has_pending_target_ = false;
 };
 

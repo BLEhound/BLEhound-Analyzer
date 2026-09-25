@@ -79,12 +79,12 @@ int DeviceManager::channelFor(const QString &location) const
     return rank >= 0 && rank < 3 ? 37 + rank : 0;
 }
 
-void DeviceManager::applyTarget(const QByteArray &mac_le)
+void DeviceManager::applyTarget(const QByteArray &mac_le, const QByteArray &irk_le)
 {
     foreach (Streamer *streamer, streamers_) {
-        streamer->setTarget(mac_le);
+        streamer->setTarget(mac_le, irk_le);
     }
-    tri_streamer_->setTarget(mac_le);
+    tri_streamer_->setTarget(mac_le, irk_le);
 }
 
 void DeviceManager::reportCaptureState(const QString &location, bool capturing)

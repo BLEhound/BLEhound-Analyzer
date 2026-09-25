@@ -8,6 +8,8 @@ add_library(blehound STATIC
 	src/adv.c
 	src/agg.c
 	src/sync.c
+	src/aes128.c
+	src/rpa.c
 )
 target_include_directories(blehound PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set_target_properties(blehound PROPERTIES

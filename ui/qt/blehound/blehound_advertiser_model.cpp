@@ -7,11 +7,13 @@
 
 #include "blehound_advertiser_model.h"
 #include "blehound_i18n.h"
+#include "blehound_key_store.h"
 
 #include <epan/addr_resolv.h>
 #include <epan/dissectors/packet-bluetooth.h>
 
 #include <QDateTime>
+#include <algorithm>
 #include <QMetaObject>
 #include <QSettings>
 
@@ -36,6 +38,48 @@ AdvertiserModel::AdvertiserModel(QObject *parent) :
     setStaleTimeout(settings.value(QStringLiteral("ui/deviceStaleSeconds"), 30).toInt());
     connect(&stale_timer_, &QTimer::timeout, this, &AdvertiserModel::dropStale);
     stale_timer_.start(2000);
+    connect(KeyStore::instance(), &KeyStore::changed, this, &AdvertiserModel::reresolve);
+}
+
+QList<QByteArray> AdvertiserModel::addressesForIdentity(const QString &identity) const
+{
+    QList<const Advertiser *> matches;
+
+    if (identity.isEmpty()) {
+        return QList<QByteArray>();
+    }
+    for (const Advertiser &a : rows_) {
+        if (a.identity.compare(identity, Qt::CaseInsensitive) == 0) {
+            matches.append(&a);
+        }
+    }
+    std::sort(matches.begin(), matches.end(), [](const Advertiser *x, const Advertiser *y) {
+        return x->last_seen_us > y->last_seen_us;
+    });
+    QList<QByteArray> out;
+    for (const Advertiser *a : matches) {
+        out.append(a->adva);
+    }
+    return out;
+}
+
+void AdvertiserModel::reresolve()
+{
+    for (int row = 0; row < rows_.size(); row++) {
+        Advertiser &a = rows_[row];
+        DeviceKey key;
+        QString identity, key_name;
+
+        if (KeyStore::instance()->resolve(a.adva, &key)) {
+            identity = key.identity;
+            key_name = key.label();
+        }
+        if (identity != a.identity || key_name != a.key_name) {
+            a.identity = identity;
+            a.key_name = key_name;
+            emit dataChanged(createIndex(row, 0), createIndex(row, ColCount - 1));
+        }
+    }
 }
 
 void AdvertiserModel::setStaleTimeout(int seconds)
@@ -189,13 +233,24 @@ QVariant AdvertiserModel::data(const QModelIndex &index, int role) const
         if (role == Qt::EditRole) {
             return alias;
         }
+        if (alias.isEmpty()) {
+            alias = a->key_name;            /* the key's label stands in for a name */
+        }
         if (!alias.isEmpty()) {
             return a->name.isEmpty() ? alias : QStringLiteral("%1 (%2)").arg(alias, a->name);
         }
         return a->name;
     }
     case ColAddress:  return formatAddress(a->adva);
-    case ColType:     return addressKind(*a) + (a->extended ? localized(", extended", "，扩展广播") : QString());
+    case ColType: {
+        QString kind = addressKind(*a);
+        if (!a->identity.isEmpty()) {
+            kind = localized("RPA of %1", "%1 的可解析随机").arg(a->identity);
+        } else if (!a->key_name.isEmpty()) {
+            kind = localized("RPA, IRK known", "可解析随机，IRK 已知");
+        }
+        return kind + (a->extended ? localized(", extended", "，扩展广播") : QString());
+    }
     case ColPhy:      return phyName(a->phy);
     case ColRssi:     return role == Qt::UserRole ? QVariant((int)a->rssi) : QVariant(QStringLiteral("%1 dBm").arg(a->rssi));
     case ColChannel:  return (int)a->channel;
@@ -296,6 +351,10 @@ void AdvertiserModel::merge(const QList<Advertiser> &batch)
             a.has_company = true;
             a.company = s.company;
         }
+        if (!s.key_name.isEmpty() && a.key_name.isEmpty()) {
+            a.identity = s.identity;
+            a.key_name = s.key_name;
+        }
         emit dataChanged(createIndex(row, 0), createIndex(row, ColCount - 1));
     }
 }
@@ -322,6 +381,9 @@ void AdvertiserCollector::onPacket(const bh_packet &pkt, qint64 now_us)
     if (a.adva.isEmpty()) {
         a.adva = adva;
         a.first_seen_us = now_us;
+        if (info.adva_random) {
+            resolveIdentity(a);
+        }
     }
     a.last_seen_us = now_us;
     if (!info.from_advertiser) {
@@ -344,6 +406,31 @@ void AdvertiserCollector::onPacket(const bh_packet &pkt, qint64 now_us)
         a.has_company = true;
         a.company = info.company_id;
     }
+}
+
+/* One AES block per stored IRK the first time an address is seen; the
+ * answer is cached until the keys change. */
+void AdvertiserCollector::resolveIdentity(Advertiser &a)
+{
+    KeyStore *store = KeyStore::instance();
+    int version = store->version();
+
+    if (version != keys_version_) {
+        resolved_.clear();
+        keys_version_ = version;
+    }
+    auto cached = resolved_.constFind(a.adva);
+    if (cached != resolved_.constEnd()) {
+        a.identity = cached->first;
+        a.key_name = cached->second;
+        return;
+    }
+    DeviceKey key;
+    if (store->resolve(a.adva, &key)) {
+        a.identity = key.identity;
+        a.key_name = key.label();
+    }
+    resolved_.insert(a.adva, qMakePair(a.identity, a.key_name));
 }
 
 void AdvertiserCollector::flushIfDue(qint64 now_us)

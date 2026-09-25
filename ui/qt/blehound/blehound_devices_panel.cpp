@@ -11,6 +11,8 @@
 #include "blehound_capture_settings.h"
 #include "blehound_device_manager.h"
 #include "blehound_i18n.h"
+#include "blehound_key_store.h"
+#include "blehound_keys_dialog.h"
 
 #include "main_application.h"
 #include "main_window.h"
@@ -89,6 +91,10 @@ DevicesPanel::DevicesPanel(QWidget *parent) :
     top->addWidget(search_, 1);
     QPushButton *clear_list = new QPushButton(localized("Clear list", "清空列表"), content);
     top->addWidget(clear_list);
+    QPushButton *keys = new QPushButton(localized("Keys…", "密钥…"), content);
+    keys->setToolTip(localized("Enter a device's IRK so its rotating private addresses are recognised and followed.",
+                               "填入设备的 IRK，它轮换的私有地址就能被认出并持续跟随。"));
+    top->addWidget(keys);
     layout->addLayout(top);
 
     proxy_ = new AdvertiserProxy(this);
@@ -133,6 +139,9 @@ DevicesPanel::DevicesPanel(QWidget *parent) :
         proxy_->setFilterRegularExpression(QRegularExpression::escape(text));
     });
     connect(clear_list, &QPushButton::clicked, AdvertiserModel::instance(), &AdvertiserModel::clear);
+    connect(keys, &QPushButton::clicked, this, &DevicesPanel::editKeys);
+    connect(AdvertiserModel::instance(), &QAbstractItemModel::rowsInserted, this, &DevicesPanel::rowsAdded);
+    connect(KeyStore::instance(), &KeyStore::changed, this, &DevicesPanel::updateTarget);
     connect(table_->selectionModel(), &QItemSelectionModel::selectionChanged, this, &DevicesPanel::selectionChanged);
     connect(table_, &QTableView::activated, this, [this](const QModelIndex &index) {
         if (index.column() != AdvertiserModel::ColName) {
@@ -174,15 +183,53 @@ void DevicesPanel::followSelected()
     if (adva.isEmpty()) {
         return;
     }
-    // Persists for the next capture and is pushed to running captures now.
+    // Persists for the next capture and is pushed to running captures now
+    // (setTargetMac attaches the IRK when a stored key resolves the address).
     CaptureSettings::instance()->setTargetMac(AdvertiserModel::formatAddress(adva));
-    DeviceManager::instance()->applyTarget(adva);
+    CaptureConfig config = CaptureSettings::instance()->config();
+    DeviceManager::instance()->applyTarget(adva, config.target_irk_le);
 }
 
 void DevicesPanel::clearTarget()
 {
     CaptureSettings::instance()->setTargetMac(QString());
-    DeviceManager::instance()->applyTarget(QByteArray());
+    DeviceManager::instance()->applyTarget(QByteArray(), QByteArray());
+}
+
+void DevicesPanel::editKeys()
+{
+    KeysDialog dialog(this);
+    dialog.exec();
+}
+
+QString DevicesPanel::targetIdentity() const
+{
+    CaptureConfig config = CaptureSettings::instance()->config();
+    DeviceKey key;
+
+    if (config.target_irk_le.isEmpty() || !KeyStore::instance()->resolve(config.target_mac_le, &key)) {
+        return QString();
+    }
+    return key.identity.isEmpty() ? key.label() : key.identity;
+}
+
+/* A new address that resolves to the target's identity: the dongle already
+ * switched to it; keep the traffic filter in step. */
+void DevicesPanel::rowsAdded(const QModelIndex &parent, int first, int last)
+{
+    Q_UNUSED(parent);
+    QString identity = targetIdentity();
+    if (identity.isEmpty()) {
+        return;
+    }
+    AdvertiserModel *model = AdvertiserModel::instance();
+    for (int row = first; row <= last; row++) {
+        const Advertiser *a = model->advertiserAt(row);
+        if (a && a->identity.compare(identity, Qt::CaseInsensitive) == 0) {
+            updateTarget();
+            return;
+        }
+    }
 }
 
 void DevicesPanel::updateTarget()
@@ -197,9 +244,20 @@ void DevicesPanel::updateTarget()
         if (row >= 0) {
             name = model->index(row, AdvertiserModel::ColName).data().toString();
         }
-        target_label_->setText(localized("<b>Target:</b> %1 %2 — following only this device",
-                                         "<b>目标：</b>%1 %2 —— 只跟这个设备")
-                               .arg(text, name.isEmpty() ? QString() : QStringLiteral("(%1)").arg(name)));
+        QString label = localized("<b>Target:</b> %1 %2 — following only this device",
+                                  "<b>目标：</b>%1 %2 —— 只跟这个设备")
+                        .arg(text, name.isEmpty() ? QString() : QStringLiteral("(%1)").arg(name));
+        QString identity = targetIdentity();
+        if (!identity.isEmpty()) {
+            QList<QByteArray> addresses = model->addressesForIdentity(identity);
+            QString current = addresses.isEmpty() ? QString() : AdvertiserModel::formatAddress(addresses.first());
+            label += localized("<br><b>IRK known:</b> identity %1, its rotating addresses are followed automatically",
+                               "<br><b>IRK 已知：</b>身份 %1，它换出的新地址会自动跟上").arg(identity);
+            if (!current.isEmpty() && current.compare(text, Qt::CaseInsensitive) != 0) {
+                label += localized(" (now %1)", "（当前 %1）").arg(current);
+            }
+        }
+        target_label_->setText(label);
         clear_button_->setEnabled(true);
     } else {
         target_label_->setText(localized("<b>Target:</b> none — observing advertising only, no connection is followed",
@@ -215,8 +273,19 @@ void DevicesPanel::applyTrafficFilter()
     QString filter;
 
     if (only_target_->isChecked() && config.target_mac_le.size() == 6) {
-        QString mac = AdvertiserModel::formatAddress(config.target_mac_le);
-        filter = QStringLiteral("btle.advertising_address == %1 || btle.central_bd_addr == %1 || btle.peripheral_bd_addr == %1").arg(mac);
+        QStringList macs = { AdvertiserModel::formatAddress(config.target_mac_le) };
+        /* With an IRK every address the device has rotated through counts. */
+        foreach (const QByteArray &adva, AdvertiserModel::instance()->addressesForIdentity(targetIdentity())) {
+            QString mac = AdvertiserModel::formatAddress(adva);
+            if (!macs.contains(mac, Qt::CaseInsensitive)) {
+                macs.append(mac);
+            }
+        }
+        QStringList terms;
+        foreach (const QString &mac, macs) {
+            terms.append(QStringLiteral("btle.advertising_address == %1 || btle.central_bd_addr == %1 || btle.peripheral_bd_addr == %1").arg(mac));
+        }
+        filter = terms.join(QStringLiteral(" || "));
     }
     MainWindow *window = mainApp->mainWindow();
     if (window) {

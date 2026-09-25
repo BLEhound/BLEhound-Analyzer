@@ -619,8 +619,120 @@ static void test_adv_parse(void)
     CHECK(!info.has_name);
 }
 
+static void test_aes_and_rpa(void)
+{
+    /* FIPS-197 C.1 */
+    const uint8_t key[16] = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+                              0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f };
+    const uint8_t in[16] = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+                             0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff };
+    const uint8_t expect[16] = { 0x69, 0xc4, 0xe0, 0xd8, 0x6a, 0x7b, 0x04, 0x30,
+                                 0xd8, 0xcd, 0xb7, 0x80, 0x70, 0xb4, 0xc5, 0x5a };
+    uint8_t out[16];
+
+    bh_aes128_encrypt(key, in, out);
+    CHECK(memcmp(out, expect, 16) == 0);
+
+    /* BT Core Spec Vol 3 Part H D.7: IRK ec02..7d9b (MSO first), prand 708194 -> hash 0dfbaa */
+    uint8_t irk_le[16];
+    uint8_t rpa[6];
+
+    CHECK(bh_parse_hex("9b7d390aa61010340 5adc857a33402ec", irk_le, 16) == false); /* stray space inside a byte */
+    CHECK(bh_parse_hex("9b7d390aa6101034 05adc857a33402ec", irk_le, 16));
+    CHECK(bh_parse_mac("70:81:94:0D:FB:AA", rpa));
+    CHECK(bh_rpa_is_resolvable(rpa));
+    CHECK(bh_rpa_matches(irk_le, rpa));
+    rpa[0] ^= 1;
+    CHECK(!bh_rpa_matches(irk_le, rpa));
+
+    /* Real device (2026-09-26): ring IRK wire/LSO-first and an RPA captured over the air. */
+    uint8_t ring_irk[16];
+    uint8_t ring_rpa[6];
+    uint8_t ring_id[6];
+
+    CHECK(bh_parse_hex("2959AE60144E6314AC2D86446CD4344F", ring_irk, 16));
+    CHECK(bh_parse_mac("77:67:D0:0A:10:48", ring_rpa));
+    CHECK(bh_parse_mac("02:10:F9:56:78:90", ring_id));
+    CHECK(bh_rpa_matches(ring_irk, ring_rpa));
+    CHECK(!bh_rpa_is_resolvable(ring_id));
+    CHECK(!bh_rpa_matches(ring_irk, ring_id));
+
+    /* Wrong byte order must not resolve. */
+    uint8_t ring_irk_mso[16];
+    for (int i = 0; i < 16; i++) {
+        ring_irk_mso[i] = ring_irk[15 - i];
+    }
+    CHECK(!bh_rpa_matches(ring_irk_mso, ring_rpa));
+
+    CHECK(!bh_parse_hex("2959AE60", ring_irk, 16));
+    CHECK(!bh_parse_hex("2959AE60144E6314AC2D86446CD4344F00", ring_irk, 16));
+    CHECK(!bh_parse_hex("zz59AE60144E6314AC2D86446CD4344F", ring_irk, 16));
+}
+
+static void test_follow_relay_irk(void)
+{
+    bh_follow_relay relay;
+    struct relay_log log = { 0 };
+    uint8_t pdu[2 + 34];
+    uint8_t *ll = pdu + 14;
+    bh_packet pkt;
+    uint8_t irk[16];
+    uint8_t rpa[6];
+    uint8_t other[6];
+
+    CHECK(bh_parse_hex("2959AE60144E6314AC2D86446CD4344F", irk, 16));
+    CHECK(bh_parse_mac("77:67:D0:0A:10:48", rpa));
+    CHECK(bh_parse_mac("5A:11:22:33:44:55", other));
+
+    /* Target is a stale (already rotated) address; only the IRK links the new one. */
+    uint8_t stale[6] = { 1, 2, 3, 4, 5, 0x4A };
+    bh_follow_relay_init(&relay, 0, stale);
+    bh_follow_relay_set_irk(&relay, irk);
+    bh_follow_relay_register(&relay, 0);
+    bh_follow_relay_register(&relay, 1);
+    bh_follow_relay_observe(&relay, 0, 1000, 10000000);
+    bh_follow_relay_observe(&relay, 1, 1500, 10010000);
+
+    memset(pdu, 0, sizeof(pdu));
+    pdu[0] = 0x05;
+    pdu[1] = 34;
+    memcpy(pdu + 2 + 6, rpa, 6);
+    ll[0] = 0x11; ll[1] = 0x22; ll[2] = 0x33; ll[3] = 0x44;        /* AA */
+    ll[7] = 1;                                                      /* win size */
+    ll[8] = 0; ll[9] = 0;                                           /* win offset */
+    ll[10] = 24; ll[11] = 0;                                        /* interval */
+    ll[14] = 200; ll[15] = 0;                                       /* timeout */
+    ll[16] = 0xff; ll[17] = 0xff; ll[18] = 0xff; ll[19] = 0xff; ll[20] = 0x1f;
+    ll[21] = 0x0A;                                                  /* hop 10, sca 0 */
+
+    memset(&pkt, 0, sizeof(pkt));
+    pkt.access_addr = BH_ADV_ACCESS_ADDR;
+    pkt.crc_ok = true;
+    pkt.pdu = pdu;
+    pkt.pdu_len = sizeof(pdu);
+    pkt.channel = 37;
+    pkt.ts_us = 2000;
+
+    CHECK(bh_follow_relay_maybe_relay(&relay, 0, &pkt, 10030000, record_send, &log) == 1);
+    CHECK(relay.stats.skipped_target == 0);
+
+    /* Another device's RPA is still skipped. */
+    memcpy(pdu + 2 + 6, other, 6);
+    ll[0] = 0x55;
+    CHECK(bh_follow_relay_maybe_relay(&relay, 0, &pkt, 10040000, record_send, &log) == 0);
+    CHECK(relay.stats.skipped_target == 1);
+
+    bh_follow_relay_set_irk(&relay, NULL);
+    memcpy(pdu + 2 + 6, rpa, 6);
+    ll[0] = 0x66;
+    CHECK(bh_follow_relay_maybe_relay(&relay, 0, &pkt, 10050000, record_send, &log) == 0);
+    CHECK(relay.stats.skipped_target == 2);
+}
+
 int main(void)
 {
+    test_aes_and_rpa();
+    test_follow_relay_irk();
     test_cobs_known_vectors();
     test_cobs_roundtrip_long_runs();
     test_cobs_rejects_malformed();

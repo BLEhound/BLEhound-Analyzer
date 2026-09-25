@@ -96,10 +96,15 @@ bool BoardReader::openAndConfigure()
     }
     flag = 0;                                   /* guard one channel, no hopping */
     sendCommand(BH_CMD_SET_HOPPING, &flag, 1);
+    uint8_t irk[16] = { 0 };
     if (config.target_mac_le.size() == (int)sizeof(mac)) {
         memcpy(mac, config.target_mac_le.constData(), sizeof(mac));
     }
+    if (config.target_irk_le.size() == (int)sizeof(irk)) {
+        memcpy(irk, config.target_irk_le.constData(), sizeof(irk));
+    }
     sendCommand(BH_CMD_SET_TARGET, mac, sizeof(mac));
+    sendCommand(BH_CMD_SET_IRK, irk, sizeof(irk));
     flag = config.single_target ? 1 : 0;
     sendCommand(BH_CMD_SET_SINGLE_TARGET, &flag, 1);
     // Frames queued before the configuration took effect are unfiltered.
@@ -191,25 +196,33 @@ CaptureConfig TriStreamer::config() const
     return config_;
 }
 
-void TriStreamer::setTarget(const QByteArray &mac_le)
+void TriStreamer::setTarget(const QByteArray &mac_le, const QByteArray &irk_le)
 {
     uint8_t mac[6] = { 0 };
+    uint8_t irk[16] = { 0 };
+    const bool have_irk = irk_le.size() == (int)sizeof(irk);
 
-    if (mac_le.size() == 6) {
+    if (mac_le.size() == (int)sizeof(mac)) {
         memcpy(mac, mac_le.constData(), sizeof(mac));
+    }
+    if (have_irk) {
+        memcpy(irk, irk_le.constData(), sizeof(irk));
     }
     {
         QMutexLocker locker(&config_mutex_);
         config_.target_mac_le = mac_le;
+        config_.target_irk_le = irk_le;
     }
     {
         QMutexLocker locker(&relay_mutex_);
-        relay_.has_target = mac_le.size() == 6;
+        relay_.has_target = mac_le.size() == (int)sizeof(mac);
         memcpy(relay_.target, mac, sizeof(mac));
+        bh_follow_relay_set_irk(&relay_, have_irk ? irk : nullptr);
     }
     QMutexLocker locker(&readers_mutex_);
     foreach (BoardReader *reader, readers_) {
         reader->sendCommand(BH_CMD_SET_TARGET, mac, sizeof(mac));
+        reader->sendCommand(BH_CMD_SET_IRK, irk, sizeof(irk));
     }
 }
 
@@ -334,6 +347,9 @@ void TriStreamer::streamToClient(int client_fd)
         const uint8_t *target = config.target_mac_le.size() == 6 ?
             reinterpret_cast<const uint8_t *>(config.target_mac_le.constData()) : nullptr;
         bh_follow_relay_init(&relay_, 0, target);
+        if (config.target_irk_le.size() == 16) {
+            bh_follow_relay_set_irk(&relay_, reinterpret_cast<const uint8_t *>(config.target_irk_le.constData()));
+        }
         boards_.clear();
     }
     {

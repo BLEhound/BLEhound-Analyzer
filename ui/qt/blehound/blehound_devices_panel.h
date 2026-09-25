@@ -39,9 +39,13 @@ private slots:
     void updateTarget();
     void applyTrafficFilter();
     void selectionChanged();
+    void editKeys();
+    void rowsAdded(const QModelIndex &parent, int first, int last);
 
 private:
     QByteArray selectedAddress() const;
+    /** Identity the target resolves to (via its IRK), or empty. */
+    QString targetIdentity() const;
 
     QTableView *table_;
     QSortFilterProxyModel *proxy_;
