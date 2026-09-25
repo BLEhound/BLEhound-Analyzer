@@ -1856,6 +1856,10 @@ add_subdirectory( wsutil )
 # copied there for running from the build directory
 add_subdirectory( doc )
 
+if(BLEHOUND_BRANDING)
+	add_subdirectory( libblehound )
+endif()
+
 if(BUILD_wireshark AND QT_FOUND)
 	add_subdirectory( ui/qt )
 elseif(BUILD_wireshark AND USE_qt6)
