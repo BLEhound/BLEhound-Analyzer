@@ -21,6 +21,8 @@ class QSerialPort;
 
 namespace BLEhound {
 
+class DeviceManager;
+
 /** Capture configuration pushed to the dongle when a capture starts. */
 struct CaptureConfig {
     bool hopping = true;            /**< hop 37/38/39; otherwise stay on channel */
@@ -36,7 +38,12 @@ class Streamer : public QThread
     Q_OBJECT
 
 public:
-    Streamer(const QString &serial_location, const QString &socket_path, QObject *parent = nullptr);
+    struct FrameStats {
+        quint64 frames = 0;
+        int board_id = -1;      /**< from the first frame; -1 until then */
+    };
+
+    Streamer(const QString &serial_location, const QString &socket_path, DeviceManager *manager);
     ~Streamer();
 
     QString serialLocation() const { return serial_location_; }
@@ -52,12 +59,17 @@ private:
     enum class Result { ClientGone, Stopped };
 
     Result streamToClient(int client_fd);
+    Result captureLoop(int client_fd);
     bool openAndConfigure(QSerialPort &port);
+    void reportState(bool capturing);
+    void reportFrames();
     bool stopping() const { return stop_requested_.loadRelaxed() != 0; }
 
     const QString serial_location_;
     const QString socket_path_;
+    DeviceManager *manager_;
     CaptureConfig config_;
+    FrameStats stats_;
     QAtomicInt stop_requested_;
 };
 

@@ -8,6 +8,8 @@
 
 #include "blehound_tri_streamer.h"
 #include "blehound_socket.h"
+#include "blehound_capture_settings.h"
+#include "blehound_device_manager.h"
 
 #include <string.h>
 #include <unistd.h>
@@ -24,6 +26,7 @@ static const int kReopenDelayMs = 500;
 static const int kConfigSettleMs = 50;
 static const int kQueueWaitMs = 200;
 static const int kQueueMax = 10000;
+static const qint64 kReportIntervalUs = 500000;
 
 /* ---------------------------------------------------------- BoardReader */
 
@@ -48,6 +51,21 @@ bool BoardReader::sendCommand(uint8_t cmd, const uint8_t *arg, size_t arg_len)
     size_t n = bh_cmd_build(cmd, arg, arg_len, framed, sizeof(framed));
 
     return n > 0 && serial_.write(framed, n);
+}
+
+void BoardReader::countFrame(uint8_t board_id)
+{
+    stats_.frames++;
+    stats_.board_id = board_id;
+}
+
+void BoardReader::reportFrames()
+{
+    DeviceManager *manager = owner_->manager();
+    QString location = location_;
+    Streamer::FrameStats stats = stats_;
+    QMetaObject::invokeMethod(manager, [=]() { manager->reportFrames(location, stats.board_id, stats.frames); },
+                              Qt::QueuedConnection);
 }
 
 void BoardReader::pinGuardChannel(uint8_t board_id)
@@ -105,6 +123,7 @@ void onDecodedFrame(void *ctx, const uint8_t *frame, size_t len)
         return;
     }
     c->reader->pinGuardChannel(pkt.board_id);
+    c->reader->countFrame(pkt.board_id);
     c->reader->owner()->onFrame(c->reader, pkt, c->host_us);
 }
 
@@ -135,15 +154,22 @@ void BoardReader::run()
         }
         FrameContext ctx = { this, g_get_real_time() };
         bh_deframer_feed(&deframer, buf, (size_t)n, onDecodedFrame, &ctx);
+        qint64 now = g_get_monotonic_time();
+        if (now - last_report_us_ >= kReportIntervalUs) {
+            reportFrames();
+            last_report_us_ = now;
+        }
     }
     serial_.close();
+    reportFrames();
 }
 
 /* ---------------------------------------------------------- TriStreamer */
 
-TriStreamer::TriStreamer(const QString &socket_path, QObject *parent) :
-    QThread(parent),
+TriStreamer::TriStreamer(const QString &socket_path, DeviceManager *manager) :
+    QThread(nullptr),
     socket_path_(socket_path),
+    manager_(manager),
     stop_requested_(0)
 {
     memset(&relay_, 0, sizeof(relay_));
@@ -154,6 +180,16 @@ TriStreamer::~TriStreamer()
 {
     requestStop();
     wait();
+}
+
+void TriStreamer::reportState(const QStringList &ports, bool capturing)
+{
+    DeviceManager *manager = manager_;
+    QMetaObject::invokeMethod(manager, [=]() {
+        foreach (const QString &port, ports) {
+            manager->reportCaptureState(port, capturing);
+        }
+    }, Qt::QueuedConnection);
 }
 
 void TriStreamer::setPorts(const QStringList &ports)
@@ -246,6 +282,9 @@ void TriStreamer::streamToClient(int client_fd)
         QMutexLocker locker(&ports_mutex_);
         ports = ports_;
     }
+    // Settings edited in the device panel apply from the next capture on.
+    config_ = CaptureSettings::instance()->config();
+    reportState(ports, true);
     {
         QMutexLocker locker(&relay_mutex_);
         const uint8_t *target = config_.target_mac_le.size() == 6 ?
@@ -308,6 +347,7 @@ void TriStreamer::streamToClient(int client_fd)
         boards_.clear();
     }
     bh_aggregator_free(agg);
+    reportState(ports, false);
 }
 
 } // namespace BLEhound

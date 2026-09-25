@@ -11,6 +11,8 @@
 
 #include <ui/qt/utils/stock_icon.h>
 
+#include "blehound_i18n.h"
+
 #include "ui_wireshark_main_window.h"
 
 #include <QDesktopServices>
@@ -77,18 +79,8 @@ const QSet<QString> kKeptActions = {
     "actionStatisticsFlowGraph", "actionBluetoothATT_Server_Attributes",
     // Help
     "actionHelpAbout", "actionBlehoundQuickStart", "actionBlehoundDocs",
-    "actionBlehoundIssue",
+    "actionBlehoundIssue", "actionBlehoundDevicePanel",
 };
-
-bool isChinese()
-{
-    return QLocale().language() == QLocale::Chinese;
-}
-
-QString localized(const char *en, const char *zh)
-{
-    return QString::fromUtf8(isChinese() ? zh : en);
-}
 
 QString docsUrl(const char *page)
 {

@@ -30,6 +30,7 @@
 
 namespace BLEhound {
 
+class DeviceManager;
 class TriStreamer;
 
 /** Reads one dongle, pinned to its guard channel, for a TriStreamer. */
@@ -52,6 +53,9 @@ public:
     /** Pin the board to its guard channel once per open. */
     void pinGuardChannel(uint8_t board_id);
 
+    /** Count a parsed frame for the device panel. */
+    void countFrame(uint8_t board_id);
+
 protected:
     void run() override;
 
@@ -61,10 +65,14 @@ private:
 
     const QString serial_location_;
     const QString location_;
+    void reportFrames();
+
     TriStreamer *owner_;
     PosixSerial serial_;
     QAtomicInt stop_requested_;
     bool pinned_ = false;
+    Streamer::FrameStats stats_;
+    qint64 last_report_us_ = 0;
 };
 
 class TriStreamer : public QThread
@@ -72,11 +80,12 @@ class TriStreamer : public QThread
     Q_OBJECT
 
 public:
-    explicit TriStreamer(const QString &socket_path, QObject *parent = nullptr);
+    TriStreamer(const QString &socket_path, DeviceManager *manager);
     ~TriStreamer();
 
     QString socketPath() const { return socket_path_; }
     const CaptureConfig &config() const { return config_; }
+    DeviceManager *manager() const { return manager_; }
 
     /** Dongles to use for the next capture; any thread. */
     void setPorts(const QStringList &ports);
@@ -96,7 +105,10 @@ private:
     void streamToClient(int client_fd);
     bool stopping() const { return stop_requested_.loadRelaxed() != 0; }
 
+    void reportState(const QStringList &ports, bool capturing);
+
     const QString socket_path_;
+    DeviceManager *manager_;
     CaptureConfig config_;
     QAtomicInt stop_requested_;
 
