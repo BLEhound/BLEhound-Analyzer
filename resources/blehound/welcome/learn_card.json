@@ -1,0 +1,46 @@
+{
+	"schema_version": 1,
+	"$schema": "../../json/learn_card.schema.json",
+	"links": [
+		{
+			"url": "https://blehound.github.io/quickstart/",
+			"label": "Quick start",
+			"short_label": "Quick start",
+			"tooltip": "Get capturing with a BLEhound dongle in a few minutes."
+		},
+		{
+			"url": "https://blehound.github.io/usage-wireshark/",
+			"label": "Capture and filters",
+			"short_label": "Filters",
+			"tooltip": "Capture options and handy display filters for Bluetooth LE."
+		},
+		{
+			"url": "https://blehound.github.io/hardware/",
+			"label": "Hardware",
+			"short_label": "Hardware",
+			"tooltip": "Schematics, PCB, bill of materials and case files."
+		},
+		{
+			"url": "https://blehound.github.io/build-firmware/",
+			"label": "Firmware",
+			"short_label": "Firmware",
+			"tooltip": "Build and flash the dongle firmware."
+		}
+	],
+	"buttons": [
+		{
+			"label": "GitHub",
+			"url": "https://github.com/BLEhound/BLEhound",
+			"tooltip": "Source code for the firmware, hardware and host tools.",
+			"color": "#2FA353",
+			"hover": "#268A45"
+		},
+		{
+			"label": "Report issue",
+			"url": "https://github.com/BLEhound/BLEhound/issues",
+			"tooltip": "Report a bug or ask for a feature.",
+			"color": "#3A4656",
+			"hover": "#2C3643"
+		}
+	]
+}

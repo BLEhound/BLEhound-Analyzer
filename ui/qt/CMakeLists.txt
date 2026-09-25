@@ -747,16 +747,26 @@ add_custom_command(
 		${CMAKE_SOURCE_DIR}/AUTHORS
 )
 
+# Welcome-page sidebar data (slides, banners, Learn card).
+if(BLEHOUND_BRANDING)
+	set(WELCOME_JSON_DIR ${CMAKE_SOURCE_DIR}/resources/blehound/welcome)
+	set(CUSTOM_SLIDES_JSON ${WELCOME_JSON_DIR}/slides_custom.json)
+	set(WELCOME_BANNER_DIR ${WELCOME_JSON_DIR}/banners)
+else()
+	set(WELCOME_JSON_DIR ${CMAKE_SOURCE_DIR}/resources/json)
+	set(WELCOME_BANNER_DIR ${CMAKE_SOURCE_DIR}/resources/json/banners)
+endif()
+
 # Generate translatable strings from JSON data files for lupdate
 GENERATE_JSON_TR_STRINGS(
-	INPUT   ${CMAKE_SOURCE_DIR}/resources/json/slides.json
+	INPUT   ${WELCOME_JSON_DIR}/slides.json
 	OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/slide_tr_strings.cpp
 	CONTEXT InfoBannerWidget
 	EXTRACT slides:tag,title,description,description_sub,body_text,button_label,url
 )
 
 GENERATE_JSON_TR_STRINGS(
-	INPUT   ${CMAKE_SOURCE_DIR}/resources/json/learn_card.json
+	INPUT   ${WELCOME_JSON_DIR}/learn_card.json
 	OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/learn_card_tr_strings.cpp
 	CONTEXT LearnCardWidget
 	EXTRACT links:label,short_label,tooltip
@@ -765,17 +775,17 @@ GENERATE_JSON_TR_STRINGS(
 
 # JSON data resources
 set(_json_qrc_files
-	"        <file alias=\"slides.json\">${CMAKE_SOURCE_DIR}/resources/json/slides.json</file>\n")
+	"        <file alias=\"slides.json\">${WELCOME_JSON_DIR}/slides.json</file>\n")
 string(APPEND _json_qrc_files
-	"        <file alias=\"learn_card.json\">${CMAKE_SOURCE_DIR}/resources/json/learn_card.json</file>\n")
+	"        <file alias=\"learn_card.json\">${WELCOME_JSON_DIR}/learn_card.json</file>\n")
 if(CUSTOM_SLIDES_JSON AND EXISTS "${CUSTOM_SLIDES_JSON}")
 	string(APPEND _json_qrc_files
 		"        <file alias=\"slides_custom.json\">${CUSTOM_SLIDES_JSON}</file>\n")
 	message(STATUS "Custom banner slides: ${CUSTOM_SLIDES_JSON}")
 endif()
-file(GLOB_RECURSE _banner_images "${CMAKE_SOURCE_DIR}/resources/json/banners/*")
+file(GLOB_RECURSE _banner_images "${WELCOME_BANNER_DIR}/*")
 foreach(_img ${_banner_images})
-	cmake_path(RELATIVE_PATH _img BASE_DIRECTORY "${CMAKE_SOURCE_DIR}/resources/json/banners/" OUTPUT_VARIABLE _img_name)
+	cmake_path(RELATIVE_PATH _img BASE_DIRECTORY "${WELCOME_BANNER_DIR}/" OUTPUT_VARIABLE _img_name)
 	string(APPEND _json_qrc_files
 		"        <file alias=\"banners/${_img_name}\">${_img}</file>\n")
 endforeach()
