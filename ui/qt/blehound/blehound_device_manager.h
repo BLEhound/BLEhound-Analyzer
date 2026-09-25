@@ -10,6 +10,7 @@
 
 #include <QMap>
 #include <QObject>
+#include <QSet>
 #include <QStringList>
 #include <QTimer>
 
@@ -40,6 +41,7 @@ private:
     QString socketPathFor(const QString &location) const;
     void syncStreamers(const QStringList &ports);
     static void ensureInterface(const QByteArray &name, const QByteArray &display);
+    void removeStaleInterfaces(const QSet<QString> &valid_names);
 
     QString socket_dir_;
     QMap<QString, Streamer *> streamers_;   /**< keyed by serial port location */
