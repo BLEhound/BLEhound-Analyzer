@@ -16,6 +16,7 @@
 namespace BLEhound {
 
 class Streamer;
+class TriStreamer;
 
 class DeviceManager : public QObject
 {
@@ -38,9 +39,11 @@ private:
     static QStringList connectedPorts();
     QString socketPathFor(const QString &location) const;
     void syncStreamers(const QStringList &ports);
+    static void ensureInterface(const QByteArray &name, const QByteArray &display);
 
     QString socket_dir_;
     QMap<QString, Streamer *> streamers_;   /**< keyed by serial port location */
+    TriStreamer *tri_streamer_;             /**< all dongles merged into one capture */
     QStringList known_ports_;
     QTimer poll_timer_;
 };

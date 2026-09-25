@@ -8,6 +8,7 @@
 
 #include "blehound_device_manager.h"
 #include "blehound_streamer.h"
+#include "blehound_tri_streamer.h"
 
 #include <string.h>
 #include <sys/stat.h>
@@ -69,6 +70,9 @@ DeviceManager::DeviceManager(QObject *parent) :
     mkdir(dir.constData(), 0700);
     chmod(dir.constData(), 0700);
 
+    tri_streamer_ = new TriStreamer(socket_dir_ + QStringLiteral("/aggregated.sock"));
+    tri_streamer_->start();
+
     known_ports_ = connectedPorts();
     connect(&poll_timer_, &QTimer::timeout, this, &DeviceManager::pollPorts);
     poll_timer_.start(kHotplugPollMs);
@@ -79,6 +83,7 @@ DeviceManager::~DeviceManager()
     set_extra_interfaces_fn(nullptr);
     manager_instance = nullptr;
     qDeleteAll(streamers_);
+    delete tri_streamer_;
 }
 
 QStringList DeviceManager::connectedPorts()
@@ -109,6 +114,7 @@ QString DeviceManager::socketPathFor(const QString &location) const
 
 void DeviceManager::syncStreamers(const QStringList &ports)
 {
+    tri_streamer_->setPorts(ports);
     foreach (const QString &location, streamers_.keys()) {
         if (!ports.contains(location)) {
             delete streamers_.take(location);
@@ -123,6 +129,43 @@ void DeviceManager::syncStreamers(const QStringList &ports)
     }
 }
 
+void DeviceManager::ensureInterface(const QByteArray &name, const QByteArray &display)
+{
+    // A selected pipe is re-added by the scan itself; just refresh its name.
+    for (unsigned i = 0; i < global_capture_opts.all_ifaces->len; i++) {
+        interface_t *device = &g_array_index(global_capture_opts.all_ifaces, interface_t, i);
+        if (strcmp(device->name, name.constData()) == 0) {
+            g_free(device->display_name);
+            device->display_name = g_strdup(display.constData());
+            return;
+        }
+    }
+
+    interface_t device;
+    memset(&device, 0, sizeof(device));
+    device.name = g_strdup(name.constData());
+    device.display_name = g_strdup(display.constData());
+    device.hidden = false;
+    device.selected = false;
+    device.local = true;
+    device.pmode = false;
+    device.has_snaplen = global_capture_opts.default_options.has_snaplen;
+    device.snaplen = global_capture_opts.default_options.snaplen;
+    device.cfilter = g_strdup(global_capture_opts.default_options.cfilter);
+    device.timestamp_type = g_strdup(global_capture_opts.default_options.timestamp_type);
+    device.buffer = DEFAULT_CAPTURE_BUFFER_SIZE;
+    link_row *link = g_new(link_row, 1);
+    link->name = g_strdup("Bluetooth LE LL");
+    link->dlt = BH_DLT_BTLE_LL_WITH_PHDR;
+    device.links = g_list_append(NULL, link);
+    device.active_dlt = BH_DLT_BTLE_LL_WITH_PHDR;
+    device.if_info.name = g_strdup(name.constData());
+    device.if_info.friendly_name = g_strdup(display.constData());
+    device.if_info.vendor_description = g_strdup(BH_USB_PRODUCT);
+    device.if_info.type = IF_PIPE;
+    g_array_append_val(global_capture_opts.all_ifaces, device);
+}
+
 void DeviceManager::appendInterfaces()
 {
     QStringList ports = connectedPorts();
@@ -130,48 +173,15 @@ void DeviceManager::appendInterfaces()
     known_ports_ = ports;
 
     foreach (const QString &location, ports) {
-        QByteArray name = socketPathFor(location).toUtf8();
-        QByteArray display = QStringLiteral("%1: %2")
-                .arg(QStringLiteral(BH_USB_PRODUCT), QFileInfo(location).fileName()).toUtf8();
-        bool found = false;
-
-        // A selected pipe is re-added by the scan itself; just fix its name.
-        for (unsigned i = 0; i < global_capture_opts.all_ifaces->len; i++) {
-            interface_t *device = &g_array_index(global_capture_opts.all_ifaces, interface_t, i);
-            if (strcmp(device->name, name.constData()) == 0) {
-                g_free(device->display_name);
-                device->display_name = g_strdup(display.constData());
-                found = true;
-                break;
-            }
-        }
-        if (found) {
-            continue;
-        }
-
-        interface_t device;
-        memset(&device, 0, sizeof(device));
-        device.name = g_strdup(name.constData());
-        device.display_name = g_strdup(display.constData());
-        device.hidden = false;
-        device.selected = false;
-        device.local = true;
-        device.pmode = false;
-        device.has_snaplen = global_capture_opts.default_options.has_snaplen;
-        device.snaplen = global_capture_opts.default_options.snaplen;
-        device.cfilter = g_strdup(global_capture_opts.default_options.cfilter);
-        device.timestamp_type = g_strdup(global_capture_opts.default_options.timestamp_type);
-        device.buffer = DEFAULT_CAPTURE_BUFFER_SIZE;
-        link_row *link = g_new(link_row, 1);
-        link->name = g_strdup("Bluetooth LE LL");
-        link->dlt = BH_DLT_BTLE_LL_WITH_PHDR;
-        device.links = g_list_append(NULL, link);
-        device.active_dlt = BH_DLT_BTLE_LL_WITH_PHDR;
-        device.if_info.name = g_strdup(name.constData());
-        device.if_info.friendly_name = g_strdup(display.constData());
-        device.if_info.vendor_description = g_strdup(BH_USB_PRODUCT);
-        device.if_info.type = IF_PIPE;
-        g_array_append_val(global_capture_opts.all_ifaces, device);
+        ensureInterface(socketPathFor(location).toUtf8(),
+                        QStringLiteral("%1: %2").arg(QStringLiteral(BH_USB_PRODUCT),
+                                                     QFileInfo(location).fileName()).toUtf8());
+    }
+    // One merged capture across all boards, each guarding its own channel.
+    if (ports.size() >= 2) {
+        ensureInterface(tri_streamer_->socketPath().toUtf8(),
+                        QStringLiteral("%1 (%2ch aggregated)").arg(QStringLiteral(BH_USB_PRODUCT))
+                            .arg(ports.size()).toUtf8());
     }
 }
 

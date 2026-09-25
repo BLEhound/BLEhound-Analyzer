@@ -7,12 +7,9 @@
 #define WS_LOG_DOMAIN LOG_DOMAIN_CAPTURE
 
 #include "blehound_streamer.h"
+#include "blehound_socket.h"
 
-#include <errno.h>
-#include <poll.h>
 #include <string.h>
-#include <sys/socket.h>
-#include <sys/un.h>
 #include <unistd.h>
 
 #include <glib.h>
@@ -22,12 +19,6 @@
 #include <QSerialPort>
 
 #include <blehound/blehound.h>
-
-#ifdef MSG_NOSIGNAL
-#define BH_SEND_FLAGS MSG_NOSIGNAL
-#else
-#define BH_SEND_FLAGS 0             /* macOS: SO_NOSIGPIPE is set on the socket instead */
-#endif
 
 namespace BLEhound {
 
@@ -90,52 +81,18 @@ Streamer::~Streamer()
     wait();
 }
 
-int Streamer::listen()
-{
-    struct sockaddr_un addr;
-    QByteArray path = socket_path_.toLocal8Bit();
-
-    if ((size_t)path.size() >= sizeof(addr.sun_path)) {
-        ws_warning("BLEhound socket path too long: %s", path.constData());
-        return -1;
-    }
-    int fd = socket(AF_UNIX, SOCK_STREAM, 0);
-    if (fd < 0) {
-        ws_warning("BLEhound socket(): %s", g_strerror(errno));
-        return -1;
-    }
-    memset(&addr, 0, sizeof(addr));
-    addr.sun_family = AF_UNIX;
-    memcpy(addr.sun_path, path.constData(), (size_t)path.size());
-    unlink(path.constData());
-    if (bind(fd, reinterpret_cast<struct sockaddr *>(&addr), sizeof(addr)) < 0 || ::listen(fd, 1) < 0) {
-        ws_warning("BLEhound bind/listen %s: %s", path.constData(), g_strerror(errno));
-        close(fd);
-        return -1;
-    }
-    return fd;
-}
-
 void Streamer::run()
 {
-    int listen_fd = listen();
+    int listen_fd = Socket::listenOn(socket_path_);
     if (listen_fd < 0) {
         return;
     }
 
     while (!stopping()) {
-        struct pollfd pfd = { listen_fd, POLLIN, 0 };
-        if (poll(&pfd, 1, kAcceptPollMs) <= 0) {
-            continue;
-        }
-        int client_fd = accept(listen_fd, nullptr, nullptr);
+        int client_fd = Socket::acceptClient(listen_fd, kAcceptPollMs);
         if (client_fd < 0) {
             continue;
         }
-#ifdef SO_NOSIGPIPE
-        int one = 1;
-        setsockopt(client_fd, SOL_SOCKET, SO_NOSIGPIPE, &one, sizeof(one));
-#endif
         ws_info("BLEhound capture started on %s", qUtf8Printable(serial_location_));
         streamToClient(client_fd);
         close(client_fd);
@@ -176,40 +133,6 @@ bool Streamer::openAndConfigure(QSerialPort &port)
     return true;
 }
 
-bool Streamer::sendAll(int fd, const QByteArray &data)
-{
-    const char *p = data.constData();
-    qsizetype left = data.size();
-
-    while (left > 0) {
-        ssize_t n = send(fd, p, (size_t)left, BH_SEND_FLAGS);
-        if (n < 0) {
-            if (errno == EINTR) {
-                continue;
-            }
-            return false;
-        }
-        p += n;
-        left -= n;
-    }
-    return true;
-}
-
-bool Streamer::clientClosed(int fd)
-{
-    struct pollfd pfd = { fd, POLLIN, 0 };
-    char c;
-
-    if (poll(&pfd, 1, 0) <= 0) {
-        return false;
-    }
-    if (pfd.revents & (POLLHUP | POLLERR | POLLNVAL)) {
-        return true;
-    }
-    // dumpcap never writes to us, so readable means end of stream.
-    return recv(fd, &c, 1, MSG_PEEK | MSG_DONTWAIT) == 0;
-}
-
 Streamer::Result Streamer::streamToClient(int client_fd)
 {
     QSerialPort port;
@@ -220,7 +143,7 @@ Streamer::Result Streamer::streamToClient(int client_fd)
 
     uint8_t global_header[BH_PCAP_GLOBAL_HEADER_LEN];
     bh_pcap_global_header(global_header);
-    if (!sendAll(client_fd, QByteArray(reinterpret_cast<const char *>(global_header), sizeof(global_header)))) {
+    if (!Socket::sendAll(client_fd, QByteArray(reinterpret_cast<const char *>(global_header), sizeof(global_header)))) {
         return Result::ClientGone;
     }
     bh_ts_mapper_init(&ts, (uint64_t)g_get_real_time());
@@ -229,7 +152,7 @@ Streamer::Result Streamer::streamToClient(int client_fd)
         if (!port.isOpen()) {
             if (!openAndConfigure(port)) {
                 // Unplugged or busy: keep the capture alive and retry.
-                if (clientClosed(client_fd)) {
+                if (Socket::clientClosed(client_fd)) {
                     return Result::ClientGone;
                 }
                 msleep(kReopenDelayMs);
@@ -251,12 +174,12 @@ Streamer::Result Streamer::streamToClient(int client_fd)
         }
 
         if (!out.isEmpty()) {
-            if (!sendAll(client_fd, out)) {
+            if (!Socket::sendAll(client_fd, out)) {
                 return Result::ClientGone;
             }
             out.clear();
         }
-        if (clientClosed(client_fd)) {
+        if (Socket::clientClosed(client_fd)) {
             return Result::ClientGone;
         }
     }
