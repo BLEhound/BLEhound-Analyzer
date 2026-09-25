@@ -9,6 +9,8 @@
 
 #ifdef BLEHOUND_BRANDING
 
+class QMainWindow;
+
 namespace Ui {
 class WiresharkMainWindow;
 }
@@ -17,9 +19,11 @@ namespace BLEhound {
 
 /**
  * Replace Wireshark-branded action texts and the trademarked shark-fin
- * capture icons. Call after setupUi() and after every retranslateUi().
+ * capture icons, keep only the menu items and toolbar buttons that are
+ * useful for Bluetooth LE sniffing, and add BLEhound help links.
+ * Call after setupUi() and after every retranslateUi().
  */
-void brandMainWindow(Ui::WiresharkMainWindow *ui);
+void brandMainWindow(QMainWindow *window, Ui::WiresharkMainWindow *ui);
 
 } // namespace BLEhound
 

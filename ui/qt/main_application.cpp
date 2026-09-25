@@ -1168,6 +1168,10 @@ _e_prefs *MainApplication::readConfigurationFiles(bool reset)
     /* BLEhound Analyzer captures only from its own dongles. */
     prefs.capture_no_extcap = true;
 #endif
+#ifdef BLEHOUND_BRANDING
+    /* Labels under the toolbar icons, so no button has to be guessed. */
+    prefs.gui_toolbar_main_style = TB_STYLE_BOTH;
+#endif
 
     return prefs_p;
 }
