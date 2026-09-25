@@ -11,6 +11,7 @@
 #include <QAbstractTableModel>
 #include <QByteArray>
 #include <QHash>
+#include <QTimer>
 #include <QList>
 #include <QString>
 
@@ -72,6 +73,9 @@ public:
     QString aliasFor(const QByteArray &adva) const;
     static QString formatAddress(const QByteArray &adva);
 
+    /** Drop rows not seen for this many seconds (0 = keep forever). */
+    void setStaleTimeout(int seconds);
+
 public slots:
     /** Fold a batch of sightings in; called (queued) from capture threads. */
     void merge(const QList<Advertiser> &batch);
@@ -80,10 +84,14 @@ public slots:
 private:
     explicit AdvertiserModel(QObject *parent = nullptr);
     void loadAliases();
+    void reindex(int from);
+    void dropStale();
 
     QList<Advertiser> rows_;
     QHash<QByteArray, int> index_;
     QHash<QByteArray, QString> aliases_;
+    QTimer stale_timer_;
+    qint64 stale_us_ = 0;
 };
 
 /**
