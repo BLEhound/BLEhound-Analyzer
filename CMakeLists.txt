@@ -1404,6 +1404,7 @@ if(BUILD_wireshark OR BUILD_stratoshark)
 			OPTIONAL_COMPONENTS
 				DBus
 				Svg
+				SerialPort
 		)
 
 		if (SPEEXDSP_FOUND)

@@ -941,6 +941,16 @@ if(BLEHOUND_BRANDING)
 	target_compile_definitions(qtui PUBLIC BLEHOUND_BRANDING)
 	# blehound/*.cpp include ui_*.h generated from .ui files in this directory.
 	set_property(TARGET qtui APPEND PROPERTY AUTOUIC_SEARCH_PATHS ${CMAKE_CURRENT_SOURCE_DIR})
+	# Native dongle capture: serial port -> Unix socket -> dumpcap.
+	# TODO: Windows needs a named-pipe server instead of a Unix socket.
+	if(Qt6SerialPort_FOUND AND NOT WIN32)
+		target_sources(qtui PRIVATE
+			blehound/blehound_device_manager.cpp
+			blehound/blehound_streamer.cpp
+		)
+		target_compile_definitions(qtui PUBLIC BLEHOUND_NATIVE_CAPTURE)
+		target_link_libraries(qtui PUBLIC Qt6::SerialPort blehound)
+	endif()
 endif()
 
 set_target_properties(qtui PROPERTIES
