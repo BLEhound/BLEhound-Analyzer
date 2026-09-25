@@ -733,6 +733,10 @@ int main(int argc, char *qt_argv[])
     /* ws_log(LOG_DOMAIN_MAIN, LOG_LEVEL_DEBUG, "Translator %s", language); */
 
     // Init the main window (and splash)
+#ifdef BLEHOUND_NATIVE_CAPTURE
+    /* The main window's device panel needs the manager to exist. */
+    BLEhound::DeviceManager::install();
+#endif
     main_w = new(WiresharkMainWindow);
     main_w->show();
     // Setup GLib mainloop on Qt event loop to enable GLib and GIO watches
@@ -766,8 +770,8 @@ int main(int argc, char *qt_argv[])
        by preference settings and then again by the command line parameters. */
     capture_opts_init(&global_capture_opts, capture_opts_get_interface_list);
 #ifdef BLEHOUND_NATIVE_CAPTURE
-    /* Replaces the interface source before anything queries it. */
-    BLEhound::DeviceManager::install();
+    /* After capture_opts_init(), which sets its own interface source. */
+    BLEhound::DeviceManager::instance()->startWatching();
 #endif
 #endif
 

@@ -77,6 +77,9 @@ DIAG_ON(frame-larger-than=)
 #include <ui/qt/utils/qt_ui_utils.h>
 #include <ui/qt/utils/stock_icon.h>
 #include "blehound/blehound_branding.h"
+#ifdef BLEHOUND_NATIVE_CAPTURE
+#include "blehound/blehound_device_panel.h"
+#endif
 #include <ui/qt/utils/variant_pointer.h>
 
 #include <QAction>
@@ -456,6 +459,10 @@ WiresharkMainWindow::WiresharkMainWindow(QWidget *parent) :
     connect(file_set_dialog_, &FileSetDialog::fileSetOpenCaptureFile, this, [=](QString cf_path) { openCaptureFile(cf_path); });
 
     initMainToolbarIcons();
+
+#ifdef BLEHOUND_NATIVE_CAPTURE
+    BLEhound::installDevicePanel(this, main_ui_->menuView, main_ui_->actionViewPacketList);
+#endif
 
     main_ui_->displayFilterToolBar->insertWidget(main_ui_->actionNewDisplayFilterExpression, df_combo_box_);
 

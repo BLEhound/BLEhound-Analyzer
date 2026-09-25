@@ -8,6 +8,8 @@
 
 #include "blehound_streamer.h"
 #include "blehound_socket.h"
+#include "blehound_capture_settings.h"
+#include "blehound_device_manager.h"
 
 #include <string.h>
 #include <unistd.h>
@@ -26,6 +28,7 @@ static const int kAcceptPollMs = 200;
 static const int kSerialWaitMs = 100;
 static const int kReopenDelayMs = 500;
 static const int kConfigSettleMs = 50;
+static const gint64 kReportIntervalUs = 500000;
 
 namespace {
 
@@ -34,6 +37,7 @@ struct FrameSink {
     const CaptureConfig *config;
     bh_ts_mapper *ts;
     QByteArray *out;
+    Streamer::FrameStats *stats;
 };
 
 void onFrame(void *ctx, const uint8_t *frame, size_t len)
@@ -46,6 +50,8 @@ void onFrame(void *ctx, const uint8_t *frame, size_t len)
     if (!bh_parse_frame(frame, len, &pkt)) {
         return;
     }
+    sink->stats->frames++;
+    sink->stats->board_id = pkt.board_id;
     if (!pkt.crc_ok && !sink->config->include_crc_errors) {
         return;
     }
@@ -67,12 +73,30 @@ bool writeCommand(QSerialPort &port, uint8_t cmd, const uint8_t *arg, size_t arg
 
 } // namespace
 
-Streamer::Streamer(const QString &serial_location, const QString &socket_path, QObject *parent) :
-    QThread(parent),
+Streamer::Streamer(const QString &serial_location, const QString &socket_path, DeviceManager *manager) :
+    QThread(nullptr),
     serial_location_(serial_location),
     socket_path_(socket_path),
+    manager_(manager),
     stop_requested_(0)
 {
+}
+
+void Streamer::reportState(bool capturing)
+{
+    DeviceManager *manager = manager_;
+    QString location = serial_location_;
+    QMetaObject::invokeMethod(manager, [=]() { manager->reportCaptureState(location, capturing); },
+                              Qt::QueuedConnection);
+}
+
+void Streamer::reportFrames()
+{
+    DeviceManager *manager = manager_;
+    QString location = serial_location_;
+    FrameStats stats = stats_;
+    QMetaObject::invokeMethod(manager, [=]() { manager->reportFrames(location, stats.board_id, stats.frames); },
+                              Qt::QueuedConnection);
 }
 
 Streamer::~Streamer()
@@ -135,11 +159,24 @@ bool Streamer::openAndConfigure(QSerialPort &port)
 
 Streamer::Result Streamer::streamToClient(int client_fd)
 {
+    // Settings edited in the device panel apply from the next capture on.
+    config_ = CaptureSettings::instance()->config();
+    stats_ = FrameStats();
+    reportState(true);
+    Result result = captureLoop(client_fd);
+    reportFrames();
+    reportState(false);
+    return result;
+}
+
+Streamer::Result Streamer::captureLoop(int client_fd)
+{
     QSerialPort port;
     bh_deframer deframer;
     bh_ts_mapper ts;
     QByteArray out;
-    FrameSink sink = { &config_, &ts, &out };
+    FrameSink sink = { &config_, &ts, &out, &stats_ };
+    gint64 last_report = g_get_monotonic_time();
 
     uint8_t global_header[BH_PCAP_GLOBAL_HEADER_LEN];
     bh_pcap_global_header(global_header);
@@ -181,6 +218,11 @@ Streamer::Result Streamer::streamToClient(int client_fd)
         }
         if (Socket::clientClosed(client_fd)) {
             return Result::ClientGone;
+        }
+        gint64 now = g_get_monotonic_time();
+        if (now - last_report >= kReportIntervalUs) {
+            reportFrames();
+            last_report = now;
         }
     }
     return Result::Stopped;

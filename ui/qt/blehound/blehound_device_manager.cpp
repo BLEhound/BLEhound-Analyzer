@@ -52,14 +52,76 @@ static GList *noSystemInterfaces(int *err, char **err_str)
     return NULL;
 }
 
+DeviceManager *DeviceManager::instance()
+{
+    return manager_instance;
+}
+
+QList<DeviceManager::BoardInfo> DeviceManager::boards() const
+{
+    QList<BoardInfo> list;
+
+    foreach (const QString &location, known_ports_) {
+        list << boards_.value(location);
+    }
+    return list;
+}
+
+int DeviceManager::channelFor(const QString &location) const
+{
+    BoardInfo board = boards_.value(location);
+    uint8_t channel;
+
+    if (board.board_id >= 0) {
+        return bh_guard_channel_for_board((uint8_t)board.board_id, &channel) ? channel : 0;
+    }
+    int rank = known_ports_.indexOf(location);
+    return rank >= 0 && rank < 3 ? 37 + rank : 0;
+}
+
+void DeviceManager::reportCaptureState(const QString &location, bool capturing)
+{
+    if (!boards_.contains(location)) {
+        return;
+    }
+    BoardInfo &board = boards_[location];
+    board.capturing = capturing;
+    if (capturing) {
+        board.packets = 0;
+    }
+    emit boardsChanged();
+}
+
+void DeviceManager::reportFrames(const QString &location, int board_id, quint64 packets)
+{
+    if (!boards_.contains(location)) {
+        return;
+    }
+    BoardInfo &board = boards_[location];
+    int old_channel = channelFor(location);
+    board.packets = packets;
+    board.board_id = board_id;
+    if (channelFor(location) != old_channel) {
+        mainApp->refreshLocalInterfaces();      /* rename the interface; deferred while capturing */
+    }
+    emit boardsChanged();
+}
+
 void DeviceManager::install()
 {
     if (manager_instance) {
         return;
     }
     manager_instance = new DeviceManager(mainApp);
+}
+
+void DeviceManager::startWatching()
+{
     global_capture_opts.get_iface_list = noSystemInterfaces;
     set_extra_interfaces_fn(appendExtraInterfaces);
+    known_ports_ = connectedPorts();
+    connect(&poll_timer_, &QTimer::timeout, this, &DeviceManager::pollPorts);
+    poll_timer_.start(kHotplugPollMs);
 }
 
 DeviceManager::DeviceManager(QObject *parent) :
@@ -72,12 +134,9 @@ DeviceManager::DeviceManager(QObject *parent) :
     mkdir(dir.constData(), 0700);
     chmod(dir.constData(), 0700);
 
-    tri_streamer_ = new TriStreamer(socket_dir_ + QStringLiteral("/aggregated.sock"));
+    tri_streamer_ = new TriStreamer(socket_dir_ + QStringLiteral("/aggregated.sock"), this);
     tri_streamer_->start();
 
-    known_ports_ = connectedPorts();
-    connect(&poll_timer_, &QTimer::timeout, this, &DeviceManager::pollPorts);
-    poll_timer_.start(kHotplugPollMs);
 }
 
 DeviceManager::~DeviceManager()
@@ -120,13 +179,17 @@ void DeviceManager::syncStreamers(const QStringList &ports)
     foreach (const QString &location, streamers_.keys()) {
         if (!ports.contains(location)) {
             delete streamers_.take(location);
+            boards_.remove(location);
         }
     }
     foreach (const QString &location, ports) {
         if (!streamers_.contains(location)) {
-            Streamer *streamer = new Streamer(location, socketPathFor(location));
+            Streamer *streamer = new Streamer(location, socketPathFor(location), this);
             streamers_.insert(location, streamer);
             streamer->start();
+            BoardInfo board;
+            board.location = location;
+            boards_.insert(location, board);
         }
     }
 }
@@ -215,9 +278,12 @@ void DeviceManager::appendInterfaces()
     removeStaleInterfaces(valid_names);
 
     foreach (const QString &location, ports) {
-        ensureInterface(socketPathFor(location).toUtf8(),
-                        QStringLiteral("%1: %2").arg(QStringLiteral(BH_USB_PRODUCT),
-                                                     QFileInfo(location).fileName()).toUtf8());
+        int channel = channelFor(location);
+        QString display = channel ?
+            QStringLiteral("%1 CH%2: %3").arg(QStringLiteral(BH_USB_PRODUCT)).arg(channel)
+                .arg(QFileInfo(location).fileName()) :
+            QStringLiteral("%1: %2").arg(QStringLiteral(BH_USB_PRODUCT), QFileInfo(location).fileName());
+        ensureInterface(socketPathFor(location).toUtf8(), display.toUtf8());
     }
     // One merged capture across all boards, each guarding its own channel.
     if (ports.size() >= 2) {
@@ -225,6 +291,7 @@ void DeviceManager::appendInterfaces()
                         QStringLiteral("%1 (%2ch aggregated)").arg(QStringLiteral(BH_USB_PRODUCT))
                             .arg(ports.size()).toUtf8());
     }
+    emit boardsChanged();
 }
 
 void DeviceManager::pollPorts()

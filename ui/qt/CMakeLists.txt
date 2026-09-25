@@ -955,7 +955,9 @@ if(BLEHOUND_BRANDING)
 	# TODO: Windows needs a named-pipe server instead of a Unix socket.
 	if(Qt6SerialPort_FOUND AND NOT WIN32)
 		target_sources(qtui PRIVATE
+			blehound/blehound_capture_settings.cpp
 			blehound/blehound_device_manager.cpp
+			blehound/blehound_device_panel.cpp
 			blehound/blehound_serial.cpp
 			blehound/blehound_socket.cpp
 			blehound/blehound_streamer.cpp
