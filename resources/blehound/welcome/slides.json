@@ -1,0 +1,14 @@
+{
+	"schema_version": 1,
+	"$schema": "../../json/slides.schema.json",
+	"config": {
+		"colors": {
+			"default": { "start": "#16202b", "end": "#0b0f16", "degrees": 145 },
+			"tips": { "start": "#1d3a2a", "end": "#0f2419", "degrees": 145 }
+		},
+		"types": {
+			"tips": { "randomized": false, "maxdisplay": 3, "only": false }
+		}
+	},
+	"slides": []
+}

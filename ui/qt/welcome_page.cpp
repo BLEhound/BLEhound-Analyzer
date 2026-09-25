@@ -211,10 +211,6 @@ void WelcomePage::applySidebarPreferences()
     // Hide the entire sidebar container when all sidebar widgets are disabled,
     // so the main content area can expand to fill the full window width.
     bool sidebar_visible = slidesAreVisible || recent.gui_welcome_page_sidebar_learn_visible;
-#ifdef BLEHOUND_BRANDING
-    // Wireshark sponsor, event and community cards do not belong here.
-    sidebar_visible = false;
-#endif
     welcome_ui_->sidebarContainer->setVisible(sidebar_visible);
 }
 

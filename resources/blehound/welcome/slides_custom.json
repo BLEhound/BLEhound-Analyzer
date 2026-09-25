@@ -1,0 +1,59 @@
+{
+	"schema_version": 1,
+	"$schema": "../../json/slides.schema.json",
+	"slides": [
+		{
+			"type": "tips",
+			"tag": "Get started",
+			"tag_i18n": { "zh": "上手" },
+			"title": "Plug in and capture",
+			"title_i18n": { "zh": "插上即可抓包" },
+			"description": "Pick a BLEhound Sniffer on the left",
+			"description_i18n": { "zh": "在左侧选择一个 BLEhound Sniffer" },
+			"description_sub": "then press Start",
+			"description_sub_i18n": { "zh": "然后点「开始」" },
+			"body_text": "Advertising channels 37, 38 and 39 are scanned by default.",
+			"body_text_i18n": { "zh": "默认轮流扫描 37 / 38 / 39 三个广播信道。" },
+			"button_label": "Quick start",
+			"button_label_i18n": { "zh": "快速上手" },
+			"url": "https://blehound.github.io/quickstart/",
+			"url_i18n": { "zh": "https://blehound.github.io/zh/quickstart/" },
+			"image": "banner-case.png"
+		},
+		{
+			"type": "tips",
+			"tag": "Tip",
+			"tag_i18n": { "zh": "技巧" },
+			"title": "Find connections fast",
+			"title_i18n": { "zh": "快速找到连接" },
+			"description": "btle.advertising_header.pdu_type == 0x05",
+			"description_sub": "Display filter",
+			"description_sub_i18n": { "zh": "显示过滤器" },
+			"body_text": "Shows every CONNECT_IND, so you can see which devices connect to which.",
+			"body_text_i18n": { "zh": "列出所有 CONNECT_IND，一眼看出谁在和谁建立连接。" },
+			"button_label": "Filter guide",
+			"button_label_i18n": { "zh": "过滤器用法" },
+			"url": "https://blehound.github.io/usage-wireshark/",
+			"url_i18n": { "zh": "https://blehound.github.io/zh/usage-wireshark/" },
+			"image": "banner-exploded.png"
+		},
+		{
+			"type": "tips",
+			"tag": "Open source",
+			"tag_i18n": { "zh": "开源" },
+			"title": "Open hardware",
+			"title_i18n": { "zh": "开源硬件" },
+			"description": "Schematics, PCB and case files",
+			"description_i18n": { "zh": "原理图、PCB 与外壳文件" },
+			"description_sub": "firmware and this app too",
+			"description_sub_i18n": { "zh": "固件和本软件同样开源" },
+			"body_text": "Build your own, or improve it and send a pull request.",
+			"body_text_i18n": { "zh": "可以自己做一套，也欢迎改进后提交 PR。" },
+			"button_label": "Hardware",
+			"button_label_i18n": { "zh": "硬件资料" },
+			"url": "https://blehound.github.io/hardware/",
+			"url_i18n": { "zh": "https://blehound.github.io/zh/hardware/" },
+			"image": "banner-board.png"
+		}
+	]
+}

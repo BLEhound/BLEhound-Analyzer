@@ -266,8 +266,11 @@ void InterfaceFrame::triggeredIfTypeButton()
 void InterfaceFrame::interfaceListChanged()
 {
     info_model_.clearInfos();
+#ifndef BLEHOUND_NATIVE_CAPTURE
+    // BLEhound Analyzer turns extcap off by design; do not announce it.
     if (prefs.capture_no_extcap)
         info_model_.appendInfo(tr("External capture interfaces disabled."));
+#endif
 
     resetInterfaceTreeDisplay();
     // Ensure that device selection is consistent with the displayed selection.
