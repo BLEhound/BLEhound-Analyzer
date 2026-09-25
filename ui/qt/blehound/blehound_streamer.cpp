@@ -38,6 +38,8 @@ struct FrameSink {
     bh_ts_mapper *ts;
     QByteArray *out;
     Streamer::FrameStats *stats;
+    AdvertiserCollector *collector;
+    int64_t now_us;
 };
 
 void onFrame(void *ctx, const uint8_t *frame, size_t len)
@@ -52,6 +54,7 @@ void onFrame(void *ctx, const uint8_t *frame, size_t len)
     }
     sink->stats->frames++;
     sink->stats->board_id = pkt.board_id;
+    sink->collector->onPacket(pkt, sink->now_us);
     if (!pkt.crc_ok && !sink->config->include_crc_errors) {
         return;
     }
@@ -80,6 +83,13 @@ Streamer::Streamer(const QString &serial_location, const QString &socket_path, D
     manager_(manager),
     stop_requested_(0)
 {
+}
+
+void Streamer::setTarget(const QByteArray &mac_le)
+{
+    QMutexLocker locker(&target_mutex_);
+    pending_target_ = mac_le;
+    has_pending_target_ = true;
 }
 
 void Streamer::reportState(bool capturing)
@@ -162,8 +172,13 @@ Streamer::Result Streamer::streamToClient(int client_fd)
     // Settings edited in the device panel apply from the next capture on.
     config_ = CaptureSettings::instance()->config();
     stats_ = FrameStats();
+    {
+        QMutexLocker locker(&target_mutex_);
+        has_pending_target_ = false;
+    }
     reportState(true);
     Result result = captureLoop(client_fd);
+    collector_.flush();
     reportFrames();
     reportState(false);
     return result;
@@ -175,7 +190,7 @@ Streamer::Result Streamer::captureLoop(int client_fd)
     bh_deframer deframer;
     bh_ts_mapper ts;
     QByteArray out;
-    FrameSink sink = { &config_, &ts, &out, &stats_ };
+    FrameSink sink = { &config_, &ts, &out, &stats_, &collector_, 0 };
     gint64 last_report = g_get_monotonic_time();
 
     uint8_t global_header[BH_PCAP_GLOBAL_HEADER_LEN];
@@ -200,6 +215,7 @@ Streamer::Result Streamer::captureLoop(int client_fd)
 
         if (port.waitForReadyRead(kSerialWaitMs)) {
             QByteArray data = port.readAll();
+            sink.now_us = g_get_real_time();
             bh_deframer_feed(&deframer, reinterpret_cast<const uint8_t *>(data.constData()),
                              (size_t)data.size(), onFrame, &sink);
         } else if (port.error() != QSerialPort::NoError && port.error() != QSerialPort::TimeoutError) {
@@ -223,6 +239,27 @@ Streamer::Result Streamer::captureLoop(int client_fd)
         if (now - last_report >= kReportIntervalUs) {
             reportFrames();
             last_report = now;
+        }
+        collector_.flushIfDue(now);
+
+        // A target picked in the devices panel takes effect without restarting.
+        bool apply_target = false;
+        {
+            QMutexLocker locker(&target_mutex_);
+            if (has_pending_target_) {
+                config_.target_mac_le = pending_target_;
+                has_pending_target_ = false;
+                apply_target = true;
+            }
+        }
+        if (apply_target && port.isOpen()) {
+            uint8_t mac[6] = { 0 };
+            if (config_.target_mac_le.size() == 6) {
+                memcpy(mac, config_.target_mac_le.constData(), sizeof(mac));
+            }
+            writeCommand(port, BH_CMD_SET_TARGET, mac, sizeof(mac));
+            ws_info("BLEhound %s: target %s", qUtf8Printable(serial_location_),
+                    config_.target_mac_le.isEmpty() ? "cleared" : "set");
         }
     }
     return Result::Stopped;

@@ -49,6 +49,18 @@ void CaptureSettings::setConfig(const CaptureConfig &config, const QString &targ
     emit changed();
 }
 
+void CaptureSettings::setTargetMac(const QString &text)
+{
+    uint8_t mac[6];
+    CaptureConfig config = this->config();
+
+    config.target_mac_le.clear();
+    if (bh_parse_mac(text.toUtf8().constData(), mac)) {
+        config.target_mac_le = QByteArray(reinterpret_cast<const char *>(mac), sizeof(mac));
+    }
+    setConfig(config, text);
+}
+
 void CaptureSettings::load()
 {
     QSettings settings(QString::fromUtf8(kOrg), QString::fromUtf8(kApp));

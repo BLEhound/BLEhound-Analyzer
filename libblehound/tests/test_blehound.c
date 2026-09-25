@@ -540,6 +540,85 @@ static void test_ts_mapper_mono(void)
     CHECK(bh_ts_mapper_map_mono(&m, 4000) == 999999999000LL);
 }
 
+/* ----------------------------------------------------------- advertising */
+
+static void test_adv_parse(void)
+{
+    bh_packet pkt;
+    bh_adv_info info;
+    char text[18];
+    /* ADV_IND, random AdvA, AD: flags, complete name "Ring", manufacturer 0x0059 */
+    uint8_t adv_ind[] = {
+        0x40, 0x14, 0x01, 0x02, 0x03, 0x04, 0x05, 0xC6,
+        0x02, 0x01, 0x06,
+        0x05, 0x09, 'R', 'i', 'n', 'g',
+        0x04, 0xFF, 0x59, 0x00, 0x11,
+    };
+
+    memset(&pkt, 0, sizeof(pkt));
+    pkt.access_addr = BH_ADV_ACCESS_ADDR;
+    pkt.pdu = adv_ind;
+    pkt.pdu_len = sizeof(adv_ind);
+    CHECK(bh_adv_parse(&pkt, &info));
+    CHECK(info.pdu_type == 0 && info.connectable && info.from_advertiser && !info.extended);
+    CHECK(info.adva_random && info.adva[0] == 0x01 && info.adva[5] == 0xC6);
+    CHECK(info.has_name && info.name_complete && strcmp(info.name, "Ring") == 0);
+    CHECK(info.has_company && info.company_id == 0x0059);
+    CHECK(bh_addr_kind(info.adva, true) == BH_ADDR_RANDOM_STATIC);
+    bh_format_mac(info.adva, text);
+    CHECK(strcmp(text, "C6:05:04:03:02:01") == 0);
+
+    /* Short name is kept until a complete one shows up. */
+    uint8_t short_name[] = { 0x02, 0x0A, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF, 0x03, 0x08, 'A', 'b' };
+    pkt.pdu = short_name;
+    pkt.pdu_len = sizeof(short_name);
+    CHECK(bh_adv_parse(&pkt, &info));
+    CHECK(info.has_name && !info.name_complete && strcmp(info.name, "Ab") == 0);
+    CHECK(!info.connectable);
+    CHECK(bh_addr_kind(info.adva, false) == BH_ADDR_PUBLIC);
+
+    /* CONNECT_IND: the advertiser is the second address, RxAdd says random. */
+    uint8_t connect_ind[2 + 34] = { 0x85, 34, 1, 1, 1, 1, 1, 1, 0x10, 0x20, 0x30, 0x40, 0x50, 0x60 };
+    pkt.pdu = connect_ind;
+    pkt.pdu_len = sizeof(connect_ind);
+    CHECK(bh_adv_parse(&pkt, &info));
+    CHECK(!info.from_advertiser && info.adva_random && info.adva[0] == 0x10 && info.adva[5] == 0x60);
+    CHECK(bh_addr_kind(info.adva, true) == BH_ADDR_RANDOM_RESOLVABLE);
+
+    /* AUX_ADV_IND (type 7): ext header with AdvA, then AdvData with a name. */
+    uint8_t aux_adv[] = {
+        0x47, 0x0E,
+        0x47 /* ext len 7, mode connectable */, 0x01 /* flags: AdvA */,
+        0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
+        0x05, 0x09, 'C', 'o', 'd', 'e',
+    };
+    pkt.pdu = aux_adv;
+    pkt.pdu_len = sizeof(aux_adv);
+    CHECK(bh_adv_parse(&pkt, &info));
+    CHECK(info.extended && info.connectable && info.adva[0] == 0x0A);
+    CHECK(info.has_name && strcmp(info.name, "Code") == 0);
+
+    /* ADV_EXT_IND without AdvA in the header: nothing to identify. */
+    uint8_t ext_no_adva[] = { 0x07, 0x03, 0x02, 0x10, 0x00 };
+    pkt.pdu = ext_no_adva;
+    pkt.pdu_len = sizeof(ext_no_adva);
+    CHECK(!bh_adv_parse(&pkt, &info));
+
+    /* Not on the advertising access address. */
+    pkt.pdu = adv_ind;
+    pkt.pdu_len = sizeof(adv_ind);
+    pkt.access_addr = 0x12345678;
+    CHECK(!bh_adv_parse(&pkt, &info));
+
+    /* Truncated AD structure does not read past the end. */
+    uint8_t truncated[] = { 0x00, 0x09, 1, 2, 3, 4, 5, 6, 0x09, 0x09, 'x' };
+    pkt.access_addr = BH_ADV_ACCESS_ADDR;
+    pkt.pdu = truncated;
+    pkt.pdu_len = sizeof(truncated);
+    CHECK(bh_adv_parse(&pkt, &info));
+    CHECK(!info.has_name);
+}
+
 int main(void)
 {
     test_cobs_known_vectors();
@@ -560,6 +639,7 @@ int main(void)
     test_guard_channel();
     test_follow_relay();
     test_ts_mapper_mono();
+    test_adv_parse();
 
     if (failures) {
         fprintf(stderr, "%d check(s) failed\n", failures);

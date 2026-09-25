@@ -178,6 +178,44 @@ void bh_pcap_global_header(uint8_t out[BH_PCAP_GLOBAL_HEADER_LEN]);
 void bh_pcap_record_header(uint64_t ts_epoch_us, uint32_t len,
                            uint8_t out[BH_PCAP_RECORD_HEADER_LEN]);
 
+/* ------------------------------------------------------- advertising */
+
+#define BH_ADV_NAME_MAX         32
+
+enum bh_addr_kind {
+    BH_ADDR_PUBLIC,
+    BH_ADDR_RANDOM_STATIC,
+    BH_ADDR_RANDOM_RESOLVABLE,
+    BH_ADDR_RANDOM_NON_RESOLVABLE,
+};
+
+/** What an advertising-channel PDU tells about the advertiser. */
+typedef struct bh_adv_info {
+    uint8_t  pdu_type;          /**< PDU type nibble */
+    bool     extended;          /**< ADV_EXT_IND / AUX_* (type 7) or AUX_CONNECT_RSP (8) */
+    bool     connectable;
+    bool     from_advertiser;   /**< sent by the advertiser (vs. SCAN_REQ/CONNECT_IND aimed at it) */
+    uint8_t  adva[6];           /**< air (little-endian) order */
+    bool     adva_random;
+    bool     has_name;
+    bool     name_complete;
+    char     name[BH_ADV_NAME_MAX];
+    bool     has_company;
+    uint16_t company_id;        /**< from manufacturer-specific data */
+} bh_adv_info;
+
+/**
+ * Parse an advertising-channel PDU and identify the advertiser it is about.
+ * @return false if the packet is not on the advertising access address or
+ *         carries no advertiser address (e.g. ADV_EXT_IND without AdvA).
+ */
+bool bh_adv_parse(const bh_packet *pkt, bh_adv_info *info);
+
+enum bh_addr_kind bh_addr_kind(const uint8_t adva[6], bool random_addr);
+
+/** "AA:BB:CC:DD:EE:FF" (display order) from an air-order address; @p out holds 18 bytes. */
+void bh_format_mac(const uint8_t mac_le[6], char out[18]);
+
 /* ------------------------------------------------- multi-board aggregation */
 
 /*

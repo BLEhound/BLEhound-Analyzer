@@ -15,7 +15,10 @@
 #include <QAtomicInt>
 #include <QByteArray>
 #include <QString>
+#include <QMutex>
 #include <QThread>
+
+#include "blehound_advertiser_model.h"
 
 class QSerialPort;
 
@@ -52,6 +55,9 @@ public:
     /** Ask the thread to finish; returns immediately. */
     void requestStop() { stop_requested_.storeRelaxed(1); }
 
+    /** Change the target while capturing (6 bytes air order, empty = none); any thread. */
+    void setTarget(const QByteArray &mac_le);
+
 protected:
     void run() override;
 
@@ -70,7 +76,12 @@ private:
     DeviceManager *manager_;
     CaptureConfig config_;
     FrameStats stats_;
+    AdvertiserCollector collector_;
     QAtomicInt stop_requested_;
+
+    QMutex target_mutex_;
+    QByteArray pending_target_;
+    bool has_pending_target_ = false;
 };
 
 } // namespace BLEhound
