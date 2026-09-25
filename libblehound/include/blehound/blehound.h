@@ -138,12 +138,21 @@ typedef struct bh_ts_mapper {
     uint32_t prev_fw_us;
     uint64_t wraps;
     bool     started;
+    uint64_t first_mono_us;
+    bool     mono_started;
 } bh_ts_mapper;
 
 void bh_ts_mapper_init(bh_ts_mapper *m, uint64_t host_epoch_us);
 
 /** Packets must be mapped in arrival order; a backwards step is a wrap. */
 uint64_t bh_ts_mapper_map(bh_ts_mapper *m, uint32_t fw_us);
+
+/**
+ * Aggregated path: @p mono_us is the aggregator's 64-bit key with wraps
+ * already unrolled, so this is a plain linear mapping. A small backwards
+ * step here is a late packet, not a wrap.
+ */
+int64_t bh_ts_mapper_map_mono(bh_ts_mapper *m, uint64_t mono_us);
 
 /* -------------------------------------------------------------- commands */
 
@@ -168,6 +177,197 @@ void bh_pcap_global_header(uint8_t out[BH_PCAP_GLOBAL_HEADER_LEN]);
 /** Classic pcap record header. Writes 16 bytes. */
 void bh_pcap_record_header(uint64_t ts_epoch_us, uint32_t len,
                            uint8_t out[BH_PCAP_RECORD_HEADER_LEN]);
+
+/* ------------------------------------------------- multi-board aggregation */
+
+/*
+ * Three dongles guard advertising channels 37/38/39 (board_id 0/1/2). Their
+ * free-running 32-bit µs counters are not synchronised: board 0 raises a
+ * SYNC edge about once a second, every board captures that edge on its own
+ * counter and reports the most recent one as sync_epoch in each frame.
+ * offset[b] = sync_epoch[b] - sync_epoch[ref] converts board b's ticks to
+ * the reference board's time base; the aggregator then merges the streams
+ * by aligned time, drops the copies of a packet heard by several boards and
+ * emits one ordered stream.
+ */
+
+#define BH_MAX_BOARDS           256
+#define BH_SYNC_HIST            4
+#define BH_NO_HOST_TIME         INT64_MIN
+#define BH_SYNC_PAIR_WINDOW_US  500000
+#define BH_AGG_DEDUP_US         100         /* < T_IFS (150 µs), > inter-board error (~75 µs) */
+#define BH_AGG_REORDER_US       300000      /* covers USB arrival skew between boards */
+#define BH_AGG_PENDING_TIMEOUT_US 3000000   /* no SYNC in 3 s: degrade to raw ticks */
+
+/** 32-bit circular signed difference a - b. */
+int32_t bh_sdiff32(uint32_t a, uint32_t b);
+
+/** board_id -> advertising channel it guards (0->37, 1->38, 2->39). */
+bool bh_guard_channel_for_board(uint8_t board_id, uint8_t *channel);
+
+typedef struct bh_sync_edge {
+    uint32_t tick;
+    int64_t  host_us;       /**< host arrival time, or BH_NO_HOST_TIME */
+} bh_sync_edge;
+
+/**
+ * Aligns board clocks to the reference board using reported SYNC edges.
+ *
+ * The two reports of one physical edge reach the host over separate serial
+ * ports and can arrive hundreds of ms apart, so ticks are paired by host
+ * arrival time (within pair_window_us) rather than "latest with latest",
+ * which would mispair by one heartbeat period when a board's new edge
+ * arrives first. Without host times it degrades to latest-with-latest.
+ */
+typedef struct bh_sync_clock {
+    uint8_t      ref_board;
+    int64_t      pair_window_us;
+    bh_sync_edge hist[BH_MAX_BOARDS][BH_SYNC_HIST];
+    uint8_t      hist_len[BH_MAX_BOARDS];
+    uint32_t     offset[BH_MAX_BOARDS];
+    bool         has_offset[BH_MAX_BOARDS];
+} bh_sync_clock;
+
+void bh_sync_clock_init(bh_sync_clock *c, uint8_t ref_board, int64_t pair_window_us);
+
+/** Record a board's most recent SYNC edge tick (0 = none yet, ignored). */
+void bh_sync_clock_observe(bh_sync_clock *c, uint8_t board_id, uint32_t tick, int64_t host_us);
+
+/** @return false while the board's offset to the reference is unknown. */
+bool bh_sync_clock_offset(const bh_sync_clock *c, uint8_t board_id, uint32_t *offset);
+
+/** Convert a board tick to the reference time base. @return false if unknown. */
+bool bh_sync_clock_to_ref(const bh_sync_clock *c, uint8_t board_id, uint32_t tick, uint32_t *ref_tick);
+
+/** A captured packet with its own copy of the PDU, as stored by the aggregator. */
+typedef struct bh_agg_packet {
+    uint32_t ts_us;
+    uint8_t  channel;
+    int8_t   rssi;
+    uint8_t  phy;
+    uint32_t access_addr;
+    uint32_t crc;
+    bool     crc_ok;
+    uint8_t  board_id;
+    uint32_t sync_epoch;
+    int64_t  host_us;       /**< host arrival time, or BH_NO_HOST_TIME */
+    uint8_t  pdu_len;
+    uint8_t  pdu[BH_MAX_PDU_LEN];
+    /* Filled in on output. */
+    uint32_t aligned;       /**< reference-board tick */
+    uint64_t key64;         /**< aligned tick with wraps unrolled; use for ordering and timestamps */
+} bh_agg_packet;
+
+void bh_agg_packet_from(bh_agg_packet *dst, const bh_packet *src, int64_t host_us);
+
+/** Borrowed view of an aggregated packet, e.g. for bh_btle_rf_record(). */
+void bh_agg_packet_view(const bh_agg_packet *src, bh_packet *view);
+
+typedef void (*bh_agg_emit_cb)(void *ctx, const bh_agg_packet *pkt);
+
+typedef struct bh_aggregator bh_aggregator;
+
+/**
+ * Create an aggregator. Packets are held in a reorder buffer until
+ * reorder_window_us has passed (in aligned time) and duplicates seen by
+ * several boards within dedup_window_us are dropped on output.
+ */
+bh_aggregator *bh_aggregator_new(uint32_t dedup_window_us, uint32_t reorder_window_us, uint8_t ref_board);
+void bh_aggregator_free(bh_aggregator *a);
+
+/**
+ * Feed one packet from any board; @p cb receives the packets that are now
+ * safe to emit, in order. Packets from a board whose clock offset is still
+ * unknown are held back (up to BH_AGG_PENDING_TIMEOUT_US) so that raw ticks
+ * never leak into the aligned stream. @p cb must not call back into @p a.
+ */
+void bh_aggregator_add(bh_aggregator *a, const bh_agg_packet *pkt, bh_agg_emit_cb cb, void *ctx);
+
+/** Emit everything still buffered, in order. */
+void bh_aggregator_flush(bh_aggregator *a, bh_agg_emit_cb cb, void *ctx);
+
+const bh_sync_clock *bh_aggregator_clock(const bh_aggregator *a);
+
+/* ------------------------------------------------------- follow relay */
+
+#define BH_ADV_ACCESS_ADDR      0x8E89BED6u
+#define BH_FOLLOW_PARAMS_LEN    25
+#define BH_RELAY_TTL_US         5000000     /* relay a given connection once per 5 s */
+
+/** CONNECT_IND fields needed to follow the connection. */
+typedef struct bh_connect_ind {
+    uint32_t aa;
+    uint32_t crc_init;
+    uint8_t  win_size;
+    uint16_t win_offset;
+    uint16_t interval;
+    uint16_t latency;
+    uint16_t timeout;
+    uint8_t  chan_map[5];
+    uint8_t  hop;
+    bool     csa2;
+    uint8_t  adva[6];       /**< air (little-endian) order */
+} bh_connect_ind;
+
+/**
+ * A CONNECT_IND on a primary advertising channel. AUX_CONNECT_REQ on a
+ * secondary channel shares the PDU type but has a different txWinDelay and
+ * PHY, so it is deliberately not matched.
+ */
+bool bh_is_connect_ind(const bh_packet *pkt);
+bool bh_parse_connect_ind(const uint8_t *pdu, size_t len, bh_connect_ind *ci);
+
+/** BH_CMD_FOLLOW argument (25 bytes); frame it with bh_cmd_build(). */
+void bh_follow_params(const bh_connect_ind *ci, uint32_t anchor0_us, uint8_t out[BH_FOLLOW_PARAMS_LEN]);
+
+/**
+ * Callback that delivers a FOLLOW command to a board.
+ * @return true if it was sent.
+ */
+typedef bool (*bh_relay_send_cb)(void *ctx, uint8_t board_id, const uint8_t *params, size_t params_len);
+
+typedef struct bh_relay_stats {
+    uint32_t relayed;
+    uint32_t sent_cmds;
+    uint32_t skipped_no_offset;
+    uint32_t skipped_dup;
+    uint32_t skipped_target;
+} bh_relay_stats;
+
+/**
+ * When one board captures a CONNECT_IND, hands the connection to the other
+ * boards (anchor converted to each board's own clock) so that all of them
+ * follow it; the aggregator then dedups. Not thread-safe: the caller locks.
+ */
+typedef struct bh_follow_relay {
+    bh_sync_clock  clock;
+    bool           has_target;
+    uint8_t        target[6];
+    bool           registered[BH_MAX_BOARDS];
+    struct {
+        bool     used;
+        uint32_t aa;
+        int64_t  host_us;
+    } relayed[64];
+    bh_relay_stats stats;
+} bh_follow_relay;
+
+/** @p target_le: 6-byte AdvA in air order to relay only that device, or NULL. */
+void bh_follow_relay_init(bh_follow_relay *r, uint8_t ref_board, const uint8_t *target_le);
+void bh_follow_relay_register(bh_follow_relay *r, uint8_t board_id);
+void bh_follow_relay_observe(bh_follow_relay *r, uint8_t board_id, uint32_t sync_epoch, int64_t host_us);
+
+/**
+ * Event-0 anchor of a CONNECT_IND captured by @p from_board, in @p to_board's
+ * clock. @p payload_len is the PDU header length byte.
+ */
+bool bh_follow_relay_anchor0(const bh_follow_relay *r, uint8_t from_board, uint32_t ts_us,
+                             uint8_t payload_len, uint16_t win_offset, uint8_t to_board,
+                             uint32_t *anchor0_us);
+
+/** @return the number of boards the connection was relayed to. */
+int bh_follow_relay_maybe_relay(bh_follow_relay *r, uint8_t from_board, const bh_packet *pkt,
+                                int64_t host_us, bh_relay_send_cb cb, void *ctx);
 
 #ifdef __cplusplus
 }

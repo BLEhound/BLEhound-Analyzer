@@ -147,3 +147,12 @@ uint64_t bh_ts_mapper_map(bh_ts_mapper *m, uint32_t fw_us)
     uint64_t elapsed = (uint64_t)fw_us + (m->wraps << 32) - m->first_fw_us;
     return m->host_epoch_us + elapsed;
 }
+
+int64_t bh_ts_mapper_map_mono(bh_ts_mapper *m, uint64_t mono_us)
+{
+    if (!m->mono_started) {
+        m->mono_started = true;
+        m->first_mono_us = mono_us;
+    }
+    return (int64_t)m->host_epoch_us + (int64_t)(mono_us - m->first_mono_us);
+}

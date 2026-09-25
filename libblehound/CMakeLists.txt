@@ -5,6 +5,8 @@ add_library(blehound STATIC
 	src/cobs.c
 	src/cmd.c
 	src/frame.c
+	src/agg.c
+	src/sync.c
 )
 target_include_directories(blehound PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set_target_properties(blehound PROPERTIES
@@ -19,3 +21,7 @@ set_target_properties(blehound_test PROPERTIES FOLDER "Tests")
 add_executable(blehound_raw2pcap tests/raw2pcap.c)
 target_link_libraries(blehound_raw2pcap blehound)
 set_target_properties(blehound_raw2pcap PROPERTIES FOLDER "Tests")
+
+add_executable(blehound_tri2pcap tests/tri2pcap.c)
+target_link_libraries(blehound_tri2pcap blehound)
+set_target_properties(blehound_tri2pcap PROPERTIES FOLDER "Tests")

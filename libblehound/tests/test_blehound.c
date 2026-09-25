@@ -244,6 +244,302 @@ static void test_pcap_headers(void)
     CHECK(r[8] == 25 && r[12] == 25);
 }
 
+/* ------------------------------------------------ multi-board aggregation */
+
+static void test_sync_clock(void)
+{
+    bh_sync_clock c;
+    uint32_t v;
+
+    bh_sync_clock_init(&c, 0, BH_SYNC_PAIR_WINDOW_US);
+    bh_sync_clock_observe(&c, 0, 1000, BH_NO_HOST_TIME);
+    bh_sync_clock_observe(&c, 1, 4000, BH_NO_HOST_TIME);     /* board 1 runs 3000 ahead */
+    CHECK(bh_sync_clock_offset(&c, 1, &v) && v == 3000);
+    CHECK(bh_sync_clock_to_ref(&c, 1, 4500, &v) && v == 1500);
+    CHECK(bh_sync_clock_to_ref(&c, 0, 1234, &v) && v == 1234);
+    CHECK(!bh_sync_clock_to_ref(&c, 2, 10, &v));
+
+    /* Offsets survive the counter wrapping. */
+    bh_sync_clock_init(&c, 0, BH_SYNC_PAIR_WINDOW_US);
+    bh_sync_clock_observe(&c, 0, 100, BH_NO_HOST_TIME);
+    bh_sync_clock_observe(&c, 1, 50, BH_NO_HOST_TIME);
+    CHECK(bh_sync_clock_to_ref(&c, 1, 60, &v) && v == 110);
+}
+
+static void test_sync_clock_pairing(void)
+{
+    /* Reports of the same edge arrive on separate serial ports; when board
+     * 1's new edge arrives before board 0's it must not be paired with
+     * board 0's previous edge (that would be off by one heartbeat). */
+    bh_sync_clock c;
+    uint32_t v;
+
+    bh_sync_clock_init(&c, 0, BH_SYNC_PAIR_WINDOW_US);
+    bh_sync_clock_observe(&c, 0, 1000000, 10000000);
+    bh_sync_clock_observe(&c, 1, 4000000, 10200000);        /* edge k: offset 3 s */
+    CHECK(bh_sync_clock_offset(&c, 1, &v) && v == 3000000);
+    bh_sync_clock_observe(&c, 1, 5000000, 11050000);        /* edge k+1, board 1 first */
+    CHECK(bh_sync_clock_offset(&c, 1, &v) && v == 3000000);
+    bh_sync_clock_observe(&c, 0, 2000000, 11300000);
+    CHECK(bh_sync_clock_offset(&c, 1, &v) && v == 3000000);
+    bh_sync_clock_observe(&c, 0, 3000000, 12100000);        /* edge k+2, board 0 first */
+    bh_sync_clock_observe(&c, 1, 6000050, 12350000);        /* 50 µs jitter: newest pair wins */
+    CHECK(bh_sync_clock_offset(&c, 1, &v) && v == 3000050);
+}
+
+static bh_agg_packet mk_pkt(uint8_t board, uint32_t ts, uint32_t sync_epoch,
+                            uint32_t aa, uint32_t crc, const uint8_t *pdu, uint8_t len)
+{
+    bh_agg_packet p;
+
+    memset(&p, 0, sizeof(p));
+    p.board_id = board;
+    p.ts_us = ts;
+    p.sync_epoch = sync_epoch;
+    p.access_addr = aa;
+    p.crc = crc;
+    p.channel = 37;
+    p.rssi = -50;
+    p.crc_ok = true;
+    p.host_us = BH_NO_HOST_TIME;
+    p.pdu_len = len;
+    memcpy(p.pdu, pdu, len);
+    return p;
+}
+
+struct agg_log {
+    int count;
+    bh_agg_packet out[16];
+};
+
+static void collect(void *ctx, const bh_agg_packet *pkt)
+{
+    struct agg_log *log = ctx;
+    if (log->count < 16) {
+        log->out[log->count] = *pkt;
+    }
+    log->count++;
+}
+
+static void test_aggregate(void)
+{
+    const uint8_t pdu[] = { 0x02, 0x06, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66 };
+    const uint8_t pdu2[] = { 0x02, 0x06, 0x99, 0x88, 0x77, 0x66, 0x55, 0x44 };
+    struct agg_log log = { 0 };
+    bh_aggregator *agg = bh_aggregator_new(200, 5000, 0);
+    bh_agg_packet p;
+
+    /* Same SYNC edge: board 0 tick 1000, board 1 tick 4000 -> offset 3000.
+     * The same air packet heard by both: aligned 2000 on both. */
+    p = mk_pkt(0, 2000, 1000, 0xAABBCCDD, 0x123456, pdu, sizeof(pdu));
+    bh_aggregator_add(agg, &p, collect, &log);
+    p = mk_pkt(1, 5000, 4000, 0xAABBCCDD, 0x123456, pdu, sizeof(pdu));
+    bh_aggregator_add(agg, &p, collect, &log);
+    p = mk_pkt(0, 20000, 1000, 0xAABBCCDD, 0x654321, pdu2, sizeof(pdu2));
+    bh_aggregator_add(agg, &p, collect, &log);
+    bh_aggregator_flush(agg, collect, &log);
+    CHECK(log.count == 2);
+    CHECK(log.out[0].crc == 0x123456 && log.out[1].crc == 0x654321);
+    CHECK(log.out[0].aligned <= log.out[1].aligned);
+    bh_aggregator_free(agg);
+
+    /* No sync_epoch at all still emits. */
+    const uint8_t empty[] = { 0, 0 };
+    memset(&log, 0, sizeof(log));
+    agg = bh_aggregator_new(BH_AGG_DEDUP_US, BH_AGG_REORDER_US, 0);
+    p = mk_pkt(1, 500, 0, 0x11111111, 1, empty, sizeof(empty));
+    bh_aggregator_add(agg, &p, collect, &log);
+    bh_aggregator_flush(agg, collect, &log);
+    CHECK(log.count == 1);
+    bh_aggregator_free(agg);
+}
+
+static void test_hold_until_synced(void)
+{
+    /* A non-reference board's packets are held until its offset is known,
+     * otherwise raw ticks leak into the aligned stream and it jumps. */
+    const uint8_t pdu[] = { 0x02, 0x06, 1, 2, 3, 4, 5, 6 };
+    struct agg_log log = { 0 };
+    bh_aggregator *agg = bh_aggregator_new(200, 5000, 0);
+    bh_agg_packet p;
+
+    p = mk_pkt(1, 5000, 0, 0xAABBCCDD, 1, pdu, sizeof(pdu));
+    bh_aggregator_add(agg, &p, collect, &log);
+    CHECK(log.count == 0);
+    p = mk_pkt(0, 2000, 1000, 0xAABBCCDD, 2, pdu, sizeof(pdu));
+    bh_aggregator_add(agg, &p, collect, &log);
+    p = mk_pkt(1, 6000, 4000, 0xAABBCCDD, 3, pdu, sizeof(pdu));
+    bh_aggregator_add(agg, &p, collect, &log);
+    bh_aggregator_flush(agg, collect, &log);
+    CHECK(log.count == 3);
+    CHECK(log.out[0].aligned == 2000 && log.out[1].aligned == 2000 && log.out[2].aligned == 3000);
+    CHECK(log.out[0].board_id == 0 && log.out[1].board_id == 1);
+    for (int i = 0; i < log.count; i++) {
+        CHECK(log.out[i].key64 < (1ull << 32));
+    }
+    bh_aggregator_free(agg);
+
+    /* Never any SYNC: after the timeout, degrade to raw ticks. */
+    memset(&log, 0, sizeof(log));
+    agg = bh_aggregator_new(BH_AGG_DEDUP_US, BH_AGG_REORDER_US, 0);
+    p = mk_pkt(1, 100, 0, 0xAABBCCDD, 1, pdu, sizeof(pdu));
+    bh_aggregator_add(agg, &p, collect, &log);
+    CHECK(log.count == 0);
+    p = mk_pkt(1, 100 + 3100000, 0, 0xAABBCCDD, 2, pdu, sizeof(pdu));
+    bh_aggregator_add(agg, &p, collect, &log);
+    bh_aggregator_flush(agg, collect, &log);
+    CHECK(log.count == 2);
+    bh_aggregator_free(agg);
+}
+
+static void test_reorder_window(void)
+{
+    const uint8_t pdu[] = { 0x02, 0x06, 9, 9, 9, 9, 9, 9 };
+    struct agg_log log = { 0 };
+    bh_aggregator *agg = bh_aggregator_new(BH_AGG_DEDUP_US, 300000, 0);
+    bh_agg_packet p;
+
+    CHECK(BH_AGG_REORDER_US >= 200000);
+    p = mk_pkt(0, 1000000, 1000, 0x11223344, 1, pdu, sizeof(pdu));
+    bh_aggregator_add(agg, &p, collect, &log);
+    p = mk_pkt(0, 1100000, 1000, 0x11223344, 2, pdu, sizeof(pdu));
+    bh_aggregator_add(agg, &p, collect, &log);
+    p = mk_pkt(0, 1050000, 1000, 0x11223344, 3, pdu, sizeof(pdu));     /* 50 ms late */
+    bh_aggregator_add(agg, &p, collect, &log);
+    CHECK(log.count == 0);
+    bh_aggregator_flush(agg, collect, &log);
+    CHECK(log.count == 3);
+    CHECK(log.out[0].aligned == 1000000 && log.out[1].aligned == 1050000 && log.out[2].aligned == 1100000);
+    bh_aggregator_free(agg);
+}
+
+static void test_guard_channel(void)
+{
+    uint8_t ch;
+
+    CHECK(bh_guard_channel_for_board(0, &ch) && ch == 37);
+    CHECK(bh_guard_channel_for_board(1, &ch) && ch == 38);
+    CHECK(bh_guard_channel_for_board(2, &ch) && ch == 39);
+    CHECK(!bh_guard_channel_for_board(3, &ch));
+    CHECK(!bh_guard_channel_for_board(255, &ch));
+}
+
+struct relay_log {
+    int count;
+    uint8_t board[8];
+    uint8_t params[8][BH_FOLLOW_PARAMS_LEN];
+};
+
+static bool record_send(void *ctx, uint8_t board, const uint8_t *params, size_t len)
+{
+    struct relay_log *log = ctx;
+    if (len != BH_FOLLOW_PARAMS_LEN || log->count >= 8) {
+        return false;
+    }
+    log->board[log->count] = board;
+    memcpy(log->params[log->count], params, len);
+    log->count++;
+    return true;
+}
+
+static void test_follow_relay(void)
+{
+    bh_follow_relay relay;
+    struct relay_log log = { 0 };
+    uint8_t pdu[2 + 34];
+    uint8_t *ll = pdu + 14;
+    bh_packet pkt;
+    bh_connect_ind ci;
+    uint32_t v;
+
+    bh_follow_relay_init(&relay, 0, NULL);
+    bh_follow_relay_register(&relay, 0);
+    bh_follow_relay_register(&relay, 1);
+    bh_follow_relay_register(&relay, 2);
+    bh_follow_relay_observe(&relay, 0, 1000, 10000000);
+    bh_follow_relay_observe(&relay, 1, 1500, 10010000);      /* +500 */
+    bh_follow_relay_observe(&relay, 2, 800, 10020000);       /* -200 */
+    CHECK(bh_sync_clock_offset(&relay.clock, 1, &v) && v == 500);
+    CHECK(bh_sync_clock_offset(&relay.clock, 2, &v) && v == (uint32_t)(800 - 1000));
+
+    /* CONNECT_IND from board 0: InitA 01..06, AdvA aa..ff. */
+    memset(pdu, 0, sizeof(pdu));
+    pdu[0] = 0x05;
+    pdu[1] = 34;
+    for (int i = 0; i < 6; i++) {
+        pdu[2 + i] = (uint8_t)(1 + i);
+    }
+    memcpy(pdu + 8, "\xaa\xbb\xcc\xdd\xee\xff", 6);
+    ll[0] = 0x78; ll[1] = 0x56; ll[2] = 0x34; ll[3] = 0x12;      /* AA */
+    ll[4] = 0xEF; ll[5] = 0xCD; ll[6] = 0xAB;                    /* crc_init */
+    ll[7] = 3;                                                   /* win_size */
+    ll[8] = 8;                                                   /* win_offset */
+    ll[10] = 24;                                                 /* interval */
+    ll[14] = 200;                                                /* timeout */
+    memset(ll + 16, 0xFF, 4); ll[20] = 0x1F;                     /* chan_map */
+    ll[21] = 0x05;                                               /* hop */
+
+    memset(&pkt, 0, sizeof(pkt));
+    pkt.access_addr = BH_ADV_ACCESS_ADDR;
+    pkt.channel = 37;
+    pkt.ts_us = 100000;
+    pkt.pdu = pdu;
+    pkt.pdu_len = sizeof(pdu);
+    CHECK(bh_is_connect_ind(&pkt));
+    CHECK(bh_parse_connect_ind(pdu, sizeof(pdu), &ci));
+    CHECK(ci.aa == 0x12345678 && ci.crc_init == 0xABCDEF);
+    CHECK(ci.interval == 24 && ci.win_offset == 8 && ci.hop == 5 && !ci.csa2);
+    CHECK(memcmp(ci.adva, "\xaa\xbb\xcc\xdd\xee\xff", 6) == 0);
+
+    CHECK(bh_follow_relay_maybe_relay(&relay, 0, &pkt, 10050000, record_send, &log) == 2);
+    CHECK(log.count == 2);
+    uint32_t air = (2 + 34 + 3) * 8;
+    uint32_t anchor0 = 100000 + air + 1250 + 8 * 1250;
+    for (int i = 0; i < log.count; i++) {
+        const uint8_t *pr = log.params[i];
+        uint32_t got = (uint32_t)pr[21] | (uint32_t)pr[22] << 8 | (uint32_t)pr[23] << 16 | (uint32_t)pr[24] << 24;
+        uint32_t expect = log.board[i] == 1 ? anchor0 + 500 : anchor0 - 200;
+        CHECK(got == expect);
+        CHECK(pr[0] == 0x78 && pr[3] == 0x12);                  /* aa */
+        CHECK((pr[14] | pr[15] << 8) == 24);                    /* interval */
+    }
+
+    /* Same AA within the TTL is not relayed again. */
+    CHECK(bh_follow_relay_maybe_relay(&relay, 0, &pkt, 10060000, record_send, &log) == 0);
+    CHECK(relay.stats.skipped_dup == 1);
+
+    /* A board whose offset is unknown is skipped. */
+    bh_follow_relay_init(&relay, 0, NULL);
+    bh_follow_relay_register(&relay, 0);
+    bh_follow_relay_register(&relay, 1);
+    CHECK(bh_follow_relay_maybe_relay(&relay, 0, &pkt, 10050000, record_send, &log) == 0);
+    CHECK(relay.stats.skipped_no_offset == 1);
+
+    /* Target filter: only the wanted AdvA is relayed. */
+    bh_follow_relay_init(&relay, 0, (const uint8_t *)"\x01\x02\x03\x04\x05\x06");
+    bh_follow_relay_register(&relay, 0);
+    bh_follow_relay_register(&relay, 1);
+    bh_follow_relay_observe(&relay, 0, 1000, 10000000);
+    bh_follow_relay_observe(&relay, 1, 1500, 10010000);
+    CHECK(bh_follow_relay_maybe_relay(&relay, 0, &pkt, 10050000, record_send, &log) == 0);
+    CHECK(relay.stats.skipped_target == 1);
+
+    /* AUX_CONNECT_REQ on a data channel is not a CONNECT_IND. */
+    pkt.channel = 5;
+    CHECK(!bh_is_connect_ind(&pkt));
+}
+
+static void test_ts_mapper_mono(void)
+{
+    bh_ts_mapper m;
+
+    bh_ts_mapper_init(&m, 1000000000000ULL);
+    CHECK(bh_ts_mapper_map_mono(&m, 5000) == 1000000000000LL);
+    CHECK(bh_ts_mapper_map_mono(&m, 6000) == 1000000001000LL);
+    /* A late packet steps back, it is not a wrap. */
+    CHECK(bh_ts_mapper_map_mono(&m, 4000) == 999999999000LL);
+}
+
 int main(void)
 {
     test_cobs_known_vectors();
@@ -256,6 +552,14 @@ int main(void)
     test_cmd_and_mac();
     test_deframer();
     test_pcap_headers();
+    test_sync_clock();
+    test_sync_clock_pairing();
+    test_aggregate();
+    test_hold_until_synced();
+    test_reorder_window();
+    test_guard_channel();
+    test_follow_relay();
+    test_ts_mapper_mono();
 
     if (failures) {
         fprintf(stderr, "%d check(s) failed\n", failures);
