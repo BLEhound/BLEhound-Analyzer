@@ -55,6 +55,9 @@ public:
     /** Ask the thread to finish; returns immediately. */
     void requestStop() { stop_requested_.storeRelaxed(1); }
 
+    /** Report a parsed status frame to the device manager (queued). */
+    void reportStatus(const bh_status &status);
+
     /** Change the target while capturing (6 bytes air order, empty = none); any thread. */
     void setTarget(const QByteArray &mac_le);
 

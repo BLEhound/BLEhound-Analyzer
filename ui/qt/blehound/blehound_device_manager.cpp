@@ -100,6 +100,25 @@ void DeviceManager::reportCaptureState(const QString &location, bool capturing)
     emit boardsChanged();
 }
 
+void DeviceManager::reportStatus(const QString &location, const bh_status &status)
+{
+    if (!boards_.contains(location)) {
+        return;
+    }
+    BoardInfo &board = boards_[location];
+    int old_channel = channelFor(location);
+    board.have_status = true;
+    board.board_id = status.board_id;
+    board.fw_version = QString::fromUtf8(status.fw_version);
+    board.sync_active = (status.flags & BH_STATUS_SYNC_ACTIVE) != 0;
+    board.following = (status.flags & BH_STATUS_FOLLOWING) != 0;
+    board.connects_seen = status.connects_seen;
+    if (channelFor(location) != old_channel) {
+        mainApp->refreshLocalInterfaces();
+    }
+    emit boardsChanged();
+}
+
 void DeviceManager::reportScanState(const QString &location, bool scanning)
 {
     if (!boards_.contains(location)) {

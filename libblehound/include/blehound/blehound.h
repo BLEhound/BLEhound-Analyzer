@@ -31,6 +31,7 @@ extern "C" {
 
 /* Device -> host frame types. */
 #define BH_FRAME_PACKET             0x01
+#define BH_FRAME_STATUS             0x02
 
 /* Host -> device commands. */
 #define BH_CMD_SET_CHANNEL          0x81    /* 1 byte: BLE channel index */
@@ -38,6 +39,16 @@ extern "C" {
 #define BH_CMD_SET_HOPPING          0x85    /* 1 byte: 1 = hop 37/38/39 */
 #define BH_CMD_FOLLOW               0x86
 #define BH_CMD_SET_SINGLE_TARGET    0x87    /* 1 byte: 1 = single-target (default), 0 = multi-target */
+#define BH_CMD_QUERY_STATUS         0x88    /* no args; device replies with a BH_FRAME_STATUS frame */
+
+/* STATUS frame flags. */
+#define BH_STATUS_SINGLE_TARGET     (1u << 0)
+#define BH_STATUS_HOPPING           (1u << 1)
+#define BH_STATUS_TARGET_SET        (1u << 2)
+#define BH_STATUS_FOLLOWING         (1u << 3)
+#define BH_STATUS_SYNC_ACTIVE       (1u << 4)
+
+#define BH_FW_VERSION_MAX           64
 
 #define BH_MAX_PDU_LEN              255
 #define BH_FRAME_HEADER_LEN         17
@@ -118,6 +129,24 @@ bool bh_parse_frame(const uint8_t *raw, size_t len, bh_packet *pkt);
 
 /** BLE channel index (0..39) to physical RF channel (2402 + 2n MHz). */
 uint8_t bh_ble_to_rf_channel(uint8_t ble_channel);
+
+/** Device status, from a BH_FRAME_STATUS reply to BH_CMD_QUERY_STATUS. */
+typedef struct bh_status {
+    uint8_t  status_version;
+    uint8_t  board_id;
+    uint8_t  guard_channel;
+    uint8_t  flags;             /**< BH_STATUS_* */
+    uint32_t sync_count;
+    uint32_t connects_seen;
+    uint8_t  active_now;
+    char     fw_version[BH_FW_VERSION_MAX];
+} bh_status;
+
+/**
+ * Parse a decoded device frame as a status frame.
+ * @return false if it is not a well-formed BH_FRAME_STATUS.
+ */
+bool bh_parse_status(const uint8_t *raw, size_t len, bh_status *st);
 
 /**
  * Build a LINKTYPE_BLUETOOTH_LE_LL_WITH_PHDR record body:

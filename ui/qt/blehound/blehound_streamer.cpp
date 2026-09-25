@@ -39,6 +39,7 @@ struct FrameSink {
     QByteArray *out;
     Streamer::FrameStats *stats;
     AdvertiserCollector *collector;
+    Streamer *streamer;
     int64_t now_us;
 };
 
@@ -46,9 +47,16 @@ void onFrame(void *ctx, const uint8_t *frame, size_t len)
 {
     FrameSink *sink = static_cast<FrameSink *>(ctx);
     bh_packet pkt;
+    bh_status status;
     uint8_t rec[BH_MAX_RECORD_LEN];
     uint8_t hdr[BH_PCAP_RECORD_HEADER_LEN];
 
+    if (len > 0 && frame[0] == BH_FRAME_STATUS) {
+        if (bh_parse_status(frame, len, &status)) {
+            sink->streamer->reportStatus(status);
+        }
+        return;
+    }
     if (!bh_parse_frame(frame, len, &pkt)) {
         return;
     }
@@ -94,6 +102,14 @@ void Streamer::setTarget(const QByteArray &mac_le)
     QMutexLocker locker(&target_mutex_);
     pending_target_ = mac_le;
     has_pending_target_ = true;
+}
+
+void Streamer::reportStatus(const bh_status &status)
+{
+    DeviceManager *manager = manager_;
+    QString location = serial_location_;
+    QMetaObject::invokeMethod(manager, [=]() { manager->reportStatus(location, status); },
+                              Qt::QueuedConnection);
 }
 
 void Streamer::reportScan(bool scanning)
@@ -152,9 +168,10 @@ void Streamer::run()
     bh_deframer deframer;
     bh_ts_mapper ts;
     CaptureConfig scan_config;                  /* hop 37/38/39, no target, observe only */
-    FrameSink sink = { &scan_config, &ts, nullptr, &stats_, &collector_, 0 };
+    FrameSink sink = { &scan_config, &ts, nullptr, &stats_, &collector_, this, 0 };
     gint64 last_open_try = 0;
     gint64 last_report = 0;
+    gint64 last_query = 0;
 
     while (!stopping()) {
         int client_fd = Socket::acceptClient(listen_fd, port.isOpen() ? 0 : kAcceptPollMs);
@@ -199,6 +216,10 @@ void Streamer::run()
         if (now - last_report >= kReportIntervalUs) {
             reportFrames();
             last_report = now;
+        }
+        if (now - last_query >= 2000000 && port.isOpen()) {
+            writeCommand(port, BH_CMD_QUERY_STATUS, nullptr, 0);
+            last_query = now;
         }
         collector_.flushIfDue(now);
     }
@@ -261,7 +282,7 @@ Streamer::Result Streamer::captureLoop(int client_fd)
     bh_deframer deframer;
     bh_ts_mapper ts;
     QByteArray out;
-    FrameSink sink = { &config_, &ts, &out, &stats_, &collector_, 0 };
+    FrameSink sink = { &config_, &ts, &out, &stats_, &collector_, this, 0 };
     gint64 last_report = g_get_monotonic_time();
 
     uint8_t global_header[BH_PCAP_GLOBAL_HEADER_LEN];
