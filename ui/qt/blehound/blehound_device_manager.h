@@ -45,6 +45,9 @@ public:
     /** Connected boards in port order. */
     QList<BoardInfo> boards() const;
 
+    /** Push a new target (6 bytes air order, empty = none) to every running capture. */
+    void applyTarget(const QByteArray &mac_le);
+
     /**
      * Advertising channel this board guards: from its board_id once a
      * capture has revealed it, otherwise by port order (the three radios

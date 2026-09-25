@@ -79,6 +79,14 @@ int DeviceManager::channelFor(const QString &location) const
     return rank >= 0 && rank < 3 ? 37 + rank : 0;
 }
 
+void DeviceManager::applyTarget(const QByteArray &mac_le)
+{
+    foreach (Streamer *streamer, streamers_) {
+        streamer->setTarget(mac_le);
+    }
+    tri_streamer_->setTarget(mac_le);
+}
+
 void DeviceManager::reportCaptureState(const QString &location, bool capturing)
 {
     if (!boards_.contains(location)) {

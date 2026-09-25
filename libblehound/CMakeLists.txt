@@ -5,6 +5,7 @@ add_library(blehound STATIC
 	src/cobs.c
 	src/cmd.c
 	src/frame.c
+	src/adv.c
 	src/agg.c
 	src/sync.c
 )

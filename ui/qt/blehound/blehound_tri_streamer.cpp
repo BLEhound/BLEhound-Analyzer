@@ -53,10 +53,11 @@ bool BoardReader::sendCommand(uint8_t cmd, const uint8_t *arg, size_t arg_len)
     return n > 0 && serial_.write(framed, n);
 }
 
-void BoardReader::countFrame(uint8_t board_id)
+void BoardReader::countFrame(const bh_packet &pkt, int64_t host_us)
 {
     stats_.frames++;
-    stats_.board_id = board_id;
+    stats_.board_id = pkt.board_id;
+    collector_.onPacket(pkt, host_us);
 }
 
 void BoardReader::reportFrames()
@@ -85,7 +86,7 @@ void BoardReader::pinGuardChannel(uint8_t board_id)
 
 bool BoardReader::openAndConfigure()
 {
-    const CaptureConfig &config = owner_->config();
+    const CaptureConfig config = owner_->config();
     QString error;
     uint8_t flag;
     uint8_t mac[6] = { 0 };
@@ -123,7 +124,7 @@ void onDecodedFrame(void *ctx, const uint8_t *frame, size_t len)
         return;
     }
     c->reader->pinGuardChannel(pkt.board_id);
-    c->reader->countFrame(pkt.board_id);
+    c->reader->countFrame(pkt, c->host_us);
     c->reader->owner()->onFrame(c->reader, pkt, c->host_us);
 }
 
@@ -159,8 +160,10 @@ void BoardReader::run()
             reportFrames();
             last_report_us_ = now;
         }
+        collector_.flushIfDue(now);
     }
     serial_.close();
+    collector_.flush();
     reportFrames();
 }
 
@@ -180,6 +183,34 @@ TriStreamer::~TriStreamer()
 {
     requestStop();
     wait();
+}
+
+CaptureConfig TriStreamer::config() const
+{
+    QMutexLocker locker(&config_mutex_);
+    return config_;
+}
+
+void TriStreamer::setTarget(const QByteArray &mac_le)
+{
+    uint8_t mac[6] = { 0 };
+
+    if (mac_le.size() == 6) {
+        memcpy(mac, mac_le.constData(), sizeof(mac));
+    }
+    {
+        QMutexLocker locker(&config_mutex_);
+        config_.target_mac_le = mac_le;
+    }
+    {
+        QMutexLocker locker(&relay_mutex_);
+        relay_.has_target = mac_le.size() == 6;
+        memcpy(relay_.target, mac, sizeof(mac));
+    }
+    QMutexLocker locker(&readers_mutex_);
+    foreach (BoardReader *reader, readers_) {
+        reader->sendCommand(BH_CMD_SET_TARGET, mac, sizeof(mac));
+    }
 }
 
 void TriStreamer::reportState(const QStringList &ports, bool capturing)
@@ -208,7 +239,11 @@ bool TriStreamer::relaySend(void *ctx, uint8_t board_id, const uint8_t *params, 
 
 void TriStreamer::onFrame(BoardReader *reader, const bh_packet &pkt, int64_t host_us)
 {
-    if (config_.follow_relay) {
+    const CaptureConfig config = this->config();
+
+    // Relaying only makes sense when the boards would follow at all: in
+    // single-target mode that needs a target.
+    if (config.follow_relay && (!config.single_target || config.target_mac_le.size() == 6)) {
         QMutexLocker locker(&relay_mutex_);
         boards_[pkt.board_id] = reader;             /* re-registered after a reconnect */
         bh_follow_relay_register(&relay_, pkt.board_id);
@@ -217,7 +252,7 @@ void TriStreamer::onFrame(BoardReader *reader, const bh_packet &pkt, int64_t hos
             bh_follow_relay_maybe_relay(&relay_, pkt.board_id, &pkt, host_us, relaySend, this);
         }
     }
-    if (!pkt.crc_ok && !config_.include_crc_errors) {
+    if (!pkt.crc_ok && !config.include_crc_errors) {
         return;
     }
 
@@ -283,12 +318,16 @@ void TriStreamer::streamToClient(int client_fd)
         ports = ports_;
     }
     // Settings edited in the device panel apply from the next capture on.
-    config_ = CaptureSettings::instance()->config();
+    {
+        QMutexLocker locker(&config_mutex_);
+        config_ = CaptureSettings::instance()->config();
+    }
     reportState(ports, true);
     {
+        const CaptureConfig config = this->config();
         QMutexLocker locker(&relay_mutex_);
-        const uint8_t *target = config_.target_mac_le.size() == 6 ?
-            reinterpret_cast<const uint8_t *>(config_.target_mac_le.constData()) : nullptr;
+        const uint8_t *target = config.target_mac_le.size() == 6 ?
+            reinterpret_cast<const uint8_t *>(config.target_mac_le.constData()) : nullptr;
         bh_follow_relay_init(&relay_, 0, target);
         boards_.clear();
     }
@@ -309,6 +348,12 @@ void TriStreamer::streamToClient(int client_fd)
         foreach (const QString &port, ports) {
             BoardReader *reader = new BoardReader(port, this);
             readers << reader;
+        }
+        {
+            QMutexLocker locker(&readers_mutex_);
+            readers_ = readers;
+        }
+        foreach (BoardReader *reader, readers) {
             reader->start();
         }
 
@@ -340,6 +385,10 @@ void TriStreamer::streamToClient(int client_fd)
 
     foreach (BoardReader *reader, readers) {
         reader->requestStop();
+    }
+    {
+        QMutexLocker locker(&readers_mutex_);
+        readers_.clear();
     }
     qDeleteAll(readers);                            /* waits for each thread */
     {

@@ -53,8 +53,8 @@ public:
     /** Pin the board to its guard channel once per open. */
     void pinGuardChannel(uint8_t board_id);
 
-    /** Count a parsed frame for the device panel. */
-    void countFrame(uint8_t board_id);
+    /** Count a parsed frame for the device panel and the devices list. */
+    void countFrame(const bh_packet &pkt, int64_t host_us);
 
 protected:
     void run() override;
@@ -72,6 +72,7 @@ private:
     QAtomicInt stop_requested_;
     bool pinned_ = false;
     Streamer::FrameStats stats_;
+    AdvertiserCollector collector_;
     qint64 last_report_us_ = 0;
 };
 
@@ -84,8 +85,11 @@ public:
     ~TriStreamer();
 
     QString socketPath() const { return socket_path_; }
-    const CaptureConfig &config() const { return config_; }
+    CaptureConfig config() const;               /**< thread-safe copy */
     DeviceManager *manager() const { return manager_; }
+
+    /** Change the target while capturing (6 bytes air order, empty = none); any thread. */
+    void setTarget(const QByteArray &mac_le);
 
     /** Dongles to use for the next capture; any thread. */
     void setPorts(const QStringList &ports);
@@ -109,8 +113,12 @@ private:
 
     const QString socket_path_;
     DeviceManager *manager_;
+    mutable QMutex config_mutex_;
     CaptureConfig config_;
     QAtomicInt stop_requested_;
+
+    QMutex readers_mutex_;
+    QList<BoardReader *> readers_;
 
     QMutex ports_mutex_;
     QStringList ports_;

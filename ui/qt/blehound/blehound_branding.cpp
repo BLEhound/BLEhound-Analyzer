@@ -79,7 +79,7 @@ const QSet<QString> kKeptActions = {
     "actionStatisticsFlowGraph", "actionBluetoothATT_Server_Attributes",
     // Help
     "actionHelpAbout", "actionBlehoundQuickStart", "actionBlehoundDocs",
-    "actionBlehoundIssue", "actionBlehoundDevicePanel",
+    "actionBlehoundIssue", "actionBlehoundDevicePanel", "actionBlehoundDevicesPanel",
 };
 
 QString docsUrl(const char *page)
