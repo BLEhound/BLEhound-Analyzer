@@ -40,6 +40,10 @@ extern "C" {
 #define BH_CMD_FOLLOW               0x86
 #define BH_CMD_SET_SINGLE_TARGET    0x87    /* 1 byte: 1 = single-target (default), 0 = multi-target */
 #define BH_CMD_QUERY_STATUS         0x88    /* no args; device replies with a BH_FRAME_STATUS frame */
+#define BH_CMD_LL_CTRL_HINT         0x8A    /* aa(4 LE) + plaintext LL data PDU (header + payload, MIC
+                                             * stripped): a control PDU the host decrypted, so the device
+                                             * can apply channel-map / connection / PHY updates at their
+                                             * instant even though the link is encrypted. */
 #define BH_CMD_SET_IRK              0x89    /* 16 bytes: target IRK, air/SMP order (LSO first); all zero = clear.
                                              * The device then recognises the target's rotating resolvable
                                              * private addresses and keeps following it. */
@@ -295,6 +299,15 @@ bool bh_decryptor_add_ltk(bh_decryptor *d, const uint8_t ltk_le[16]);
  * @return true if the packet was decrypted.
  */
 bool bh_decryptor_process(bh_decryptor *d, bh_packet *pkt, uint8_t *buf, size_t cap, uint8_t *direction);
+
+/**
+ * After a successful bh_decryptor_process(): is this plaintext a control PDU
+ * the device needs to know about (channel map, connection or PHY update)?
+ */
+bool bh_ll_ctrl_hint_wanted(const bh_packet *pkt);
+
+/** Build the BH_CMD_LL_CTRL_HINT argument for @p pkt. @return length, 0 if it does not fit. */
+size_t bh_ll_ctrl_hint_args(const bh_packet *pkt, uint8_t *out, size_t cap);
 
 /* ------------------------------------------------------------------ pcap */
 

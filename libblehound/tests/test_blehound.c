@@ -840,6 +840,25 @@ static void test_decryptor_session(void)
     CHECK(ok && dir == BH_DIR_PERIPHERAL_CENTRAL);
     CHECK(d.stats.decrypted == 7);
 
+    /* The decrypted channel-map update is what the device must be told about. */
+    {
+        bh_packet hp;
+        uint8_t args[64];
+        uint8_t map_pdu[] = { 0x03, 0x08, 0x01, 0xff, 0xff, 0xff, 0xff, 0x1f, 0x3a, 0x02 };
+        memset(&hp, 0, sizeof(hp));
+        hp.access_addr = aa;
+        hp.pdu = map_pdu;
+        hp.pdu_len = sizeof(map_pdu);
+        CHECK(bh_ll_ctrl_hint_wanted(&hp));
+        CHECK(bh_ll_ctrl_hint_args(&hp, args, sizeof(args)) == 4 + sizeof(map_pdu));
+        CHECK(args[0] == 0x78 && args[3] == 0x12 && args[4] == 0x03 && args[6] == 0x01);
+        CHECK(bh_ll_ctrl_hint_args(&hp, args, 8) == 0);
+        map_pdu[2] = 0x14;                                       /* LL_LENGTH_REQ: not needed */
+        CHECK(!bh_ll_ctrl_hint_wanted(&hp));
+        map_pdu[0] = 0x02; map_pdu[2] = 0x01;                     /* not a control PDU */
+        CHECK(!bh_ll_ctrl_hint_wanted(&hp));
+    }
+
     /* Empty PDUs and garbage pass through untouched. */
     feed(&d, aa, "0100", &ok, &dir, out, &out_len);
     CHECK(!ok && out_len == 2);

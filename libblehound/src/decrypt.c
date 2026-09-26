@@ -27,6 +27,10 @@
 #define LL_PAUSE_ENC_REQ        0x0A
 #define LL_PAUSE_ENC_RSP        0x0B
 
+#define LL_CONNECTION_UPDATE_IND 0x00
+#define LL_CHANNEL_MAP_IND      0x01
+#define LL_PHY_UPDATE_IND       0x18
+
 #define MIC_LEN                 4
 #define COUNTER_WINDOW          32      /* packets we may have missed in a row */
 #define FIRST_PACKET_WINDOW     4       /* counters tried while the key is still unknown */
@@ -252,4 +256,32 @@ finish:
         }
     }
     return true;
+}
+
+bool bh_ll_ctrl_hint_wanted(const bh_packet *pkt)
+{
+    if (pkt->access_addr == BH_ADV_ACCESS_ADDR || pkt->pdu_len < 3 || (pkt->pdu[0] & 0x03) != LLID_CONTROL) {
+        return false;
+    }
+    switch (pkt->pdu[2]) {
+    case LL_CONNECTION_UPDATE_IND:
+    case LL_CHANNEL_MAP_IND:
+    case LL_PHY_UPDATE_IND:
+        return true;
+    default:
+        return false;
+    }
+}
+
+size_t bh_ll_ctrl_hint_args(const bh_packet *pkt, uint8_t *out, size_t cap)
+{
+    if (cap < 4u + pkt->pdu_len) {
+        return 0;
+    }
+    out[0] = (uint8_t)pkt->access_addr;
+    out[1] = (uint8_t)(pkt->access_addr >> 8);
+    out[2] = (uint8_t)(pkt->access_addr >> 16);
+    out[3] = (uint8_t)(pkt->access_addr >> 24);
+    memcpy(out + 4, pkt->pdu, pkt->pdu_len);
+    return 4u + pkt->pdu_len;
 }
