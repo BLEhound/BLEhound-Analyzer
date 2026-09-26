@@ -257,6 +257,11 @@ void DevicesPanel::updateTarget()
                 label += localized(" (now %1)", "（当前 %1）").arg(current);
             }
         }
+        DeviceKey key;
+        if (KeyStore::instance()->resolve(config.target_mac_le, &key) && key.hasLtk()) {
+            label += localized("<br><b>LTK known:</b> its encrypted traffic is decrypted on the fly",
+                               "<br><b>LTK 已知：</b>它的加密数据会实时解密");
+        }
         target_label_->setText(label);
         clear_button_->setEnabled(true);
     } else {

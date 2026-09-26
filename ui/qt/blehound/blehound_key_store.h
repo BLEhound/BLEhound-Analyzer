@@ -58,6 +58,9 @@ public:
      */
     static QList<DeviceKey> parseDeviceLog(const QString &text);
 
+    /** Every stored LTK, air order; what a capture hands to the decryptor. */
+    QList<QByteArray> ltks() const;
+
     static QString hex(const QByteArray &bytes);
     /** 16-byte key from hex text (separators allowed); empty result if malformed or blank. */
     static QByteArray keyFromHex(const QString &text, bool *ok = nullptr);

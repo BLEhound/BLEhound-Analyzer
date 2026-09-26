@@ -10,6 +10,8 @@ add_library(blehound STATIC
 	src/sync.c
 	src/aes128.c
 	src/rpa.c
+	src/ccm.c
+	src/decrypt.c
 )
 target_include_directories(blehound PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set_target_properties(blehound PROPERTIES
@@ -28,3 +30,7 @@ set_target_properties(blehound_raw2pcap PROPERTIES FOLDER "Tests")
 add_executable(blehound_tri2pcap tests/tri2pcap.c)
 target_link_libraries(blehound_tri2pcap blehound)
 set_target_properties(blehound_tri2pcap PROPERTIES FOLDER "Tests")
+
+add_executable(blehound_pcap_decrypt tests/pcap_decrypt.c)
+target_link_libraries(blehound_pcap_decrypt blehound)
+set_target_properties(blehound_pcap_decrypt PROPERTIES FOLDER "Tests")
