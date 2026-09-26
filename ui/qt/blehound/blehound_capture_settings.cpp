@@ -85,9 +85,16 @@ void CaptureSettings::load()
         config.target_mac_le = QByteArray(reinterpret_cast<const char *>(mac), sizeof(mac));
     }
     config.target_irk_le = KeyStore::keyFromHex(settings.value(QStringLiteral("capture/targetIrk")).toString());
-    config.include_crc_errors = settings.value(QStringLiteral("capture/includeCrcErrors"), false).toBool();
-    config.single_target = settings.value(QStringLiteral("capture/singleTarget"), true).toBool();
-    config.follow_relay = settings.value(QStringLiteral("capture/followRelay"), false).toBool();
+    // Defaults: keep CRC-bad frames, single target, all boards follow together.
+    // Settings written before these became the defaults are brought up to date once.
+    const int kDefaultsVersion = 1;
+    const bool stale = settings.value(QStringLiteral("capture/defaultsVersion"), 0).toInt() < kDefaultsVersion;
+    config.include_crc_errors = stale || settings.value(QStringLiteral("capture/includeCrcErrors"), true).toBool();
+    config.single_target = stale || settings.value(QStringLiteral("capture/singleTarget"), true).toBool();
+    config.follow_relay = stale || settings.value(QStringLiteral("capture/followRelay"), true).toBool();
+    if (stale) {
+        settings.setValue(QStringLiteral("capture/defaultsVersion"), kDefaultsVersion);
+    }
     config_ = config;
 }
 
