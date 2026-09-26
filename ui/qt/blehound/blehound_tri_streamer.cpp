@@ -59,6 +59,22 @@ void BoardReader::countFrame(const bh_packet &pkt, int64_t host_us)
     stats_.frames++;
     stats_.board_id = pkt.board_id;
     collector_.onPacket(pkt, host_us);
+
+    /* Hint the dongle from here, before the reorder delay; the aggregated
+     * output still decrypts on its own for the capture file. */
+    if (hint_decryptor_.n_ltk > 0) {
+        bh_packet copy = pkt;
+        uint8_t plain[BH_MAX_PDU_LEN + 2];
+        uint8_t direction;
+        if (bh_decryptor_process(&hint_decryptor_, &copy, plain, sizeof(plain), &direction) &&
+            bh_ll_ctrl_hint_wanted(&copy)) {
+            uint8_t args[4 + BH_MAX_PDU_LEN];
+            size_t n = bh_ll_ctrl_hint_args(&copy, args, sizeof(args));
+            if (n) {
+                sendCommand(BH_CMD_LL_CTRL_HINT, args, n);
+            }
+        }
+    }
 }
 
 void BoardReader::reportFrames()
@@ -106,6 +122,10 @@ bool BoardReader::openAndConfigure()
     }
     sendCommand(BH_CMD_SET_TARGET, mac, sizeof(mac));
     sendCommand(BH_CMD_SET_IRK, irk, sizeof(irk));
+    bh_decryptor_init(&hint_decryptor_);
+    foreach (const QByteArray &ltk, KeyStore::instance()->ltks()) {
+        bh_decryptor_add_ltk(&hint_decryptor_, reinterpret_cast<const uint8_t *>(ltk.constData()));
+    }
     flag = config.single_target ? 1 : 0;
     sendCommand(BH_CMD_SET_SINGLE_TARGET, &flag, 1);
     // Frames queued before the configuration took effect are unfiltered.
@@ -296,6 +316,7 @@ void TriStreamer::emitPacket(void *ctx, const bh_agg_packet *pkt)
     bh_agg_packet_view(pkt, &view);
     if (bh_decryptor_process(&self->decryptor_, &view, plain, sizeof(plain), &direction)) {
         extra_flags = bh_rf_flags_for_decrypted(direction);
+        /* Control-PDU hints go out from the reader threads (BoardReader::countFrame). */
     }
     size_t n = bh_btle_rf_record_ex(&view, extra_flags, rec, sizeof(rec));
     if (n == 0) {

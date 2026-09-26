@@ -74,6 +74,10 @@ private:
     Streamer::FrameStats stats_;
     AdvertiserCollector collector_;
     qint64 last_report_us_ = 0;
+    /* Decrypts this board's own stream as it arrives, only to hand control
+     * PDUs back to the dongle right away: the aggregator's reorder buffer
+     * would deliver them ~300 ms later, past a short instant. */
+    bh_decryptor hint_decryptor_;
 };
 
 class TriStreamer : public QThread

@@ -43,6 +43,7 @@ struct FrameSink {
     Streamer *streamer;
     int64_t now_us;
     bh_decryptor *decryptor;                    /**< capture only; nullptr while idle */
+    QSerialPort *port;                          /**< to hand decrypted control PDUs back to the dongle */
 };
 
 /* Hand every stored LTK to a fresh decryptor. */
@@ -53,6 +54,8 @@ void loadDecryptor(bh_decryptor *decryptor)
         bh_decryptor_add_ltk(decryptor, reinterpret_cast<const uint8_t *>(ltk.constData()));
     }
 }
+
+bool writeCommand(QSerialPort &port, uint8_t cmd, const uint8_t *arg, size_t arg_len);
 
 void onFrame(void *ctx, const uint8_t *frame, size_t len)
 {
@@ -85,6 +88,14 @@ void onFrame(void *ctx, const uint8_t *frame, size_t len)
     uint16_t extra_flags = 0;
     if (sink->decryptor && bh_decryptor_process(sink->decryptor, &pkt, plain, sizeof(plain), &direction)) {
         extra_flags = bh_rf_flags_for_decrypted(direction);
+        /* The dongle cannot read the encrypted update itself: tell it. */
+        if (sink->port && bh_ll_ctrl_hint_wanted(&pkt)) {
+            uint8_t args[4 + BH_MAX_PDU_LEN];
+            size_t n = bh_ll_ctrl_hint_args(&pkt, args, sizeof(args));
+            if (n) {
+                writeCommand(*sink->port, BH_CMD_LL_CTRL_HINT, args, n);
+            }
+        }
     }
     size_t rec_len = bh_btle_rf_record_ex(&pkt, extra_flags, rec, sizeof(rec));
     if (rec_len == 0) {
@@ -94,8 +105,6 @@ void onFrame(void *ctx, const uint8_t *frame, size_t len)
     sink->out->append(reinterpret_cast<const char *>(hdr), sizeof(hdr));
     sink->out->append(reinterpret_cast<const char *>(rec), (qsizetype)rec_len);
 }
-
-bool writeCommand(QSerialPort &port, uint8_t cmd, const uint8_t *arg, size_t arg_len);
 
 /* SET_TARGET followed by SET_IRK (all zero = none), the pair every configuration path sends. */
 void writeTarget(QSerialPort &port, const CaptureConfig &config)
@@ -204,7 +213,7 @@ void Streamer::run()
     bh_deframer deframer;
     bh_ts_mapper ts;
     CaptureConfig scan_config;                  /* hop 37/38/39, no target, observe only */
-    FrameSink sink = { &scan_config, &ts, nullptr, &stats_, &collector_, this, 0, nullptr };
+    FrameSink sink = { &scan_config, &ts, nullptr, &stats_, &collector_, this, 0, nullptr, nullptr };
     gint64 last_open_try = 0;
     gint64 last_report = 0;
     gint64 last_query = 0;
@@ -315,7 +324,7 @@ Streamer::Result Streamer::captureLoop(int client_fd)
     bh_ts_mapper ts;
     QByteArray out;
     bh_decryptor decryptor;
-    FrameSink sink = { &config_, &ts, &out, &stats_, &collector_, this, 0, &decryptor };
+    FrameSink sink = { &config_, &ts, &out, &stats_, &collector_, this, 0, &decryptor, &port };
     gint64 last_report = g_get_monotonic_time();
 
     loadDecryptor(&decryptor);
