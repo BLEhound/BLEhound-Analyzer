@@ -948,8 +948,36 @@ static void test_decryptor_session(void)
     CHECK(!ok && out_len == 7);
 }
 
+static void test_sync_clock_extra_edge(void)
+{
+    bh_sync_clock c;
+    uint32_t off;
+
+    bh_sync_clock_init(&c, 0, BH_SYNC_PAIR_WINDOW_US);
+    /* Edge 1 at host 10.000 s: ref tick 1000000, board tick 5000000 -> offset 4000000 */
+    bh_sync_clock_observe(&c, 0, 1000000, 10000000);
+    bh_sync_clock_observe(&c, 1, 5000000, 10001000);
+    CHECK(bh_sync_clock_offset(&c, 1, &off) && off == 4000000);
+    /* The reference emits an extra edge 0.48 s later (a hit). Both reference
+     * edges are inside the 0.5 s window: the one heard closest must win. */
+    bh_sync_clock_observe(&c, 0, 1480000, 10480000);
+    bh_sync_clock_observe(&c, 1, 5480000, 10481000);
+    CHECK(bh_sync_clock_offset(&c, 1, &off) && off == 4000000);
+    /* A single stray pairing 0.48 s off does not move the offset... */
+    bh_sync_clock_observe(&c, 0, 2000000, 11000000);
+    bh_sync_clock_observe(&c, 1, 6480000, 11001000);
+    CHECK(bh_sync_clock_offset(&c, 1, &off) && off == 4000000);
+    /* ...but a board that really restarted (new offset seen twice) is adopted. */
+    bh_sync_clock_observe(&c, 0, 3000000, 12000000);
+    bh_sync_clock_observe(&c, 1, 100000, 12001000);
+    bh_sync_clock_observe(&c, 0, 4000000, 13000000);
+    bh_sync_clock_observe(&c, 1, 1100000, 13001000);
+    CHECK(bh_sync_clock_offset(&c, 1, &off) && off == (uint32_t)(1100000 - 4000000));
+}
+
 int main(void)
 {
+    test_sync_clock_extra_edge();
     test_ccm_spec_vectors();
     test_decryptor_session();
     test_aes_and_rpa();

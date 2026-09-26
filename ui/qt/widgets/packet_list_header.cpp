@@ -28,6 +28,9 @@
 #include <models/pref_models.h>
 #include <ui/qt/utils/wireshark_mime_data.h>
 #include <ui/qt/widgets/packet_list_header.h>
+#ifdef BLEHOUND_BRANDING
+#include <ui/qt/blehound/blehound_i18n.h>
+#endif
 
 PacketListHeader::PacketListHeader(Qt::Orientation orientation, QWidget *parent) :
     QHeaderView(orientation, parent),
@@ -182,6 +185,45 @@ void PacketListHeader::contextMenuEvent(QContextMenuEvent *event)
     contextMenu->setAttribute(Qt::WA_DeleteOnClose);
     contextMenu->setProperty("column", QVariant::fromValue(sectionIdx));
 
+#ifdef BLEHOUND_BRANDING
+    /* Time column: the display format right where one looks for it, as in
+     * other analyzers; the entries are the View menu's own actions. */
+    if (get_column_format(sectionIdx) == COL_CLS_TIME) {
+        MainWindow *mw = mainApp->mainWindow();
+        struct Entry { const char *action; const char *en; const char *zh; };
+        const Entry formats[] = {
+            { "actionViewTimeDisplayFormatSecondsSinceFirstCapturedPacket", "Relative time", "相对时间" },
+            { "actionViewTimeDisplayFormatSecondsSincePreviousDisplayedPacket", "Delta to previous displayed", "与上一显示包的间隔" },
+            { "actionViewTimeDisplayFormatTimeOfDay", "Absolute time (local)", "绝对时间（本地）" },
+            { "actionViewTimeDisplayFormatUTCTimeOfDay", "Absolute time (UTC)", "绝对时间（UTC）" },
+            { "actionViewTimeDisplayFormatDateYMDandTimeOfDay", "Absolute date (local)", "绝对日期（本地）" },
+            { "actionViewTimeDisplayFormatUTCDateYMDandTimeOfDay", "Absolute date (UTC)", "绝对日期（UTC）" },
+        };
+        const Entry precisions[] = {
+            { "actionViewTimeDisplayFormatPrecisionAutomatic", "Automatic", "自动" },
+            { "actionViewTimeDisplayFormatPrecisionMilliseconds", "Milliseconds", "毫秒" },
+            { "actionViewTimeDisplayFormatPrecisionMicroseconds", "Microseconds", "微秒" },
+            { "actionViewTimeDisplayFormatPrecisionNanoseconds", "Nanoseconds", "纳秒" },
+        };
+        QMenu *display = contextMenu->addMenu(BLEhound::localized("Display", "显示"));
+        for (const Entry &e : formats) {
+            QAction *a = mw ? mw->findChild<QAction *>(QLatin1String(e.action)) : nullptr;
+            if (a) {
+                a->setText(BLEhound::localized(e.en, e.zh));
+                display->addAction(a);
+            }
+        }
+        QMenu *precision = contextMenu->addMenu(BLEhound::localized("Precision", "精度"));
+        for (const Entry &e : precisions) {
+            QAction *a = mw ? mw->findChild<QAction *>(QLatin1String(e.action)) : nullptr;
+            if (a) {
+                a->setText(BLEhound::localized(e.en, e.zh));
+                precision->addAction(a);
+            }
+        }
+        contextMenu->addSeparator();
+    }
+#endif
     action = contextMenu->addAction(tr("Column Preferences…"));
     connect(action, &QAction::triggered, this, &PacketListHeader::showColumnPrefs);
     action = contextMenu->addAction(tr("Edit Column"));
