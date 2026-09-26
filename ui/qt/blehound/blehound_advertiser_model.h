@@ -35,6 +35,7 @@ struct Advertiser {
     bool name_complete = false;
     QString identity;           /**< identity address text when an IRK resolved this RPA */
     QString key_name;           /**< label of that key */
+    QList<QByteArray> previous; /**< addresses this identity rotated away from, newest first */
     bool has_company = false;
     uint16_t company = 0;
     qint64 first_seen_us = 0;
@@ -69,7 +70,9 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role) override;
 
     const Advertiser *advertiserAt(int row) const;
+    /** Row showing this address: current, or one it rotated away from. */
     int rowFor(const QByteArray &adva) const;
+    int rowForIdentity(const QString &identity) const;
 
     /** User-given name for an address, kept across runs; empty if none. */
     QString aliasFor(const QByteArray &adva) const;
@@ -94,8 +97,13 @@ private:
     void reindex(int from);
     void dropStale();
 
+    /** Fold @p s into the row already showing its identity; false if none. */
+    bool mergeIntoIdentity(const Advertiser &s);
+    void foldDuplicateIdentities();
+
     QList<Advertiser> rows_;
-    QHash<QByteArray, int> index_;
+    QHash<QByteArray, int> index_;      /**< current addresses */
+    QHash<QString, int> identity_index_;
     QHash<QByteArray, QString> aliases_;
     QTimer stale_timer_;
     qint64 stale_us_ = 0;

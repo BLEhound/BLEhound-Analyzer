@@ -43,22 +43,12 @@ AdvertiserModel::AdvertiserModel(QObject *parent) :
 
 QList<QByteArray> AdvertiserModel::addressesForIdentity(const QString &identity) const
 {
-    QList<const Advertiser *> matches;
-
-    if (identity.isEmpty()) {
-        return QList<QByteArray>();
-    }
-    for (const Advertiser &a : rows_) {
-        if (a.identity.compare(identity, Qt::CaseInsensitive) == 0) {
-            matches.append(&a);
-        }
-    }
-    std::sort(matches.begin(), matches.end(), [](const Advertiser *x, const Advertiser *y) {
-        return x->last_seen_us > y->last_seen_us;
-    });
     QList<QByteArray> out;
-    for (const Advertiser *a : matches) {
-        out.append(a->adva);
+    int row = rowForIdentity(identity);
+
+    if (row >= 0) {
+        out.append(rows_.at(row).adva);
+        out.append(rows_.at(row).previous);
     }
     return out;
 }
@@ -80,6 +70,95 @@ void AdvertiserModel::reresolve()
             emit dataChanged(createIndex(row, 0), createIndex(row, ColCount - 1));
         }
     }
+    identity_index_.clear();
+    reindex(0);
+    foldDuplicateIdentities();
+}
+
+/* Keys changed after rows were listed: rows that now share an identity
+ * collapse into the most recently seen one. */
+void AdvertiserModel::foldDuplicateIdentities()
+{
+    for (int i = rows_.size() - 1; i >= 0; i--) {
+        const Advertiser &a = rows_.at(i);
+        if (a.identity.isEmpty()) {
+            continue;
+        }
+        int keep = -1;
+        for (int j = 0; j < i; j++) {
+            if (rows_.at(j).identity.compare(a.identity, Qt::CaseInsensitive) == 0) {
+                keep = j;
+                break;
+            }
+        }
+        if (keep < 0) {
+            continue;
+        }
+        Advertiser folded = rows_.at(i);
+        beginRemoveRows(QModelIndex(), i, i);
+        index_.remove(folded.adva);
+        rows_.removeAt(i);
+        endRemoveRows();
+        identity_index_.clear();
+        reindex(0);
+        mergeIntoIdentity(folded);
+    }
+}
+
+/* One physical device, one row: a sighting whose IRK-resolved identity is
+ * already listed folds into that row. A different address means it rotated;
+ * the row moves to the new address and remembers the old one. */
+bool AdvertiserModel::mergeIntoIdentity(const Advertiser &s)
+{
+    if (s.identity.isEmpty()) {
+        return false;
+    }
+    int row = rowForIdentity(s.identity);
+    if (row < 0) {
+        return false;
+    }
+    Advertiser &a = rows_[row];
+    if (a.adva != s.adva) {
+        const bool newer = s.last_seen_us >= a.last_seen_us;
+        QByteArray demoted = newer ? a.adva : s.adva;
+        if (newer) {
+            index_.remove(a.adva);
+            a.adva = s.adva;
+            index_.insert(a.adva, row);
+        }
+        a.previous.removeAll(demoted);
+        a.previous.removeAll(a.adva);
+        a.previous.prepend(demoted);
+        while (a.previous.size() > 8) {
+            a.previous.removeLast();
+        }
+    }
+    a.packets += s.packets;
+    a.requests += s.requests;
+    a.first_seen_us = qMin(a.first_seen_us, s.first_seen_us);
+    a.last_seen_us = qMax(a.last_seen_us, s.last_seen_us);
+    if (s.packets > 0 && s.last_seen_us >= a.last_seen_us) {
+        a.rssi = s.rssi;
+        a.channel = s.channel;
+        a.phy = s.phy;
+        a.random = s.random;
+    }
+    a.rssi_max = qMax(a.rssi_max, s.rssi_max);
+    a.extended = a.extended || s.extended;
+    a.connectable = a.connectable || s.connectable;
+    if (!s.name.isEmpty() && (a.name.isEmpty() || (s.name_complete && !a.name_complete))) {
+        a.name = s.name;
+        a.name_complete = s.name_complete;
+    }
+    if (s.has_company && !a.has_company) {
+        a.has_company = true;
+        a.company = s.company;
+    }
+    if (a.key_name.isEmpty()) {
+        a.key_name = s.key_name;
+    }
+    emit dataChanged(createIndex(row, 0), createIndex(row, ColCount - 1));
+    return true;
 }
 
 void AdvertiserModel::setStaleTimeout(int seconds)
@@ -93,6 +172,9 @@ void AdvertiserModel::reindex(int from)
 {
     for (int i = from; i < rows_.size(); i++) {
         index_.insert(rows_.at(i).adva, i);
+        if (!rows_.at(i).identity.isEmpty()) {
+            identity_index_.insert(rows_.at(i).identity.toUpper(), i);
+        }
     }
 }
 
@@ -111,6 +193,9 @@ void AdvertiserModel::dropStale()
         }
         beginRemoveRows(QModelIndex(), i, i);
         index_.remove(rows_.at(i).adva);
+        if (!rows_.at(i).identity.isEmpty()) {
+            identity_index_.remove(rows_.at(i).identity.toUpper());
+        }
         rows_.removeAt(i);
         endRemoveRows();
         reindex(i);
@@ -149,7 +234,21 @@ QString AdvertiserModel::aliasFor(const QByteArray &adva) const
 
 int AdvertiserModel::rowFor(const QByteArray &adva) const
 {
-    return index_.value(adva, -1);
+    int row = index_.value(adva, -1);
+    if (row >= 0) {
+        return row;
+    }
+    for (int i = 0; i < rows_.size(); i++) {
+        if (rows_.at(i).previous.contains(adva)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int AdvertiserModel::rowForIdentity(const QString &identity) const
+{
+    return identity.isEmpty() ? -1 : identity_index_.value(identity.toUpper(), -1);
 }
 
 const Advertiser *AdvertiserModel::advertiserAt(int row) const
@@ -223,6 +322,14 @@ QVariant AdvertiserModel::data(const QModelIndex &index, int role) const
     }
     if (role == Qt::ToolTipRole && index.column() == ColName) {
         return localized("Double-click to give this device your own name.", "双击可以给这个设备起名字。");
+    }
+    if (role == Qt::ToolTipRole && index.column() == ColAddress && !a->previous.isEmpty()) {
+        QStringList old;
+        foreach (const QByteArray &adva, a->previous) {
+            old.append(formatAddress(adva));
+        }
+        return localized("Current address; earlier ones of this device: %1", "当前地址；这个设备之前用过：%1")
+               .arg(old.join(QStringLiteral(", ")));
     }
     if (role != Qt::DisplayRole && role != Qt::EditRole && role != Qt::UserRole) {
         return QVariant();
@@ -321,12 +428,18 @@ void AdvertiserModel::merge(const QList<Advertiser> &batch)
     foreach (const Advertiser &s, batch) {
         int row = index_.value(s.adva, -1);
         if (row < 0) {
+            if (mergeIntoIdentity(s)) {
+                continue;
+            }
             if (rows_.size() >= kMaxRows) {
                 continue;
             }
             beginInsertRows(QModelIndex(), rows_.size(), rows_.size());
             rows_.append(s);
             index_.insert(s.adva, rows_.size() - 1);
+            if (!s.identity.isEmpty()) {
+                identity_index_.insert(s.identity.toUpper(), rows_.size() - 1);
+            }
             endInsertRows();
             continue;
         }
@@ -364,6 +477,7 @@ void AdvertiserModel::clear()
     beginResetModel();
     rows_.clear();
     index_.clear();
+    identity_index_.clear();
     endResetModel();
 }
 

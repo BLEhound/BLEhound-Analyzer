@@ -142,7 +142,14 @@ DevicesPanel::DevicesPanel(QWidget *parent) :
     connect(clear_list, &QPushButton::clicked, AdvertiserModel::instance(), &AdvertiserModel::clear);
     connect(keys, &QPushButton::clicked, this, &DevicesPanel::editKeys);
     connect(AdvertiserModel::instance(), &QAbstractItemModel::rowsInserted, this, &DevicesPanel::rowsAdded);
-    connect(KeyStore::instance(), &KeyStore::changed, this, &DevicesPanel::updateTarget);
+    connect(KeyStore::instance(), &KeyStore::changed, this, [this]() {
+        /* CaptureSettings re-attached the IRK; push it to running captures. */
+        CaptureConfig config = CaptureSettings::instance()->config();
+        if (config.target_mac_le.size() == 6) {
+            DeviceManager::instance()->applyTarget(config.target_mac_le, config.target_irk_le);
+        }
+        updateTarget();
+    });
     connect(table_->selectionModel(), &QItemSelectionModel::selectionChanged, this, &DevicesPanel::selectionChanged);
     connect(table_, &QTableView::activated, this, [this](const QModelIndex &index) {
         if (index.column() != AdvertiserModel::ColName) {
@@ -208,7 +215,7 @@ QString DevicesPanel::targetIdentity() const
     CaptureConfig config = CaptureSettings::instance()->config();
     DeviceKey key;
 
-    if (config.target_irk_le.isEmpty() || !KeyStore::instance()->resolve(config.target_mac_le, &key)) {
+    if (!KeyStore::instance()->resolve(config.target_mac_le, &key)) {
         return QString();
     }
     return key.identity.isEmpty() ? key.label() : key.identity;
@@ -290,6 +297,13 @@ void DevicesPanel::applyTrafficFilter()
         QStringList terms;
         foreach (const QString &mac, macs) {
             terms.append(QStringLiteral("btle.advertising_address == %1 || btle.central_bd_addr == %1 || btle.peripheral_bd_addr == %1").arg(mac));
+        }
+        /* In single-target mode the dongles follow no other connection, so
+         * every data-channel packet is the target's. This also covers a
+         * capture that started after the connection was already up, where
+         * the dissector never saw the CONNECT_IND and cannot name the peers. */
+        if (config.single_target) {
+            terms.append(QStringLiteral("btle.access_address != 0x8e89bed6"));
         }
         filter = terms.join(QStringLiteral(" || "));
     }
