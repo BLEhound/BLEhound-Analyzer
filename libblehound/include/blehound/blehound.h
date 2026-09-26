@@ -32,6 +32,7 @@ extern "C" {
 /* Device -> host frame types. */
 #define BH_FRAME_PACKET             0x01
 #define BH_FRAME_STATUS             0x02
+#define BH_FRAME_SYNC               0x03    /* SYNC heartbeat: board_id, sync_count, sync_epoch */
 
 /* Host -> device commands. */
 #define BH_CMD_SET_CHANNEL          0x81    /* 1 byte: BLE channel index */
@@ -90,6 +91,7 @@ typedef struct bh_packet {
     bool           crc_ok;
     uint8_t        board_id;     /**< tri-board mode only, else 0 */
     uint32_t       sync_epoch;   /**< tri-board mode only, else 0 */
+    uint8_t        direction;    /**< BH_DIR_*: from the dongle's place in the connection event */
     const uint8_t *pdu;          /**< points into the decoded frame */
     uint8_t        pdu_len;
 } bh_packet;
@@ -155,6 +157,14 @@ typedef struct bh_status {
  * @return false if it is not a well-formed BH_FRAME_STATUS.
  */
 bool bh_parse_status(const uint8_t *raw, size_t len, bh_status *st);
+
+/** SYNC heartbeat: sent after every SYNC edge whether or not packets pass the target filter. */
+typedef struct bh_sync_frame {
+    uint8_t  board_id;
+    uint32_t sync_count;
+    uint32_t sync_epoch;    /**< the board's timer at that edge */
+} bh_sync_frame;
+bool bh_parse_sync(const uint8_t *raw, size_t len, bh_sync_frame *sf);
 
 /**
  * Build a LINKTYPE_BLUETOOTH_LE_LL_WITH_PHDR record body:
@@ -428,6 +438,7 @@ typedef struct bh_agg_packet {
     bool     crc_ok;
     uint8_t  board_id;
     uint32_t sync_epoch;
+    uint8_t  direction;
     int64_t  host_us;       /**< host arrival time, or BH_NO_HOST_TIME */
     uint8_t  pdu_len;
     uint8_t  pdu[BH_MAX_PDU_LEN];
@@ -471,6 +482,8 @@ const bh_sync_clock *bh_aggregator_clock(const bh_aggregator *a);
 #define BH_ADV_ACCESS_ADDR      0x8E89BED6u
 #define BH_FOLLOW_PARAMS_LEN    25
 #define BH_RELAY_TTL_US         5000000     /* relay a given connection once per 5 s */
+#define BH_RELAY_RETRY_US       1000000     /* re-send FOLLOW to a board that has not picked up */
+#define BH_RELAY_MAX_TRIES      4
 
 /** CONNECT_IND fields needed to follow the connection. */
 typedef struct bh_connect_ind {
@@ -510,6 +523,7 @@ typedef struct bh_relay_stats {
     uint32_t skipped_no_offset;
     uint32_t skipped_dup;
     uint32_t skipped_target;
+    uint32_t retried;               /**< FOLLOW re-sent (late sync offset or board did not pick up) */
 } bh_relay_stats;
 
 /**
@@ -523,14 +537,34 @@ typedef struct bh_follow_relay {
     uint8_t        target[6];
     bool           has_irk;         /**< also relay the target's resolvable private addresses */
     uint8_t        irk[16];
+    bool           trust_source;    /**< the catching board already filtered: relay without checking AdvA */
     bool           registered[BH_MAX_BOARDS];
     struct {
         bool     used;
         uint32_t aa;
-        int64_t  host_us;
-    } relayed[64];
+        int64_t  host_us;           /**< when the CONNECT_IND was seen */
+        int64_t  last_try_us;
+        uint8_t  tries;
+        uint8_t  from_board;
+        uint32_t ts_us;             /**< CONNECT_IND timestamp on from_board */
+        uint8_t  payload_len;
+        bh_connect_ind ci;
+        bool     delivered[BH_MAX_BOARDS];  /**< FOLLOW written to that board */
+        bool     seen[BH_MAX_BOARDS];       /**< that board has produced data frames for aa */
+    } relayed[16];
     bh_relay_stats stats;
 } bh_follow_relay;
+
+/** Relay every CONNECT_IND the boards let through, without matching AdvA on the host. */
+void bh_follow_relay_set_trust(bh_follow_relay *r, bool trust);
+/** Note a data-channel frame: the board that sent it follows that connection. */
+void bh_follow_relay_note_packet(bh_follow_relay *r, uint8_t board_id, const bh_packet *pkt);
+/**
+ * Re-send FOLLOW for recent connections to boards that could not be reached
+ * (no sync offset yet) or have not produced any frame for them. Cheap; call often.
+ * @return the number of commands sent.
+ */
+int bh_follow_relay_retry(bh_follow_relay *r, int64_t host_us, bh_relay_send_cb cb, void *ctx);
 
 /** @p target_le: 6-byte AdvA in air order to relay only that device, or NULL. */
 void bh_follow_relay_init(bh_follow_relay *r, uint8_t ref_board, const uint8_t *target_le);

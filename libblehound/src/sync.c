@@ -238,22 +238,25 @@ bool bh_follow_relay_anchor0(const bh_follow_relay *r, uint8_t from_board, uint3
     return true;
 }
 
-/* Remember when a connection was last relayed; the oldest entry is recycled. */
-static bool relayed_recently(bh_follow_relay *r, uint32_t aa, int64_t host_us)
+void bh_follow_relay_set_trust(bh_follow_relay *r, bool trust)
 {
-    size_t n = sizeof(r->relayed) / sizeof(r->relayed[0]);
-    size_t slot = 0;
+    r->trust_source = trust;
+}
 
-    for (size_t i = 0; i < n; i++) {
-        if (r->relayed[i].used && r->relayed[i].aa == aa) {
-            if (host_us - r->relayed[i].host_us < BH_RELAY_TTL_US) {
-                return true;
-            }
-            r->relayed[i].host_us = host_us;
-            return false;
+/* Entry for a connection relayed recently, or a fresh one (oldest recycled). */
+static int relay_entry(bh_follow_relay *r, uint32_t aa, int64_t host_us, bool *is_new)
+{
+    int n = (int)(sizeof(r->relayed) / sizeof(r->relayed[0]));
+    int slot = 0;
+
+    *is_new = false;
+    for (int i = 0; i < n; i++) {
+        if (r->relayed[i].used && r->relayed[i].aa == aa &&
+                host_us - r->relayed[i].host_us < BH_RELAY_TTL_US) {
+            return i;
         }
     }
-    for (size_t i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) {
         if (!r->relayed[i].used) {
             slot = i;
             break;
@@ -262,50 +265,124 @@ static bool relayed_recently(bh_follow_relay *r, uint32_t aa, int64_t host_us)
             slot = i;
         }
     }
+    memset(&r->relayed[slot], 0, sizeof(r->relayed[slot]));
     r->relayed[slot].used = true;
     r->relayed[slot].aa = aa;
     r->relayed[slot].host_us = host_us;
-    return false;
+    *is_new = true;
+    return slot;
+}
+
+/* Send FOLLOW for entry @p e to every board that still needs it. */
+static int relay_send_pending(bh_follow_relay *r, int e, int64_t host_us, bh_relay_send_cb cb, void *ctx,
+                              bool retry)
+{
+    uint8_t params[BH_FOLLOW_PARAMS_LEN];
+    int sent = 0;
+
+    for (int b = 0; b < BH_MAX_BOARDS; b++) {
+        uint32_t anchor;
+
+        if (!r->registered[b] || b == r->relayed[e].from_board || r->relayed[e].seen[b]) {
+            continue;
+        }
+        if (!retry && r->relayed[e].delivered[b]) {
+            continue;
+        }
+        if (!bh_follow_relay_anchor0(r, r->relayed[e].from_board, r->relayed[e].ts_us,
+                                     r->relayed[e].payload_len, r->relayed[e].ci.win_offset,
+                                     (uint8_t)b, &anchor)) {
+            r->stats.skipped_no_offset++;
+            continue;
+        }
+        bh_follow_params(&r->relayed[e].ci, anchor, params);
+        if (cb(ctx, (uint8_t)b, params, sizeof(params))) {
+            sent++;
+            r->stats.sent_cmds++;
+            if (retry) {
+                r->stats.retried++;
+            }
+            r->relayed[e].delivered[b] = true;
+        }
+    }
+    if (sent > 0) {
+        r->relayed[e].last_try_us = host_us;
+        r->relayed[e].tries++;
+    }
+    return sent;
 }
 
 int bh_follow_relay_maybe_relay(bh_follow_relay *r, uint8_t from_board, const bh_packet *pkt,
                                 int64_t host_us, bh_relay_send_cb cb, void *ctx)
 {
     bh_connect_ind ci;
-    uint8_t params[BH_FOLLOW_PARAMS_LEN];
-    int sent = 0;
+    bool is_new;
 
     if (!bh_is_connect_ind(pkt) || !bh_parse_connect_ind(pkt->pdu, pkt->pdu_len, &ci)) {
         return 0;
     }
-    /* The firmware's own target filter does not see relayed connections. */
-    if (!relay_target_matches(r, ci.adva)) {
+    /* The catching board applied its own target filter before letting the
+     * CONNECT_IND through; only re-check here when told not to trust it. */
+    if (!r->trust_source && !relay_target_matches(r, ci.adva)) {
         r->stats.skipped_target++;
         return 0;
     }
-    if (relayed_recently(r, ci.aa, host_us)) {
+    int e = relay_entry(r, ci.aa, host_us, &is_new);
+
+    if (!is_new) {
         r->stats.skipped_dup++;
         return 0;
     }
-    for (int b = 0; b < BH_MAX_BOARDS; b++) {
-        uint32_t anchor;
+    r->relayed[e].from_board = from_board;
+    r->relayed[e].ts_us = pkt->ts_us;
+    r->relayed[e].payload_len = pkt->pdu[1];
+    r->relayed[e].ci = ci;
+    r->relayed[e].seen[from_board] = true;
 
-        if (!r->registered[b] || b == from_board) {
-            continue;
-        }
-        if (!bh_follow_relay_anchor0(r, from_board, pkt->ts_us, pkt->pdu[1], ci.win_offset,
-                                     (uint8_t)b, &anchor)) {
-            r->stats.skipped_no_offset++;
-            continue;
-        }
-        bh_follow_params(&ci, anchor, params);
-        if (cb(ctx, (uint8_t)b, params, sizeof(params))) {
-            sent++;
-            r->stats.sent_cmds++;
-        }
-    }
+    int sent = relay_send_pending(r, e, host_us, cb, ctx, false);
+
     if (sent > 0) {
         r->stats.relayed++;
+    }
+    return sent;
+}
+
+void bh_follow_relay_note_packet(bh_follow_relay *r, uint8_t board_id, const bh_packet *pkt)
+{
+    int n = (int)(sizeof(r->relayed) / sizeof(r->relayed[0]));
+
+    if (pkt->access_addr == BH_ADV_ACCESS_ADDR || board_id >= BH_MAX_BOARDS) {
+        return;
+    }
+    for (int i = 0; i < n; i++) {
+        if (r->relayed[i].used && r->relayed[i].aa == pkt->access_addr) {
+            r->relayed[i].seen[board_id] = true;
+            return;
+        }
+    }
+}
+
+int bh_follow_relay_retry(bh_follow_relay *r, int64_t host_us, bh_relay_send_cb cb, void *ctx)
+{
+    int n = (int)(sizeof(r->relayed) / sizeof(r->relayed[0]));
+    int sent = 0;
+
+    for (int i = 0; i < n; i++) {
+        if (!r->relayed[i].used || r->relayed[i].tries >= BH_RELAY_MAX_TRIES ||
+                host_us - r->relayed[i].host_us >= BH_RELAY_TTL_US ||
+                host_us - r->relayed[i].last_try_us < BH_RELAY_RETRY_US) {
+            continue;
+        }
+        bool pending = false;
+
+        for (int b = 0; b < BH_MAX_BOARDS; b++) {
+            if (r->registered[b] && b != r->relayed[i].from_board && !r->relayed[i].seen[b]) {
+                pending = true;
+            }
+        }
+        if (pending) {
+            sent += relay_send_pending(r, i, host_us, cb, ctx, true);
+        }
     }
     return sent;
 }

@@ -102,6 +102,8 @@ public:
 
     /** Called by board readers for every parsed frame. */
     void onFrame(BoardReader *reader, const bh_packet &pkt, int64_t host_us);
+    /** A SYNC heartbeat: keeps the board's time base paired even when no packet passes the filter. */
+    void onSyncFrame(BoardReader *reader, const bh_sync_frame &sf, int64_t host_us);
 
 protected:
     void run() override;

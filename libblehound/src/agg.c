@@ -82,6 +82,7 @@ void bh_agg_packet_from(bh_agg_packet *dst, const bh_packet *src, int64_t host_u
     dst->crc_ok = src->crc_ok;
     dst->board_id = src->board_id;
     dst->sync_epoch = src->sync_epoch;
+    dst->direction = src->direction;
     dst->host_us = host_us;
     dst->pdu_len = src->pdu_len;
     memcpy(dst->pdu, src->pdu, src->pdu_len);
@@ -99,6 +100,7 @@ void bh_agg_packet_view(const bh_agg_packet *src, bh_packet *view)
     view->crc_ok = src->crc_ok;
     view->board_id = src->board_id;
     view->sync_epoch = src->sync_epoch;
+    view->direction = src->direction;
     view->pdu = src->pdu;
     view->pdu_len = src->pdu_len;
 }
