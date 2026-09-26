@@ -26,6 +26,13 @@ CaptureSettings::CaptureSettings(QObject *parent) :
     QObject(parent)
 {
     load();
+    /* A key entered after the target was picked still applies to it. */
+    connect(KeyStore::instance(), &KeyStore::changed, this, [this]() {
+        QString text = targetMacText();
+        if (!text.isEmpty()) {
+            setTargetMac(text);
+        }
+    });
 }
 
 CaptureConfig CaptureSettings::config() const
