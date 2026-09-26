@@ -145,7 +145,14 @@ void onDecodedFrame(void *ctx, const uint8_t *frame, size_t len)
 {
     FrameContext *c = static_cast<FrameContext *>(ctx);
     bh_packet pkt;
+    bh_sync_frame sf;
 
+    if (len > 0 && frame[0] == BH_FRAME_SYNC) {
+        if (bh_parse_sync(frame, len, &sf)) {
+            c->reader->owner()->onSyncFrame(c->reader, sf, c->host_us);
+        }
+        return;
+    }
     if (!bh_parse_frame(frame, len, &pkt)) {
         return;
     }
@@ -267,8 +274,25 @@ bool TriStreamer::relaySend(void *ctx, uint8_t board_id, const uint8_t *params, 
 {
     TriStreamer *self = static_cast<TriStreamer *>(ctx);
     BoardReader *reader = self->boards_.value(board_id);   /* relay_mutex_ held by caller */
+    bool ok = reader != nullptr && reader->sendCommand(BH_CMD_FOLLOW, params, params_len);
+    uint32_t aa = (uint32_t)params[0] | (uint32_t)params[1] << 8 | (uint32_t)params[2] << 16 | (uint32_t)params[3] << 24;
+    uint32_t anchor = (uint32_t)params[21] | (uint32_t)params[22] << 8 | (uint32_t)params[23] << 16 | (uint32_t)params[24] << 24;
 
-    return reader != nullptr && reader->sendCommand(BH_CMD_FOLLOW, params, params_len);
+    ws_info("BLEhound relay: FOLLOW AA=%08x -> board %u (%s) anchor0=%u us %s", aa, board_id,
+            reader ? qUtf8Printable(reader->location()) : "no reader", anchor, ok ? "sent" : "WRITE FAILED");
+    return ok;
+}
+
+void TriStreamer::onSyncFrame(BoardReader *reader, const bh_sync_frame &sf, int64_t host_us)
+{
+    const CaptureConfig config = this->config();
+
+    if (config.follow_relay && (!config.single_target || config.target_mac_le.size() == 6)) {
+        QMutexLocker locker(&relay_mutex_);
+        boards_[sf.board_id] = reader;
+        bh_follow_relay_register(&relay_, sf.board_id);
+        bh_follow_relay_observe(&relay_, sf.board_id, sf.sync_epoch, host_us);
+    }
 }
 
 void TriStreamer::onFrame(BoardReader *reader, const bh_packet &pkt, int64_t host_us)
@@ -283,8 +307,32 @@ void TriStreamer::onFrame(BoardReader *reader, const bh_packet &pkt, int64_t hos
         bh_follow_relay_register(&relay_, pkt.board_id);
         bh_follow_relay_observe(&relay_, pkt.board_id, pkt.sync_epoch, host_us);
         if (pkt.crc_ok) {
-            bh_follow_relay_maybe_relay(&relay_, pkt.board_id, &pkt, host_us, relaySend, this);
+            bh_follow_relay_note_packet(&relay_, pkt.board_id, &pkt);
+            if (bh_is_connect_ind(&pkt)) {
+                bh_relay_stats before = relay_.stats;
+                int sent = bh_follow_relay_maybe_relay(&relay_, pkt.board_id, &pkt, host_us, relaySend, this);
+                uint32_t off[BH_MAX_BOARDS];
+                bool have[BH_MAX_BOARDS];
+                for (int b = 0; b < BH_MAX_BOARDS; b++) {
+                    have[b] = bh_sync_clock_offset(&relay_.clock, (uint8_t)b, &off[b]);
+                }
+                uint32_t ref_tick = 0;
+                bh_sync_clock_to_ref(&relay_.clock, pkt.board_id, pkt.ts_us, &ref_tick);
+                ws_info("BLEhound relay: CONNECT_IND ts=%u on board %u (its sync_epoch=%u) -> ref tick %u; offsets b0=%u b1=%u b2=%u",
+                        pkt.ts_us, pkt.board_id, pkt.sync_epoch, ref_tick, off[0], off[1], off[2]);
+                ws_info("BLEhound relay: CONNECT_IND from board %u: sent %d, skipped target %u dup %u no-offset %u; "
+                        "registered %d%d%d offsets %s/%s/%s trust=%d",
+                        pkt.board_id, sent,
+                        relay_.stats.skipped_target - before.skipped_target,
+                        relay_.stats.skipped_dup - before.skipped_dup,
+                        relay_.stats.skipped_no_offset - before.skipped_no_offset,
+                        relay_.registered[0], relay_.registered[1], relay_.registered[2],
+                        have[0] ? "ok" : "none", have[1] ? "ok" : "none", have[2] ? "ok" : "none",
+                        relay_.trust_source);
+            }
         }
+        /* Boards that could not be reached yet, or did not pick the connection up, get it again. */
+        bh_follow_relay_retry(&relay_, host_us, relaySend, this);
     }
     if (!pkt.crc_ok && !config.include_crc_errors) {
         return;
@@ -342,6 +390,12 @@ void TriStreamer::run()
         ws_info("BLEhound aggregated capture started");
         streamToClient(client_fd);
         close(client_fd);
+        {
+            QMutexLocker locker(&relay_mutex_);
+            ws_info("BLEhound relay stats: relayed %u, commands %u, retried %u, skipped target %u dup %u no-offset %u",
+                    relay_.stats.relayed, relay_.stats.sent_cmds, relay_.stats.retried,
+                    relay_.stats.skipped_target, relay_.stats.skipped_dup, relay_.stats.skipped_no_offset);
+        }
         ws_info("BLEhound aggregated capture ended (%llu packets dropped on the way to the aggregator)",
                 (unsigned long long)dropped_);
     }
@@ -376,6 +430,12 @@ void TriStreamer::streamToClient(int client_fd)
         const uint8_t *target = config.target_mac_le.size() == 6 ?
             reinterpret_cast<const uint8_t *>(config.target_mac_le.constData()) : nullptr;
         bh_follow_relay_init(&relay_, 0, target);
+        /* Single-target mode: the catching board already let only the target's
+         * CONNECT_IND through, so do not re-check it here with keys that may be stale. */
+        bh_follow_relay_set_trust(&relay_, config.single_target && target != nullptr);
+        ws_info("BLEhound aggregated capture: relay %s, single-target %d, target %s, irk %s",
+                config.follow_relay ? "on" : "off", config.single_target, target ? "set" : "none",
+                config.target_irk_le.isEmpty() ? "none" : "set");
         bh_decryptor_init(&decryptor_);
         foreach (const QByteArray &ltk, KeyStore::instance()->ltks()) {
             bh_decryptor_add_ltk(&decryptor_, reinterpret_cast<const uint8_t *>(ltk.constData()));

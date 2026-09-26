@@ -727,6 +727,83 @@ static void test_follow_relay_irk(void)
     ll[0] = 0x66;
     CHECK(bh_follow_relay_maybe_relay(&relay, 0, &pkt, 10050000, record_send, &log) == 0);
     CHECK(relay.stats.skipped_target == 2);
+
+    /* Trusting the catching board skips the address check altogether. */
+    bh_follow_relay_set_trust(&relay, true);
+    memcpy(pdu + 2 + 6, other, 6);
+    ll[0] = 0x77;
+    CHECK(bh_follow_relay_maybe_relay(&relay, 0, &pkt, 10060000, record_send, &log) == 1);
+}
+
+static void test_follow_relay_retry(void)
+{
+    bh_follow_relay relay;
+    struct relay_log log = { 0 };
+    uint8_t pdu[2 + 34];
+    uint8_t *ll = pdu + 14;
+    bh_packet pkt;
+
+    bh_follow_relay_init(&relay, 0, NULL);
+    bh_follow_relay_register(&relay, 0);
+    bh_follow_relay_register(&relay, 1);
+    bh_follow_relay_register(&relay, 2);
+    bh_follow_relay_observe(&relay, 0, 1000, 10000000);
+    bh_follow_relay_observe(&relay, 1, 1500, 10010000);      /* board 2 has no offset yet */
+
+    memset(pdu, 0, sizeof(pdu));
+    pdu[0] = 0x05;
+    pdu[1] = 34;
+    ll[0] = 0x9A; ll[1] = 0xBC; ll[2] = 0xDE; ll[3] = 0xF0;
+    ll[7] = 1; ll[10] = 24; ll[14] = 200;
+    memset(ll + 16, 0xFF, 4); ll[20] = 0x1F; ll[21] = 0x05;
+    memset(&pkt, 0, sizeof(pkt));
+    pkt.access_addr = BH_ADV_ACCESS_ADDR;
+    pkt.crc_ok = true;
+    pkt.pdu = pdu;
+    pkt.pdu_len = sizeof(pdu);
+    pkt.channel = 37;
+    pkt.ts_us = 5000;
+
+    /* Only board 1 reachable at first. */
+    CHECK(bh_follow_relay_maybe_relay(&relay, 0, &pkt, 10020000, record_send, &log) == 1);
+    CHECK(log.count == 1 && log.board[0] == 1);
+    CHECK(relay.stats.skipped_no_offset == 1);
+
+    /* Too early for a retry; nothing sent. */
+    CHECK(bh_follow_relay_retry(&relay, 10500000, record_send, &log) == 0);
+
+    /* Board 2's sync offset arrives; board 1 has produced data for the connection. */
+    bh_follow_relay_observe(&relay, 2, 800, 10020000);
+    bh_packet data;
+    memset(&data, 0, sizeof(data));
+    data.access_addr = 0xF0DEBC9A;
+    data.pdu = pdu;
+    data.pdu_len = 2;
+    bh_follow_relay_note_packet(&relay, 1, &data);
+
+    /* After the retry interval only board 2 is sent to. */
+    CHECK(bh_follow_relay_retry(&relay, 11100000, record_send, &log) == 1);
+    CHECK(log.count == 2 && log.board[1] == 2);
+    CHECK(relay.stats.retried == 1);
+
+    /* Board 2 picks it up: no further retries. */
+    bh_follow_relay_note_packet(&relay, 2, &data);
+    CHECK(bh_follow_relay_retry(&relay, 12200000, record_send, &log) == 0);
+
+    /* A board that stays silent is retried, but only a few times and only within the TTL. */
+    bh_follow_relay relay2;
+    struct relay_log log2 = { 0 };
+    bh_follow_relay_init(&relay2, 0, NULL);
+    bh_follow_relay_register(&relay2, 0);
+    bh_follow_relay_register(&relay2, 1);
+    bh_follow_relay_observe(&relay2, 0, 1000, 10000000);
+    bh_follow_relay_observe(&relay2, 1, 1500, 10010000);
+    CHECK(bh_follow_relay_maybe_relay(&relay2, 0, &pkt, 10020000, record_send, &log2) == 1);
+    int extra = 0;
+    for (int64_t t = 10020000; t < 10020000 + 8000000; t += 500000) {
+        extra += bh_follow_relay_retry(&relay2, t, record_send, &log2);
+    }
+    CHECK(extra == BH_RELAY_MAX_TRIES - 1);
 }
 
 /* BT Core Spec Vol 6, Part C: encryption sample data. */
@@ -877,6 +954,7 @@ int main(void)
     test_decryptor_session();
     test_aes_and_rpa();
     test_follow_relay_irk();
+    test_follow_relay_retry();
     test_cobs_known_vectors();
     test_cobs_roundtrip_long_runs();
     test_cobs_rejects_malformed();

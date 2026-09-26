@@ -9,7 +9,9 @@
 #include "blehound/blehound.h"
 
 #define FLAG_CRC_OK             0x01
+#define FLAG_DIR_S2M            0x02    /* peripheral -> central (with FLAG_DIR_KNOWN) */
 #define FLAG_TRI                0x08    /* tri-board: board_id + sync_epoch follow the header */
+#define FLAG_DIR_KNOWN          0x10    /* data-channel direction known from the event position */
 
 /* BTLE_RF pseudo-header flags */
 #define RF_FLAG_DEWHITENED      0x0001
@@ -54,6 +56,9 @@ bool bh_parse_frame(const uint8_t *raw, size_t len, bh_packet *pkt)
     pkt->crc = (uint32_t)raw[13] | (uint32_t)raw[14] << 8 | (uint32_t)raw[15] << 16;
     pkt->pdu_len = raw[16];
     pkt->crc_ok = (flags & FLAG_CRC_OK) != 0;
+    if (flags & FLAG_DIR_KNOWN) {
+        pkt->direction = (flags & FLAG_DIR_S2M) ? BH_DIR_PERIPHERAL_CENTRAL : BH_DIR_CENTRAL_PERIPHERAL;
+    }
 
     if (flags & FLAG_TRI) {
         if (len < BH_FRAME_HEADER_LEN + BH_TRI_EXT_LEN) {
@@ -95,6 +100,17 @@ bool bh_parse_status(const uint8_t *raw, size_t len, bh_status *st)
     memcpy(st->fw_version, raw + 15, fw_len);
     st->fw_version[fw_len] = '\0';
     return true;
+}
+
+bool bh_parse_sync(const uint8_t *raw, size_t len, bh_sync_frame *sf)
+{
+    if (len < 10 || raw[0] != BH_FRAME_SYNC) {
+        return false;
+    }
+    sf->board_id = raw[1];
+    sf->sync_count = get_le32(raw + 2);
+    sf->sync_epoch = get_le32(raw + 6);
+    return sf->board_id < BH_MAX_BOARDS;
 }
 
 uint8_t bh_ble_to_rf_channel(uint8_t ble_channel)
@@ -144,6 +160,14 @@ size_t bh_btle_rf_record_ex(const bh_packet *pkt, uint16_t extra_flags, uint8_t 
     }
     flags |= (uint16_t)(phy & 0x3) << RF_FLAG_PHY_SHIFT;
     flags |= extra_flags;
+    /* Direction from the dongle, unless the caller (decryption) already set the PDU type. */
+    if ((flags & 0x0380) == 0 && pkt->access_addr != BH_ADV_ACCESS_ADDR) {
+        if (pkt->direction == BH_DIR_CENTRAL_PERIPHERAL) {
+            flags |= BH_RF_PDU_DATA_C2P;
+        } else if (pkt->direction == BH_DIR_PERIPHERAL_CENTRAL) {
+            flags |= BH_RF_PDU_DATA_P2C;
+        }
+    }
 
     /* BTLE_RF pseudo-header */
     out[o++] = bh_ble_to_rf_channel(pkt->channel);
