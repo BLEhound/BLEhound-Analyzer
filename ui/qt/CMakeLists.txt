@@ -962,6 +962,7 @@ if(BLEHOUND_BRANDING)
 			blehound/blehound_devices_panel.cpp
 			blehound/blehound_key_store.cpp
 			blehound/blehound_keys_dialog.cpp
+			blehound/blehound_layer_toolbar.cpp
 			blehound/blehound_serial.cpp
 			blehound/blehound_socket.cpp
 			blehound/blehound_streamer.cpp

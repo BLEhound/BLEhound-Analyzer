@@ -12,6 +12,9 @@
 #include <ui/qt/utils/stock_icon.h>
 
 #include "blehound_i18n.h"
+#include "blehound_layer_toolbar.h"
+
+#include "main_window.h"
 
 #include "ui_wireshark_main_window.h"
 
@@ -57,7 +60,7 @@ const QSet<QString> kKeptActions = {
     "actionEditSetTimeReference", "actionEditUnsetAllTimeReferences",
     "actionEditPreferences",
     // View
-    "actionViewMainToolbar", "actionViewFilterToolbar", "actionViewStatusBar",
+    "actionViewMainToolbar", "actionViewFilterToolbar", "actionViewLayerToolbar", "actionViewStatusBar",
     "actionViewFullScreen", "actionViewPacketList", "actionViewPacketDetails",
     "actionViewPacketBytes", "actionViewExpandSubtrees", "actionViewCollapseSubtrees",
     "actionViewExpandAll", "actionViewCollapseAll", "actionViewColorizePacketList",
@@ -210,6 +213,7 @@ void brandMainWindow(QMainWindow *window, Ui::WiresharkMainWindow *ui)
     addHelpLinks(ui);
     rebuildToolbar(ui);
     pruneMenuBar(window->menuBar());
+    installLayerToolbar(qobject_cast<MainWindow *>(window), ui);
 }
 
 } // namespace BLEhound
