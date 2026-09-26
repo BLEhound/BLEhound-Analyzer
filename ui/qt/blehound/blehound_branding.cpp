@@ -61,6 +61,7 @@ const QSet<QString> kKeptActions = {
     "actionEditPreferences",
     // View
     "actionViewMainToolbar", "actionViewFilterToolbar", "actionViewLayerToolbar", "actionViewStatusBar",
+    "actionBlehoundDevicesPanel", "actionBlehoundDevicePanel", "actionBlehoundConnectionPanel", "actionBlehoundTransactionsPanel",
     "actionViewFullScreen", "actionViewPacketList", "actionViewPacketDetails",
     "actionViewPacketBytes", "actionViewExpandSubtrees", "actionViewCollapseSubtrees",
     "actionViewExpandAll", "actionViewCollapseAll", "actionViewColorizePacketList",

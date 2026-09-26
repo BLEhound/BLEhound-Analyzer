@@ -13,8 +13,13 @@
 
 #include "config.h"
 
+#include <string.h>
+
 #include <epan/packet.h>
+#include <epan/tap.h>
 #include <wiretap/wtap.h>
+
+#include "packet-blehound.h"
 
 void proto_register_blehound(void);
 void proto_reg_handoff_blehound(void);
@@ -24,6 +29,7 @@ static int hf_blehound_payload;
 static int hf_blehound_payload_summary;
 static int hf_blehound_payload_len;
 static int ett_blehound;
+static int blehound_tap;
 
 #define BLE_ADV_ACCESS_ADDR   0x8E89BED6
 #define RF_HEADER_LEN         10
@@ -54,24 +60,75 @@ dissect_blehound(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree, void *data
         return 0;
     }
     unsigned plen = len;
+    /* Taps are pushed after this function returns: the record must outlive
+     * the call, so it lives in the packet's pool. */
+    blehound_tap_info_t *ip = wmem_new0(pinfo->pool, blehound_tap_info_t);
+#define info (*ip)
+    info.frame_num = pinfo->num;
+    info.abs_ts = pinfo->abs_ts;
+    info.rel_ts = nstime_to_sec(&pinfo->rel_ts);
+    info.aa = aa;
+    info.rssi = (int8_t)tvb_get_uint8(tvb, 1);
+    info.crc_ok = (flags & 0x0800) != 0;
+    info.decrypted = (flags & 0x0008) != 0;
+    switch ((flags >> 7) & 0x7) {
+    case 2: info.direction = BLEHOUND_DIR_C2P; break;
+    case 3: info.direction = BLEHOUND_DIR_P2C; break;
+    default: info.direction = BLEHOUND_DIR_UNKNOWN; break;
+    }
+    {
+        uint8_t rf = tvb_get_uint8(tvb, 0);
+        info.channel = rf == 0 ? 37 : rf == 12 ? 38 : rf == 39 ? 39 : rf <= 11 ? rf - 1 : rf - 2;
+    }
+    info.llid = hdr & 0x03;
 
     if (aa == BLE_ADV_ACCESS_ADDR) {
         uint8_t type = hdr & 0x0F;
+        info.kind = BLEHOUND_KIND_ADV;
+        info.adv_type = type;
         /* ADV_IND / ADV_NONCONN_IND / SCAN_RSP / ADV_SCAN_IND: AdvA then data */
         if ((type == 0x00 || type == 0x02 || type == 0x04 || type == 0x06) && plen >= 6) {
             pstart += 6;
             plen -= 6;
         }
+        if (type == 0x05 && len >= 34) {
+            const uint8_t *p = tvb_get_ptr(tvb, off + 2, 34);
+            info.connect_ind = true;
+            memcpy(info.inita, p, 6);
+            memcpy(info.adva, p + 6, 6);
+            info.conn_aa = (uint32_t)p[12] | (uint32_t)p[13] << 8 | (uint32_t)p[14] << 16 | (uint32_t)p[15] << 24;
+            info.win_size = p[19];
+            info.win_offset = (uint16_t)(p[20] | p[21] << 8);
+            info.interval = (uint16_t)(p[22] | p[23] << 8);
+            info.latency = (uint16_t)(p[24] | p[25] << 8);
+            info.timeout = (uint16_t)(p[26] | p[27] << 8);
+            memcpy(info.chan_map, p + 28, 5);
+            info.hop = p[33] & 0x1F;
+            info.csa2 = (hdr & 0x20) != 0;
+        }
     } else {
         uint8_t llid = hdr & 0x03;
-        if (llid == 0x02 && plen >= 4) {
+        if (plen == 0) {
+            info.kind = BLEHOUND_KIND_EMPTY;
+        } else if (llid == 0x03) {
+            info.kind = BLEHOUND_KIND_LL_CTRL;
+            info.ctrl_opcode = tvb_get_uint8(tvb, pstart);
+        } else if (llid == 0x02 && plen >= 4) {
+            info.kind = BLEHOUND_KIND_L2CAP;
+            info.l2cap_cid = tvb_get_letohs(tvb, pstart + 2);
+            info.l2cap_opcode = plen > 4 ? tvb_get_uint8(tvb, pstart + 4) : 0;
             pstart += 4;                        /* L2CAP start fragment: skip the L2CAP header */
             plen -= 4;
+        } else {
+            info.kind = BLEHOUND_KIND_L2CAP_CONT;
         }
-        /* Decrypted frames have the MIC stripped already; a MIC-checked
-         * frame that still carries one would be 4 bytes longer, which the
-         * dissector reports as encrypted anyway. */
     }
+    if (plen > 0) {
+        info.payload = tvb_get_ptr(tvb, pstart, plen);
+        info.payload_len = plen;
+    }
+    tap_queue_packet(blehound_tap, pinfo, ip);
+#undef info
     if (plen == 0) {
         return 0;
     }
@@ -114,6 +171,7 @@ proto_register_blehound(void)
     proto_register_field_array(proto_blehound, hf, array_length(hf));
     proto_register_subtree_array(ett, array_length(ett));
     register_dissector("blehound", dissect_blehound, proto_blehound);
+    blehound_tap = register_tap("blehound");
 }
 
 void

@@ -960,6 +960,9 @@ if(BLEHOUND_BRANDING)
 			blehound/blehound_device_manager.cpp
 			blehound/blehound_device_panel.cpp
 			blehound/blehound_devices_panel.cpp
+			blehound/blehound_connection_panel.cpp
+			blehound/blehound_ll_tap.cpp
+			blehound/blehound_transactions_panel.cpp
 			blehound/blehound_key_store.cpp
 			blehound/blehound_keys_dialog.cpp
 			blehound/blehound_layer_toolbar.cpp
