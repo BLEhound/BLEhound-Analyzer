@@ -414,7 +414,12 @@ typedef struct bh_sync_clock {
     uint8_t      hist_len[BH_MAX_BOARDS];
     uint32_t     offset[BH_MAX_BOARDS];
     bool         has_offset[BH_MAX_BOARDS];
+    uint32_t     cand_offset[BH_MAX_BOARDS];   /**< an offset that disagrees with the established one */
+    uint8_t      cand_hits[BH_MAX_BOARDS];     /**< how many times in a row it was seen */
 } bh_sync_clock;
+
+#define BH_SYNC_OFFSET_TOL_US   20000      /* offsets closer than this are the same edge */
+#define BH_SYNC_SWITCH_AFTER    2          /* consistent disagreements before adopting a new offset */
 
 void bh_sync_clock_init(bh_sync_clock *c, uint8_t ref_board, int64_t pair_window_us);
 

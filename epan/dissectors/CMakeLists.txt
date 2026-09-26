@@ -866,6 +866,7 @@ set(DISSECTOR_SRC
 	${CMAKE_CURRENT_SOURCE_DIR}/packet-bthid.c
 	${CMAKE_CURRENT_SOURCE_DIR}/packet-bthsp.c
 	${CMAKE_CURRENT_SOURCE_DIR}/packet-btl2cap.c
+	${CMAKE_CURRENT_SOURCE_DIR}/packet-blehound.c
 	${CMAKE_CURRENT_SOURCE_DIR}/packet-btle.c
 	${CMAKE_CURRENT_SOURCE_DIR}/packet-btle_rf.c
 	${CMAKE_CURRENT_SOURCE_DIR}/packet-btlmp.c

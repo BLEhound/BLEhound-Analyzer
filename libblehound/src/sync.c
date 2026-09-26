@@ -46,21 +46,74 @@ static bool within_window(const bh_sync_clock *c, const bh_sync_edge *a, const b
     return (d < 0 ? -d : d) <= c->pair_window_us;
 }
 
-/* Newest edge of the board against newest edge of the reference that was
- * heard at about the same time: those are the same physical edge. */
+static int64_t host_gap(const bh_sync_edge *a, const bh_sync_edge *b)
+{
+    if (a->host_us == BH_NO_HOST_TIME || b->host_us == BH_NO_HOST_TIME) {
+        return 0;
+    }
+    int64_t d = a->host_us - b->host_us;
+    return d < 0 ? -d : d;
+}
+
+/* The board's edge and the reference's edge heard closest together in host
+ * time are the same physical edge. The reference emits extra edges (on a
+ * hit) so two of its edges can sit inside the pairing window; taking the
+ * closest one, and not moving an established offset for a single outlier,
+ * keeps a stray pairing from shifting the board's clock by a fraction of a
+ * second. */
 static void pair_board(bh_sync_clock *c, uint8_t board)
 {
     const bh_sync_edge *bh = c->hist[board];
     const bh_sync_edge *rh = c->hist[c->ref_board];
+    int64_t best = -1;
+    uint32_t offset = 0;
 
-    for (int i = c->hist_len[board] - 1; i >= 0; i--) {
+    /* Newest board edge first, so the offset follows the clocks' drift; among
+     * the reference edges inside the window take the one heard closest. */
+    for (int i = c->hist_len[board] - 1; i >= 0 && best < 0; i--) {
         for (int j = c->hist_len[c->ref_board] - 1; j >= 0; j--) {
-            if (within_window(c, &bh[i], &rh[j])) {
-                c->offset[board] = bh[i].tick - rh[j].tick;
-                c->has_offset[board] = true;
-                return;
+            if (!within_window(c, &bh[i], &rh[j])) {
+                continue;
+            }
+            int64_t gap = host_gap(&bh[i], &rh[j]);
+            if (best < 0 || gap < best) {
+                best = gap;
+                offset = bh[i].tick - rh[j].tick;
             }
         }
+    }
+    if (best < 0) {
+        return;
+    }
+    if (!c->has_offset[board]) {
+        c->offset[board] = offset;
+        c->has_offset[board] = true;
+        c->cand_hits[board] = 0;
+        return;
+    }
+    int32_t diff = (int32_t)(offset - c->offset[board]);
+    if (diff < 0) {
+        diff = -diff;
+    }
+    if (diff <= BH_SYNC_OFFSET_TOL_US) {
+        c->offset[board] = offset;          /* same edge: follow the drift */
+        c->cand_hits[board] = 0;
+        return;
+    }
+    /* A different offset: real (board restarted) only if it keeps coming back. */
+    int32_t cdiff = (int32_t)(offset - c->cand_offset[board]);
+    if (cdiff < 0) {
+        cdiff = -cdiff;
+    }
+    if (c->cand_hits[board] > 0 && cdiff <= BH_SYNC_OFFSET_TOL_US) {
+        c->cand_hits[board]++;
+    } else {
+        c->cand_offset[board] = offset;
+        c->cand_hits[board] = 1;
+    }
+    if (c->cand_hits[board] >= BH_SYNC_SWITCH_AFTER) {
+        c->offset[board] = offset;
+        c->cand_hits[board] = 0;
     }
 }
 
