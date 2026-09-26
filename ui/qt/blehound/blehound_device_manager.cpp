@@ -237,6 +237,27 @@ void DeviceManager::syncStreamers(const QStringList &ports)
     }
 }
 
+/* The aggregated capture is what a user wants nearly always, so it is the
+ * selection on the welcome page unless one of our interfaces was picked already. */
+void DeviceManager::selectByDefault(const QByteArray &name, const QSet<QString> &ours)
+{
+    interface_t *target = nullptr;
+
+    for (unsigned i = 0; i < global_capture_opts.all_ifaces->len; i++) {
+        interface_t *device = &g_array_index(global_capture_opts.all_ifaces, interface_t, i);
+        if (device->selected && ours.contains(QString::fromUtf8(device->name))) {
+            return;
+        }
+        if (strcmp(device->name, name.constData()) == 0) {
+            target = device;
+        }
+    }
+    if (target && !target->selected) {
+        target->selected = true;
+        global_capture_opts.num_selected++;
+    }
+}
+
 void DeviceManager::ensureInterface(const QByteArray &name, const QByteArray &display)
 {
     // A selected pipe is re-added by the scan itself; just refresh its name.
@@ -330,9 +351,11 @@ void DeviceManager::appendInterfaces()
     }
     // One merged capture across all boards, each guarding its own channel.
     if (ports.size() >= 2) {
-        ensureInterface(tri_streamer_->socketPath().toUtf8(),
+        QByteArray aggregated = tri_streamer_->socketPath().toUtf8();
+        ensureInterface(aggregated,
                         QStringLiteral("%1 (%2ch aggregated)").arg(QStringLiteral(BH_USB_PRODUCT))
                             .arg(ports.size()).toUtf8());
+        selectByDefault(aggregated, valid_names);
     }
     emit boardsChanged();
 }

@@ -87,6 +87,7 @@ private:
     QString socketPathFor(const QString &location) const;
     void syncStreamers(const QStringList &ports);
     static void ensureInterface(const QByteArray &name, const QByteArray &display);
+    static void selectByDefault(const QByteArray &name, const QSet<QString> &ours);
     void removeStaleInterfaces(const QSet<QString> &valid_names);
 
     QString socket_dir_;
