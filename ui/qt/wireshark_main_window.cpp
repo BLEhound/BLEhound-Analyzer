@@ -80,6 +80,8 @@ DIAG_ON(frame-larger-than=)
 #ifdef BLEHOUND_NATIVE_CAPTURE
 #include "blehound/blehound_device_panel.h"
 #include "blehound/blehound_devices_panel.h"
+#include "blehound/blehound_connection_panel.h"
+#include "blehound/blehound_transactions_panel.h"
 #endif
 #include <ui/qt/utils/variant_pointer.h>
 
@@ -464,6 +466,8 @@ WiresharkMainWindow::WiresharkMainWindow(QWidget *parent) :
 #ifdef BLEHOUND_NATIVE_CAPTURE
     BLEhound::installDevicePanel(this, main_ui_->menuView, main_ui_->actionViewPacketList);
     BLEhound::installDevicesPanel(this, main_ui_->menuView, main_ui_->actionViewPacketList);
+    BLEhound::installTransactionsPanel(this, main_ui_->menuView, main_ui_->actionViewPacketList);
+    BLEhound::installConnectionPanel(this, main_ui_->menuView, main_ui_->actionViewPacketList);
 #endif
 
     main_ui_->displayFilterToolBar->insertWidget(main_ui_->actionNewDisplayFilterExpression, df_combo_box_);
