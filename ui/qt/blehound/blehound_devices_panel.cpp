@@ -13,6 +13,7 @@
 #include "blehound_i18n.h"
 #include "blehound_key_store.h"
 #include "blehound_keys_dialog.h"
+#include "blehound_layer_toolbar.h"
 
 #include "main_application.h"
 #include "main_window.h"
@@ -292,10 +293,7 @@ void DevicesPanel::applyTrafficFilter()
         }
         filter = terms.join(QStringLiteral(" || "));
     }
-    MainWindow *window = mainApp->mainWindow();
-    if (window) {
-        window->setDisplayFilter(filter, FilterAction::ActionApply, FilterAction::ActionTypePlain);
-    }
+    setTargetFilter(filter);
 }
 
 void installDevicesPanel(QMainWindow *window, QMenu *view_menu, QAction *before)

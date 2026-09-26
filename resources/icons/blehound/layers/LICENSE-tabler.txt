@@ -1,0 +1,1 @@
+Icons in this directory come from Tabler Icons (https://tabler.io/icons), MIT License, Copyright (c) 2020-2026 Pawel Kuna. Only the stroke colour was changed.

@@ -14,6 +14,24 @@
         <file alias="wsicon64.png">app-64.png</file>
         <file alias="wsicon128.png">app-128.png</file>
         <file alias="wsicon256.png">app-256.png</file>
+        <file alias="layers/all.svg">layers/all.svg</file>
+        <file alias="layers/all.on.svg">layers/all.on.svg</file>
+        <file alias="layers/packets.svg">layers/packets.svg</file>
+        <file alias="layers/packets.on.svg">layers/packets.on.svg</file>
+        <file alias="layers/link.svg">layers/link.svg</file>
+        <file alias="layers/link.on.svg">layers/link.on.svg</file>
+        <file alias="layers/llcp.svg">layers/llcp.svg</file>
+        <file alias="layers/llcp.on.svg">layers/llcp.on.svg</file>
+        <file alias="layers/llcp-tx.svg">layers/llcp-tx.svg</file>
+        <file alias="layers/llcp-tx.on.svg">layers/llcp-tx.on.svg</file>
+        <file alias="layers/l2cap.svg">layers/l2cap.svg</file>
+        <file alias="layers/l2cap.on.svg">layers/l2cap.on.svg</file>
+        <file alias="layers/smp.svg">layers/smp.svg</file>
+        <file alias="layers/smp.on.svg">layers/smp.on.svg</file>
+        <file alias="layers/att.svg">layers/att.svg</file>
+        <file alias="layers/att.on.svg">layers/att.on.svg</file>
+        <file alias="layers/att-tx.svg">layers/att-tx.svg</file>
+        <file alias="layers/att-tx.on.svg">layers/att-tx.on.svg</file>
     </qresource>
     <qresource prefix="/blehound">
         <file>splash.png</file>
