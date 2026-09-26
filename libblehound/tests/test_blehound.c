@@ -729,8 +729,133 @@ static void test_follow_relay_irk(void)
     CHECK(relay.stats.skipped_target == 2);
 }
 
+/* BT Core Spec Vol 6, Part C: encryption sample data. */
+static const char *SPEC_LTK_MSO = "4C68384139F574D836BCF34E9DFB01BF";
+
+static void spec_ltk_le(uint8_t out[16])
+{
+    uint8_t mso[16];
+    CHECK(bh_parse_hex(SPEC_LTK_MSO, mso, 16));
+    for (int i = 0; i < 16; i++) {
+        out[i] = mso[15 - i];
+    }
+}
+
+static void feed(bh_decryptor *d, uint32_t aa, const char *hex, bool *decrypted, uint8_t *dir,
+                 uint8_t *out, size_t *out_len)
+{
+    uint8_t pdu[64];
+    uint8_t buf[64];
+    size_t n = strlen(hex) / 2;
+    bh_packet pkt;
+
+    CHECK(bh_parse_hex(hex, pdu, n));
+    memset(&pkt, 0, sizeof(pkt));
+    pkt.access_addr = aa;
+    pkt.crc_ok = true;
+    pkt.pdu = pdu;
+    pkt.pdu_len = (uint8_t)n;
+    *decrypted = bh_decryptor_process(d, &pkt, buf, sizeof(buf), dir);
+    if (out) {
+        memcpy(out, pkt.pdu, pkt.pdu_len);
+        *out_len = pkt.pdu_len;
+    }
+}
+
+static void test_ccm_spec_vectors(void)
+{
+    uint8_t sk[16], nonce[13], pt[32], ct[32], mic[4];
+
+    CHECK(bh_parse_hex("99AD1B5226A37E3E058E3B8E27C2C666", sk, 16));
+    /* nonce = counter(5, LSB first, bit 7 of byte 4 = direction) || IVm || IVs */
+    memset(nonce, 0, sizeof(nonce));
+    nonce[4] = 0x80;                                         /* central -> peripheral */
+    CHECK(bh_parse_hex("24ABDCBABEBAAFDE", nonce + 5, 8));
+    pt[0] = 0x06;                                            /* LL_START_ENC_RSP */
+    bh_ccm_encrypt(sk, nonce, 0x0F & 0xE3, pt, 1, ct, mic);
+    CHECK(ct[0] == 0x9F);
+    CHECK(mic[0] == 0xCD && mic[1] == 0xA7 && mic[2] == 0xF4 && mic[3] == 0x48);
+    CHECK(bh_ccm_decrypt(sk, nonce, 0x0F & 0xE3, ct, 1, mic, pt) && pt[0] == 0x06);
+    mic[3] ^= 1;
+    CHECK(!bh_ccm_decrypt(sk, nonce, 0x0F & 0xE3, ct, 1, mic, pt));
+
+    nonce[4] = 0x00;                                         /* peripheral -> central */
+    pt[0] = 0x06;
+    bh_ccm_encrypt(sk, nonce, 0x07 & 0xE3, pt, 1, ct, mic);
+    CHECK(ct[0] == 0xA3);
+    CHECK(mic[0] == 0x4C && mic[1] == 0x13 && mic[2] == 0xA4 && mic[3] == 0x15);
+}
+
+static void test_decryptor_session(void)
+{
+    bh_decryptor d;
+    uint8_t ltk[16], wrong[16], out[64], dir;
+    size_t out_len;
+    bool ok;
+    const uint32_t aa = 0x12345678;
+
+    spec_ltk_le(ltk);
+    memset(wrong, 0x55, sizeof(wrong));
+    bh_decryptor_init(&d);
+    CHECK(bh_decryptor_add_ltk(&d, wrong));                 /* a key for some other device */
+    CHECK(bh_decryptor_add_ltk(&d, ltk));
+
+    /* LL_ENC_REQ: Rand ABCDEF1234567890 EDIV 2474 SKDm ACBDCEDFE0F10213 IVm BADCAB24 (all LE on air) */
+    feed(&d, aa, "0317" "03" "9078563412EFCDAB" "7424" "1302F1E0DFCEBDAC" "24ABDCBA", &ok, &dir, NULL, NULL);
+    CHECK(!ok);
+    /* LL_ENC_RSP: SKDs 0213243546576879 IVs DEAFBABE */
+    feed(&d, aa, "070D" "04" "7968574635241302" "BEBAAFDE", &ok, &dir, NULL, NULL);
+    CHECK(!ok);
+    CHECK(d.stats.sessions == 1);
+    /* LL_START_ENC_REQ (plain, from the peripheral) */
+    feed(&d, aa, "0701" "05", &ok, &dir, NULL, NULL);
+    CHECK(!ok);
+
+    /* Spec: central LL_START_ENC_RSP, counter 0 */
+    feed(&d, aa, "0F059FCDA7F448", &ok, &dir, out, &out_len);
+    CHECK(ok);
+    CHECK(dir == BH_DIR_CENTRAL_PERIPHERAL);
+    CHECK(out_len == 3 && out[0] == 0x0F && out[1] == 0x01 && out[2] == 0x06);
+    /* Spec: peripheral LL_START_ENC_RSP, counter 0 */
+    feed(&d, aa, "0705A34C13A415", &ok, &dir, out, &out_len);
+    CHECK(ok);
+    CHECK(dir == BH_DIR_PERIPHERAL_CENTRAL);
+    CHECK(out[2] == 0x06);
+
+    /* Data, counter 1 both ways (generated with the spec SK). */
+    const char *plain = "1700636465666768696A6B6C6D6E6F70713132333435363738393031";
+    uint8_t expect[28];
+    CHECK(bh_parse_hex(plain, expect, 28));
+    feed(&d, aa, "0E207A70D66415226DF26B17839A060405596BD6564F796B5B9CE6FF32710014E1E9", &ok, &dir, out, &out_len);
+    CHECK(ok && dir == BH_DIR_CENTRAL_PERIPHERAL && out_len == 30 && out[1] == 28 && memcmp(out + 2, expect, 28) == 0);
+    feed(&d, aa, "0620F388D5B5EDC69D9931E38C4668F76DB09CF542B72B7476D74DB5BEBE4864B552", &ok, &dir, out, &out_len);
+    CHECK(ok && dir == BH_DIR_PERIPHERAL_CENTRAL && memcmp(out + 2, expect, 28) == 0);
+
+    /* Missed packets: central jumps to counter 7; a peripheral retransmission reuses counter 2 twice. */
+    feed(&d, aa, "0A20072F457BD06A21A05FE77B4379AF9B7AC0B44A71875ED750442C4A285C4B68BA", &ok, &dir, out, &out_len);
+    CHECK(ok && dir == BH_DIR_CENTRAL_PERIPHERAL);
+    feed(&d, aa, "1A20875D95DCE69867D8405F9A7D43C855202B4658ADC65342FA45A3E51D46D1EEE1", &ok, &dir, out, &out_len);
+    CHECK(ok && dir == BH_DIR_PERIPHERAL_CENTRAL);
+    feed(&d, aa, "1A20875D95DCE69867D8405F9A7D43C855202B4658ADC65342FA45A3E51D46D1EEE1", &ok, &dir, out, &out_len);
+    CHECK(ok && dir == BH_DIR_PERIPHERAL_CENTRAL);
+    CHECK(d.stats.decrypted == 7);
+
+    /* Empty PDUs and garbage pass through untouched. */
+    feed(&d, aa, "0100", &ok, &dir, out, &out_len);
+    CHECK(!ok && out_len == 2);
+    feed(&d, aa, "0E20000000000000000000000000000000000000000000000000000000000000000000", &ok, &dir, out, &out_len);
+    CHECK(!ok && out_len >= 33);
+    CHECK(d.stats.failed == 1);
+
+    /* A connection with no ENC_REQ/RSP seen stays untouched. */
+    feed(&d, 0x55AA55AA, "0F059FCDA7F448", &ok, &dir, out, &out_len);
+    CHECK(!ok && out_len == 7);
+}
+
 int main(void)
 {
+    test_ccm_spec_vectors();
+    test_decryptor_session();
     test_aes_and_rpa();
     test_follow_relay_irk();
     test_cobs_known_vectors();

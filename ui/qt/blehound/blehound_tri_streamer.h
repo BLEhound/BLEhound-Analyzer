@@ -137,6 +137,7 @@ private:
     /* Aggregator thread only. */
     bh_ts_mapper ts_;
     QByteArray out_;
+    bh_decryptor decryptor_;
 };
 
 } // namespace BLEhound

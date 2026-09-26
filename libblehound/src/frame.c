@@ -112,6 +112,23 @@ uint8_t bh_ble_to_rf_channel(uint8_t ble_channel)
 
 size_t bh_btle_rf_record(const bh_packet *pkt, uint8_t *out, size_t out_cap)
 {
+    return bh_btle_rf_record_ex(pkt, 0, out, out_cap);
+}
+
+uint16_t bh_rf_flags_for_decrypted(uint8_t direction)
+{
+    uint16_t flags = BH_RF_FLAG_DECRYPTED | BH_RF_FLAG_MIC_CHECKED | BH_RF_FLAG_MIC_VALID;
+
+    if (direction == BH_DIR_CENTRAL_PERIPHERAL) {
+        flags |= BH_RF_PDU_DATA_C2P;
+    } else if (direction == BH_DIR_PERIPHERAL_CENTRAL) {
+        flags |= BH_RF_PDU_DATA_P2C;
+    }
+    return flags;
+}
+
+size_t bh_btle_rf_record_ex(const bh_packet *pkt, uint16_t extra_flags, uint8_t *out, size_t out_cap)
+{
     uint8_t phy = pkt->phy > BH_PHY_CODED_S8 ? BH_PHY_CODED_S8 : pkt->phy;
     bool coded = pkt->phy == BH_PHY_CODED_S8 || pkt->phy == BH_PHY_CODED_S2;
     size_t need = 10 + 4 + (coded ? 1 : 0) + pkt->pdu_len + 3;
@@ -126,6 +143,7 @@ size_t bh_btle_rf_record(const bh_packet *pkt, uint8_t *out, size_t out_cap)
         flags |= RF_FLAG_CRC_VALID;
     }
     flags |= (uint16_t)(phy & 0x3) << RF_FLAG_PHY_SHIFT;
+    flags |= extra_flags;
 
     /* BTLE_RF pseudo-header */
     out[o++] = bh_ble_to_rf_channel(pkt->channel);

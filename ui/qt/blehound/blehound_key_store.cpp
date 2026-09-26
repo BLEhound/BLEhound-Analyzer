@@ -80,6 +80,18 @@ bool KeyStore::resolve(const QByteArray &adva_le, DeviceKey *key) const
     return false;
 }
 
+QList<QByteArray> KeyStore::ltks() const
+{
+    QList<QByteArray> out;
+    QMutexLocker locker(&mutex_);
+    foreach (const DeviceKey &k, keys_) {
+        if (k.hasLtk()) {
+            out.append(k.ltk_le);
+        }
+    }
+    return out;
+}
+
 QString KeyStore::hex(const QByteArray &bytes)
 {
     return QString::fromLatin1(bytes.toHex().toUpper());

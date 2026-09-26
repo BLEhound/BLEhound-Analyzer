@@ -159,6 +159,18 @@ bool bh_parse_status(const uint8_t *raw, size_t len, bh_status *st);
  */
 size_t bh_btle_rf_record(const bh_packet *pkt, uint8_t *out, size_t out_cap);
 
+/* Extra BTLE_RF pseudo-header flags for bh_btle_rf_record_ex(). */
+#define BH_RF_FLAG_DECRYPTED        0x0008
+#define BH_RF_FLAG_MIC_CHECKED      0x1000
+#define BH_RF_FLAG_MIC_VALID        0x2000
+#define BH_RF_PDU_DATA_C2P          (2u << 7)
+#define BH_RF_PDU_DATA_P2C          (3u << 7)
+
+/** Same as bh_btle_rf_record() with extra pseudo-header flags OR-ed in. */
+size_t bh_btle_rf_record_ex(const bh_packet *pkt, uint16_t extra_flags, uint8_t *out, size_t out_cap);
+/** Flags describing a packet the decryptor handled: decrypted, MIC valid, direction. */
+uint16_t bh_rf_flags_for_decrypted(uint8_t direction);
+
 /* ------------------------------------------------------------ timestamps */
 
 /**
@@ -222,6 +234,67 @@ bool bh_rpa_is_resolvable(const uint8_t addr_le[6]);
  * @param addr_le 6 bytes in air (little-endian) order
  */
 bool bh_rpa_matches(const uint8_t irk_le[16], const uint8_t addr_le[6]);
+
+/**
+ * AES-CCM as the BLE link layer uses it: 13-byte nonce, one AAD byte,
+ * 4-byte MIC. @p ct/@p pt may alias.
+ */
+void bh_ccm_encrypt(const uint8_t sk[16], const uint8_t nonce[13], uint8_t aad,
+                    const uint8_t *pt, size_t pt_len, uint8_t *ct, uint8_t mic[4]);
+/** @return true if the MIC verified; @p pt then holds the plaintext. */
+bool bh_ccm_decrypt(const uint8_t sk[16], const uint8_t nonce[13], uint8_t aad,
+                    const uint8_t *ct, size_t ct_len, const uint8_t mic[4], uint8_t *pt);
+
+/* ------------------------------------------------- link-layer decryption */
+
+#define BH_DECRYPT_MAX_LTKS     8
+#define BH_DECRYPT_MAX_CONNS    4
+
+#define BH_DIR_UNKNOWN              0
+#define BH_DIR_CENTRAL_PERIPHERAL   1
+#define BH_DIR_PERIPHERAL_CENTRAL   2
+
+/** Encryption state of one followed connection. */
+typedef struct bh_ll_crypto_conn {
+    bool     used;
+    uint32_t aa;
+    uint32_t last_seq;
+    uint8_t  skd[16];           /**< SKDs || SKDm, AES block order */
+    uint8_t  iv[8];             /**< IVm || IVs, air order */
+    bool     have_skdm, have_skds;
+    uint8_t  sk_cand[BH_DECRYPT_MAX_LTKS][16];
+    int      n_cand;
+    bool     sk_confirmed;
+    uint8_t  sk[16];
+    bool     encrypted;
+    uint64_t counter[2];        /**< next expected packet counter, [0]=central->peripheral */
+} bh_ll_crypto_conn;
+
+typedef struct bh_decrypt_stats {
+    uint32_t sessions;          /**< SKD/IV pairs seen (session keys derived) */
+    uint32_t decrypted;
+    uint32_t failed;            /**< encrypted PDUs no key/counter verified */
+} bh_decrypt_stats;
+
+typedef struct bh_decryptor {
+    uint8_t  ltk[BH_DECRYPT_MAX_LTKS][16];   /**< AES key order */
+    int      n_ltk;
+    uint32_t seq;
+    bh_ll_crypto_conn conns[BH_DECRYPT_MAX_CONNS];
+    bh_decrypt_stats stats;
+} bh_decryptor;
+
+void bh_decryptor_init(bh_decryptor *d);
+void bh_decryptor_clear_ltks(bh_decryptor *d);
+/** @p ltk_le: 16 bytes in air / SMP order (LSO first). @return false when full. */
+bool bh_decryptor_add_ltk(bh_decryptor *d, const uint8_t ltk_le[16]);
+/**
+ * Feed one captured packet (advertising packets are ignored). When the
+ * packet decrypts, its PDU is replaced by the plaintext written to @p buf
+ * (MIC stripped, length adjusted) and @p direction says who sent it.
+ * @return true if the packet was decrypted.
+ */
+bool bh_decryptor_process(bh_decryptor *d, bh_packet *pkt, uint8_t *buf, size_t cap, uint8_t *direction);
 
 /* ------------------------------------------------------------------ pcap */
 

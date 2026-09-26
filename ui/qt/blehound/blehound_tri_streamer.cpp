@@ -10,6 +10,7 @@
 #include "blehound_socket.h"
 #include "blehound_capture_settings.h"
 #include "blehound_device_manager.h"
+#include "blehound_key_store.h"
 
 #include <string.h>
 #include <unistd.h>
@@ -288,8 +289,15 @@ void TriStreamer::emitPacket(void *ctx, const bh_agg_packet *pkt)
     uint8_t rec[BH_MAX_RECORD_LEN];
     uint8_t hdr[BH_PCAP_RECORD_HEADER_LEN];
 
+    uint8_t plain[BH_MAX_PDU_LEN + 2];
+    uint8_t direction;
+    uint16_t extra_flags = 0;
+
     bh_agg_packet_view(pkt, &view);
-    size_t n = bh_btle_rf_record(&view, rec, sizeof(rec));
+    if (bh_decryptor_process(&self->decryptor_, &view, plain, sizeof(plain), &direction)) {
+        extra_flags = bh_rf_flags_for_decrypted(direction);
+    }
+    size_t n = bh_btle_rf_record_ex(&view, extra_flags, rec, sizeof(rec));
     if (n == 0) {
         return;
     }
@@ -347,6 +355,10 @@ void TriStreamer::streamToClient(int client_fd)
         const uint8_t *target = config.target_mac_le.size() == 6 ?
             reinterpret_cast<const uint8_t *>(config.target_mac_le.constData()) : nullptr;
         bh_follow_relay_init(&relay_, 0, target);
+        bh_decryptor_init(&decryptor_);
+        foreach (const QByteArray &ltk, KeyStore::instance()->ltks()) {
+            bh_decryptor_add_ltk(&decryptor_, reinterpret_cast<const uint8_t *>(ltk.constData()));
+        }
         if (config.target_irk_le.size() == 16) {
             bh_follow_relay_set_irk(&relay_, reinterpret_cast<const uint8_t *>(config.target_irk_le.constData()));
         }
