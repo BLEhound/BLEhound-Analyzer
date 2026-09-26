@@ -149,6 +149,22 @@ ConnectionPanel::ConnectionPanel(QWidget *parent) :
     heatmap_->setToolTip(localized("Packets per data channel; red = many CRC errors, hatched = not in the channel map.",
                                    "每个数据信道的包数；红色 = CRC 错误多，斜线 = 当前信道图未启用。"));
     layout->addWidget(heatmap_);
+
+    /* Legend, in the heat map's own colours. */
+    QLabel *legend = new QLabel(content);
+    legend->setTextFormat(Qt::RichText);
+    legend->setWordWrap(true);
+    legend->setText(QStringLiteral(
+        "<span style='color:#7fd48a'>&#9632;</span> %1 &nbsp; "
+        "<span style='color:#2f9e44'>&#9632;</span> %2 &nbsp; "
+        "<span style='color:#d9534f'>&#9632;</span> %3 &nbsp; "
+        "<span style='color:#8c8c8c'>&#9636;</span> %4 &nbsp; %5")
+        .arg(localized("few packets", "包少"),
+             localized("many packets", "包多"),
+             localized("CRC errors over 20%", "CRC 错误超过两成"),
+             localized("not in the current channel map", "当前信道图未启用"),
+             localized("hover a cell for the numbers", "悬停看具体数字")));
+    layout->addWidget(legend);
     layout->addStretch();
     setWidget(content);
 
