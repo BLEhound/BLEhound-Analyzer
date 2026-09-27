@@ -47,11 +47,21 @@ set(STRATOSHARK_NSIS_FILES
 )
 
 # Variables required for config.nsh
-set(PROGRAM_NAME ${CMAKE_PROJECT_NAME})
+if(BLEHOUND_BRANDING)
+	# Installed side by side with a stock Wireshark: its own install
+	# directory, registry keys, shortcuts and file association.
+	set(PROGRAM_NAME "BLEhound Analyzer")
+else()
+	set(PROGRAM_NAME ${CMAKE_PROJECT_NAME})
+endif()
 file(TO_NATIVE_PATH "${CMAKE_SOURCE_DIR}" TOP_SRC_DIR)
 # STAGING_DIR depends on the build configuration so we pass it
 # on the command line below.
-file(TO_NATIVE_PATH "${CMAKE_BINARY_DIR}/doc" DOC_DIR)
+# Only bundle the User's Guide when it can actually be built
+# (requires Asciidoctor and xsltproc); wireshark.nsi checks DOC_DIR.
+if(TARGET user_guide_html)
+	file(TO_NATIVE_PATH "${CMAKE_BINARY_DIR}/doc" DOC_DIR)
+endif()
 set (MMDBRESOLVE_EXE ${MAXMINDDB_FOUND})
 
 # To do:

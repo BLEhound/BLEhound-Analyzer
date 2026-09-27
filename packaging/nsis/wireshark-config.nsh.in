@@ -21,8 +21,13 @@
 
 # Optional components
 
+#cmakedefine BLEHOUND_BRANDING
 #cmakedefine MMDBRESOLVE_EXE @MMDBRESOLVE_EXE@
+#cmakedefine BUILD_androiddump
 #cmakedefine BUILD_etwdump
+#cmakedefine BUILD_randpktdump
+#cmakedefine BUILD_sshdump
+#cmakedefine BUILD_udpdump
 #cmakedefine SPANDSP_FOUND
 #cmakedefine BCG729_FOUND
 #cmakedefine SBC_FOUND
