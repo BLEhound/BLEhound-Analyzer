@@ -92,13 +92,14 @@ void CaptureSettings::load()
         config.target_mac_le = QByteArray(reinterpret_cast<const char *>(mac), sizeof(mac));
     }
     config.target_irk_le = KeyStore::keyFromHex(settings.value(QStringLiteral("capture/targetIrk")).toString());
-    // Defaults: keep CRC-bad frames, single target, all boards follow together.
+    // Defaults: keep CRC-bad frames, single target, host follow relay OFF (v2: the boards hand connections
+    // to each other over the inter-board link themselves, the USB relay is only a fallback).
     // Settings written before these became the defaults are brought up to date once.
-    const int kDefaultsVersion = 1;
+    const int kDefaultsVersion = 2;
     const bool stale = settings.value(QStringLiteral("capture/defaultsVersion"), 0).toInt() < kDefaultsVersion;
     config.include_crc_errors = stale || settings.value(QStringLiteral("capture/includeCrcErrors"), true).toBool();
     config.single_target = stale || settings.value(QStringLiteral("capture/singleTarget"), true).toBool();
-    config.follow_relay = stale || settings.value(QStringLiteral("capture/followRelay"), true).toBool();
+    config.follow_relay = !stale && settings.value(QStringLiteral("capture/followRelay"), false).toBool();
     if (stale) {
         settings.setValue(QStringLiteral("capture/defaultsVersion"), kDefaultsVersion);
     }

@@ -128,11 +128,13 @@ QWidget *DevicePanel::buildSettings()
                                          "一次只跟一个连接，跟随期间不再扫描。关闭后持续扫描并最多同时跟 6 个连接（评估用）。"));
     form->addRow(QString(), single_target_);
 
-    follow_relay_ = new QCheckBox(localized("Joint follow across boards (aggregated capture)",
-                                            "多板联合跟随（聚合抓包）"), group);
-    follow_relay_->setToolTip(localized("When one board sees a CONNECT_IND, hand the connection to the other boards "
-                                        "so they follow it together and fill in each other's gaps.",
-                                        "一块板抓到 CONNECT_IND 时把连接参数发给其他板，三块一起跟，互相补漏包。"));
+    follow_relay_ = new QCheckBox(localized("Host follow relay across boards (fallback, aggregated capture)",
+                                            "经上位机的多板联合跟随（后备，聚合抓包）"), group);
+    follow_relay_->setToolTip(localized("The boards already hand a caught connection to each other over their inter-board "
+                                        "link. Enable this only as a fallback: the host relays the CONNECT_IND parameters "
+                                        "to the other boards over USB as well (5-30 ms later, ignored when they already follow).",
+                                        "三块板已经通过片间链路把抓到的连接互相交接。只在需要后备时打开：上位机再经 USB 把 "
+                                        "CONNECT_IND 参数转发给其他板（晚 5~30 ms，已在跟时被忽略）。"));
     form->addRow(QString(), follow_relay_);
 
     connect(hop_, &QCheckBox::toggled, this, &DevicePanel::saveSettings);
