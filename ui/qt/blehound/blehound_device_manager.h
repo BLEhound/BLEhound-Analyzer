@@ -84,6 +84,8 @@ private:
     ~DeviceManager();
 
     static QStringList connectedPorts();
+    QString endpointPrefix() const;
+    QString endpointPath(const QString &name) const;
     QString socketPathFor(const QString &location) const;
     void syncStreamers(const QStringList &ports);
     static void ensureInterface(const QByteArray &name, const QByteArray &display);

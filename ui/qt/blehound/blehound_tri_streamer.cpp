@@ -13,7 +13,6 @@
 #include "blehound_key_store.h"
 
 #include <string.h>
-#include <unistd.h>
 
 #include <glib.h>
 
@@ -377,19 +376,19 @@ void TriStreamer::emitPacket(void *ctx, const bh_agg_packet *pkt)
 
 void TriStreamer::run()
 {
-    int listen_fd = Socket::listenOn(socket_path_);
+    Socket::Listener *listener = Socket::listenOn(socket_path_);
 
-    if (listen_fd < 0) {
+    if (!listener) {
         return;
     }
     while (!stopping()) {
-        int client_fd = Socket::acceptClient(listen_fd, kAcceptPollMs);
-        if (client_fd < 0) {
+        Socket::Client client = Socket::acceptClient(listener, kAcceptPollMs);
+        if (client == Socket::kNoClient) {
             continue;
         }
         ws_info("BLEhound aggregated capture started");
-        streamToClient(client_fd);
-        close(client_fd);
+        streamToClient(client);
+        Socket::closeClient(client);
         {
             QMutexLocker locker(&relay_mutex_);
             ws_info("BLEhound relay stats: relayed %u, commands %u, retried %u, skipped target %u dup %u no-offset %u",
@@ -399,11 +398,10 @@ void TriStreamer::run()
         ws_info("BLEhound aggregated capture ended (%llu packets dropped on the way to the aggregator)",
                 (unsigned long long)dropped_);
     }
-    close(listen_fd);
-    unlink(socket_path_.toLocal8Bit().constData());
+    Socket::closeListener(listener);
 }
 
-void TriStreamer::streamToClient(int client_fd)
+void TriStreamer::streamToClient(Socket::Client client)
 {
     QStringList ports;
     QList<BoardReader *> readers;
@@ -458,7 +456,7 @@ void TriStreamer::streamToClient(int client_fd)
     }
 
     bh_pcap_global_header(global_header);
-    if (Socket::sendAll(client_fd, QByteArray(reinterpret_cast<const char *>(global_header), sizeof(global_header)))) {
+    if (Socket::sendAll(client, QByteArray(reinterpret_cast<const char *>(global_header), sizeof(global_header)))) {
         foreach (const QString &port, ports) {
             BoardReader *reader = new BoardReader(port, this);
             readers << reader;
@@ -486,12 +484,12 @@ void TriStreamer::streamToClient(int client_fd)
                 bh_aggregator_add(agg, &pkt, emitPacket, this);
             }
             if (!out_.isEmpty()) {
-                if (!Socket::sendAll(client_fd, out_)) {
+                if (!Socket::sendAll(client, out_)) {
                     break;
                 }
                 out_.clear();
             }
-            if (Socket::clientClosed(client_fd)) {
+            if (Socket::clientClosed(client)) {
                 break;
             }
         }

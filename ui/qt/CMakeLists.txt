@@ -492,6 +492,7 @@ set(WIRESHARK_QT_SRC
 	main_window_preferences_frame.cpp
 	main_window.cpp
 	blehound/blehound_branding.cpp
+	blehound/blehound_layer_toolbar.cpp
 	main.cpp
 	manage_interfaces_dialog.cpp
 	manuf_dialog.cpp
@@ -951,9 +952,9 @@ if(BLEHOUND_BRANDING)
 	target_compile_definitions(qtui PUBLIC BLEHOUND_BRANDING)
 	# blehound/*.cpp include ui_*.h generated from .ui files in this directory.
 	set_property(TARGET qtui APPEND PROPERTY AUTOUIC_SEARCH_PATHS ${CMAKE_CURRENT_SOURCE_DIR})
-	# Native dongle capture: serial port -> Unix socket -> dumpcap.
-	# TODO: Windows needs a named-pipe server instead of a Unix socket.
-	if(Qt6SerialPort_FOUND AND NOT WIN32)
+	# Native dongle capture: serial port -> Unix socket (named pipe on
+	# Windows) -> dumpcap.
+	if(Qt6SerialPort_FOUND)
 		target_sources(qtui PRIVATE
 			blehound/blehound_advertiser_model.cpp
 			blehound/blehound_capture_settings.cpp
@@ -966,7 +967,6 @@ if(BLEHOUND_BRANDING)
 			blehound/blehound_transactions_panel.cpp
 			blehound/blehound_key_store.cpp
 			blehound/blehound_keys_dialog.cpp
-			blehound/blehound_layer_toolbar.cpp
 			blehound/blehound_serial.cpp
 			blehound/blehound_socket.cpp
 			blehound/blehound_streamer.cpp

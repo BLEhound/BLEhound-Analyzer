@@ -22,7 +22,7 @@ class QPushButton;
 
 namespace BLEhound {
 
-class PosixSerial;
+class NativeSerial;
 
 /**
  * Updates one board. Steps: send BH_CMD_ENTER_DFU on the capture port, wait
@@ -50,10 +50,10 @@ protected:
 
 private:
     bool enterLoader(QString *loader_port);
-    bool openLoader(PosixSerial &port, const QString &path);
-    bool transact(PosixSerial &port, const QByteArray &request, uint8_t seq,
+    bool openLoader(NativeSerial &port, const QString &path);
+    bool transact(NativeSerial &port, const QByteArray &request, uint8_t seq,
                   QByteArray *reply_payload, int timeout_ms);
-    bool upload(PosixSerial &port, uint8_t *seq);
+    bool upload(NativeSerial &port, uint8_t *seq);
     bool waitForApp(const QString &loader_port);
 
     QString capture_port_;

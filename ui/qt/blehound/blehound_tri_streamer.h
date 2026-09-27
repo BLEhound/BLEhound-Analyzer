@@ -68,7 +68,7 @@ private:
     void reportFrames();
 
     TriStreamer *owner_;
-    PosixSerial serial_;
+    NativeSerial serial_;
     QAtomicInt stop_requested_;
     bool pinned_ = false;
     Streamer::FrameStats stats_;
@@ -112,7 +112,7 @@ private:
     static bool relaySend(void *ctx, uint8_t board_id, const uint8_t *params, size_t params_len);
     static void emitPacket(void *ctx, const bh_agg_packet *pkt);
 
-    void streamToClient(int client_fd);
+    void streamToClient(Socket::Client client);
     bool stopping() const { return stop_requested_.loadRelaxed() != 0; }
 
     void reportState(const QStringList &ports, bool capturing);
