@@ -959,6 +959,7 @@ if(BLEHOUND_BRANDING)
 			blehound/blehound_capture_settings.cpp
 			blehound/blehound_device_manager.cpp
 			blehound/blehound_device_panel.cpp
+			blehound/blehound_dfu.cpp
 			blehound/blehound_devices_panel.cpp
 			blehound/blehound_connection_panel.cpp
 			blehound/blehound_ll_tap.cpp

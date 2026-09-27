@@ -18,6 +18,7 @@ class QLabel;
 class QLineEdit;
 class QMainWindow;
 class QMenu;
+class QPushButton;
 class QTableWidget;
 
 namespace BLEhound {
@@ -36,12 +37,14 @@ private slots:
     void refreshBoards();
     void loadSettings();
     void saveSettings();
+    void updateFirmware();
 
 private:
     QWidget *buildBoardList();
     QWidget *buildSettings();
 
     QTableWidget *table_;
+    QPushButton *update_fw_;
     QLabel *empty_label_;
     QCheckBox *hop_;
     QComboBox *channel_;

@@ -975,8 +975,161 @@ static void test_sync_clock_extra_edge(void)
     CHECK(bh_sync_clock_offset(&c, 1, &off) && off == (uint32_t)(1100000 - 4000000));
 }
 
+
+/* ---- SMP / DFU ---- */
+
+typedef struct smp_capture {
+    bh_smp_hdr hdr;
+    uint8_t payload[BH_SMP_MAX_PACKET];
+    size_t len;
+    int count;
+} smp_capture;
+
+static void smp_on_packet(void *ctx, const bh_smp_hdr *hdr, const uint8_t *payload, size_t len)
+{
+    smp_capture *c = ctx;
+
+    c->hdr = *hdr;
+    memcpy(c->payload, payload, len);
+    c->len = len;
+    c->count++;
+}
+
+static void test_smp_crc_and_framing(void)
+{
+    /* CRC-16/XMODEM check value */
+    CHECK(bh_crc16_xmodem(0, (const uint8_t *)"123456789", 9) == 0x31C3);
+
+    /* mcumgr "os echo"-style empty-map read: known serial bytes (marker 06 09 + base64 + LF). */
+    uint8_t line[64];
+    size_t n = bh_smp_req_params(7, line, sizeof(line));
+    /* raw = 00 0B | 00 00 00 01 00 00 07 06 | A0 | crc */
+    CHECK(n == 2 + 20 + 1);
+    CHECK(line[0] == 0x06 && line[1] == 0x09 && line[n - 1] == '\n');
+    smp_capture cap = { 0 };
+    bh_smp_deframer d;
+    bh_smp_deframer_init(&d);
+    bh_smp_deframer_feed(&d, line, n, smp_on_packet, &cap);
+    CHECK(cap.count == 1);
+    CHECK(cap.hdr.op == BH_SMP_OP_READ && cap.hdr.group == BH_SMP_GROUP_OS &&
+          cap.hdr.id == BH_SMP_ID_OS_PARAMS && cap.hdr.seq == 7 && cap.hdr.len == 1);
+    CHECK(cap.len == 1 && cap.payload[0] == 0xA0);
+
+    /* A large upload request spans several frames; split feeding must reassemble it. */
+    uint8_t data[900];
+    for (size_t i = 0; i < sizeof(data); i++) data[i] = (uint8_t)(i * 7);
+    uint8_t enc[BH_SMP_MAX_ENCODED];
+    n = bh_smp_req_image_upload(3, 4096, 0, data, sizeof(data), enc, sizeof(enc));
+    CHECK(n > 900 * 4 / 3);
+    CHECK(enc[0] == 0x06 && enc[2 + 124] == '\n' && enc[127] == 0x04 && enc[128] == 0x14);
+    memset(&cap, 0, sizeof(cap));
+    bh_smp_deframer_init(&d);
+    for (size_t i = 0; i < n; i += 5) {
+        bh_smp_deframer_feed(&d, enc + i, n - i < 5 ? n - i : 5, smp_on_packet, &cap);
+    }
+    CHECK(cap.count == 1 && cap.hdr.op == BH_SMP_OP_WRITE && cap.hdr.group == BH_SMP_GROUP_IMAGE &&
+          cap.hdr.id == BH_SMP_ID_IMG_UPLOAD && cap.hdr.len == cap.len);
+    /* payload: map(2) "off" 4096 "data" bstr(900) */
+    CHECK(cap.payload[0] == 0xA2);
+    CHECK(memcmp(cap.payload + 1, "\x63off\x19\x10\x00\x64" "data\x59\x03\x84", 13) == 0);
+    CHECK(memcmp(cap.payload + 16, data, sizeof(data)) == 0);
+
+    /* First chunk carries image + len. */
+    n = bh_smp_req_image_upload(0, 0, 110125, data, 16, enc, sizeof(enc));
+    memset(&cap, 0, sizeof(cap));
+    bh_smp_deframer_init(&d);
+    bh_smp_deframer_feed(&d, enc, n, smp_on_packet, &cap);
+    CHECK(cap.count == 1 && cap.payload[0] == 0xA4);
+    CHECK(memcmp(cap.payload + 1, "\x65image\x00\x63len\x1a\x00\x01\xae\x2d\x63off\x00\x64" "data\x50", 22) == 0);
+
+    /* Corrupted CRC and console noise are dropped, a following good packet still arrives. */
+    n = bh_smp_req_reset(9, enc, sizeof(enc));
+    uint8_t bad[64];
+    memcpy(bad, enc, n);
+    bad[5] ^= 0x01;
+    memset(&cap, 0, sizeof(cap));
+    bh_smp_deframer_init(&d);
+    bh_smp_deframer_feed(&d, bad, n, smp_on_packet, &cap);
+    bh_smp_deframer_feed(&d, (const uint8_t *)"*** Booting ***\r\n", 17, smp_on_packet, &cap);
+    CHECK(cap.count == 0);
+    bh_smp_deframer_feed(&d, enc, n, smp_on_packet, &cap);
+    CHECK(cap.count == 1 && cap.hdr.id == BH_SMP_ID_OS_RESET && cap.hdr.op == BH_SMP_OP_WRITE);
+
+    /* Chunk sizing stays inside the packet budget. */
+    size_t chunk = bh_smp_upload_chunk_max(256);
+    n = bh_smp_req_image_upload(1, 0, 1000000, data, chunk, enc, sizeof(enc));
+    memset(&cap, 0, sizeof(cap));
+    bh_smp_deframer_init(&d);
+    bh_smp_deframer_feed(&d, enc, n, smp_on_packet, &cap);
+    CHECK(cap.count == 1 && cap.len + BH_SMP_HDR_LEN <= 256);
+    CHECK(bh_smp_upload_chunk_max(4096) == bh_smp_upload_chunk_max(BH_SMP_MAX_PACKET));
+}
+
+static void test_smp_responses(void)
+{
+    int32_t rc = -1;
+    uint32_t off = 0;
+    /* {"rc":0,"off":4096} */
+    const uint8_t ok[] = { 0xA2, 0x62, 'r', 'c', 0x00, 0x63, 'o', 'f', 'f', 0x19, 0x10, 0x00 };
+    CHECK(bh_smp_rsp_status(ok, sizeof(ok), &rc, &off) && rc == 0 && off == 4096);
+    /* {"rc":3} (no off) leaves off untouched */
+    const uint8_t err[] = { 0xA1, 0x62, 'r', 'c', 0x03 };
+    CHECK(bh_smp_rsp_status(err, sizeof(err), &rc, &off) && rc == 3 && off == 4096);
+    /* {"off":16} with no rc reads as success */
+    const uint8_t v2[] = { 0xA1, 0x63, 'o', 'f', 'f', 0x10 };
+    CHECK(bh_smp_rsp_status(v2, sizeof(v2), &rc, &off) && rc == 0 && off == 16);
+    /* not a map */
+    const uint8_t arr[] = { 0x80 };
+    CHECK(!bh_smp_rsp_status(arr, sizeof(arr), &rc, &off));
+    /* truncated map */
+    const uint8_t trunc[] = { 0xA2, 0x62, 'r', 'c' };
+    CHECK(!bh_smp_rsp_status(trunc, sizeof(trunc), &rc, &off));
+
+    /* {"buf_size":1220,"buf_count":4} */
+    const uint8_t params[] = { 0xA2, 0x68, 'b','u','f','_','s','i','z','e', 0x19, 0x04, 0xC4,
+                               0x69, 'b','u','f','_','c','o','u','n','t', 0x04 };
+    uint32_t bs = 0, bc = 0;
+    CHECK(bh_smp_rsp_params(params, sizeof(params), &bs, &bc) && bs == 1220 && bc == 4);
+
+    /* {"images":[{"slot":0,"version":"1.0.0.208","hash":h'..32..',"bootable":true,"pending":false,
+     *             "confirmed":true,"active":false,"permanent":false},{"slot":1,"version":"0.0.0",
+     *             "hash":h'..',"bootable":true,"active":true}],"splitStatus":0} */
+    uint8_t imgs[256];
+    size_t n = 0;
+    imgs[n++] = 0xA2;
+    memcpy(imgs + n, "\x66images\x82", 8); n += 8;
+    imgs[n++] = 0xA8;
+    memcpy(imgs + n, "\x64slot\x00", 6); n += 6;
+    memcpy(imgs + n, "\x67version\x69" "1.0.0.208", 18); n += 18;
+    memcpy(imgs + n, "\x64hash\x58\x20", 7); n += 7;
+    for (int i = 0; i < 32; i++) imgs[n++] = (uint8_t)i;
+    memcpy(imgs + n, "\x68" "bootable\xf5", 10); n += 10;
+    memcpy(imgs + n, "\x67pending\xf4", 9); n += 9;
+    memcpy(imgs + n, "\x69" "confirmed\xf5", 11); n += 11;
+    memcpy(imgs + n, "\x66" "active\xf4", 8); n += 8;
+    memcpy(imgs + n, "\x69permanent\xf4", 11); n += 11;
+    imgs[n++] = 0xA4;
+    memcpy(imgs + n, "\x64slot\x01", 6); n += 6;
+    memcpy(imgs + n, "\x67version\x65" "0.0.0", 14); n += 14;
+    memcpy(imgs + n, "\x68" "bootable\xf5", 10); n += 10;
+    memcpy(imgs + n, "\x66" "active\xf5", 8); n += 8;
+    memcpy(imgs + n, "\x6bsplitStatus\x00", 13); n += 13;
+    bh_smp_image out[3];
+    int count = bh_smp_rsp_images(imgs, n, out, 3);
+    CHECK(count == 2);
+    CHECK(out[0].slot == 0 && strcmp(out[0].version, "1.0.0.208") == 0 && out[0].has_hash &&
+          out[0].hash[31] == 31 && out[0].bootable && out[0].confirmed && !out[0].active);
+    CHECK(out[1].slot == 1 && strcmp(out[1].version, "0.0.0") == 0 && !out[1].has_hash && out[1].active);
+    /* room for one only: the rest is skipped, count reports what was stored */
+    CHECK(bh_smp_rsp_images(imgs, n, out, 1) == 1);
+    /* truncated array is rejected */
+    CHECK(bh_smp_rsp_images(imgs, n - 20, out, 3) == -1);
+}
+
 int main(void)
 {
+    test_smp_crc_and_framing();
+    test_smp_responses();
     test_sync_clock_extra_edge();
     test_ccm_spec_vectors();
     test_decryptor_session();
