@@ -35,7 +35,7 @@
 			"button_label_i18n": { "zh": "过滤器用法" },
 			"url": "https://blehound.github.io/usage-wireshark/",
 			"url_i18n": { "zh": "https://blehound.github.io/zh/usage-wireshark/" },
-			"image": "banner-exploded.png"
+			"image": "banner-case-photo.png"
 		},
 		{
 			"type": "tips",

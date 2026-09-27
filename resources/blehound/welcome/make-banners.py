@@ -27,7 +27,7 @@ FONT_CANDIDATES = [
 BANNERS = [
     ("banner-case", "case-assembled.png", "3-channel BLE sniffer"),
     ("banner-board", "photo-board-1-cutout.png", "Open hardware"),
-    ("banner-exploded", "case-exploded.png", "3D-printed case"),
+    ("banner-case-photo", "photo-case-1-cutout.png", "3D-printed case"),
 ]
 
 
