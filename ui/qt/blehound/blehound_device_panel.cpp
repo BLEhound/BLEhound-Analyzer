@@ -7,6 +7,7 @@
 
 #include "blehound_capture_settings.h"
 #include "blehound_device_manager.h"
+#include "blehound_dfu.h"
 #include "blehound_i18n.h"
 #include "blehound_key_store.h"
 
@@ -17,11 +18,13 @@
 #include <QFileInfo>
 #include <QFormLayout>
 #include <QGroupBox>
+#include <QHBoxLayout>
 #include <QHeaderView>
 #include <QLabel>
 #include <QLineEdit>
 #include <QMainWindow>
 #include <QMenu>
+#include <QPushButton>
 #include <QSettings>
 #include <QTableWidget>
 #include <QVBoxLayout>
@@ -83,7 +86,23 @@ QWidget *DevicePanel::buildBoardList()
     table_->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     table_->horizontalHeader()->setStretchLastSection(true);
     layout->addWidget(table_);
+
+    /* USB firmware update: the boards carry MCUboot + a firmware loader, no J-Link needed. */
+    QHBoxLayout *button_row = new QHBoxLayout();
+    update_fw_ = new QPushButton(localized("Update firmware…", "升级固件…"), box);
+    update_fw_->setToolTip(localized("Upload a signed application image (blehound_ota.bin) to the boards over USB.",
+                                     "经 USB 把签名的应用镜像（blehound_ota.bin）写入板子。"));
+    button_row->addWidget(update_fw_);
+    button_row->addStretch();
+    layout->addLayout(button_row);
+    connect(update_fw_, &QPushButton::clicked, this, &DevicePanel::updateFirmware);
     return box;
+}
+
+void DevicePanel::updateFirmware()
+{
+    DfuDialog dialog(this);
+    dialog.exec();
 }
 
 QWidget *DevicePanel::buildSettings()
@@ -160,6 +179,11 @@ void DevicePanel::refreshBoards()
 
     empty_label_->setVisible(boards.isEmpty());
     table_->setVisible(!boards.isEmpty());
+    bool capturing = false;
+    foreach (const DeviceManager::BoardInfo &board, boards) {
+        capturing = capturing || board.capturing;
+    }
+    update_fw_->setEnabled(!boards.isEmpty() && !capturing);
     table_->setRowCount(boards.size());
     for (int row = 0; row < boards.size(); row++) {
         const DeviceManager::BoardInfo &board = boards.at(row);
@@ -239,6 +263,7 @@ void DevicePanel::saveSettings()
 
 void installDevicePanel(QMainWindow *window, QMenu *view_menu, QAction *before)
 {
+    DfuDialog::autoTestIfRequested(window);
     QSettings settings(QStringLiteral("BLEhound"), QStringLiteral("Analyzer"));
     DevicePanel *panel = new DevicePanel(window);
 

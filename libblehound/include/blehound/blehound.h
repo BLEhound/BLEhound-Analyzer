@@ -590,6 +590,103 @@ bool bh_follow_relay_anchor0(const bh_follow_relay *r, uint8_t from_board, uint3
 int bh_follow_relay_maybe_relay(bh_follow_relay *r, uint8_t from_board, const bh_packet *pkt,
                                 int64_t host_us, bh_relay_send_cb cb, void *ctx);
 
+
+/* ---- USB DFU: SMP (mcumgr) over the firmware loader's CDC ACM port ------------------------
+ *
+ * The dongle firmware is MCUboot (firmware-loader mode) + a loader image + the sniffer app.
+ * BH_CMD_ENTER_DFU on the capture port makes the app reboot into the loader, which enumerates
+ * with BH_USB_PID_LOADER and speaks SMP over serial: packets are base64 lines with a 2-byte
+ * marker (0x06 0x09 first frame, 0x04 0x14 continuation), carrying be16 length + SMP header +
+ * CBOR payload + be16 CRC-16/XMODEM. The loader only writes image-0 (the app slot).
+ */
+#define BH_USB_PID_LOADER           0x5210
+#define BH_USB_PRODUCT_LOADER       "BLEhound Loader"
+#define BH_CMD_ENTER_DFU            0x8B    /* no args: reboot into the firmware loader */
+
+#define BH_SMP_OP_READ              0
+#define BH_SMP_OP_READ_RSP          1
+#define BH_SMP_OP_WRITE             2
+#define BH_SMP_OP_WRITE_RSP         3
+#define BH_SMP_GROUP_OS             0
+#define BH_SMP_GROUP_IMAGE          1
+#define BH_SMP_ID_OS_RESET          5
+#define BH_SMP_ID_OS_PARAMS         6
+#define BH_SMP_ID_IMG_STATE         0
+#define BH_SMP_ID_IMG_UPLOAD        1
+#define BH_SMP_ID_IMG_ERASE         5
+
+#define BH_SMP_HDR_LEN              8
+#define BH_SMP_MAX_PACKET           1220    /* CONFIG_MCUMGR_TRANSPORT_NETBUF_SIZE in the loader */
+#define BH_SMP_FRAME_MAX            127     /* MCUMGR_SERIAL_MAX_FRAME: marker + base64 + '\n' */
+#define BH_SMP_FRAME_RAW            93      /* raw bytes per frame, (127 - 3) / 4 * 3 */
+/* Serial bytes for one maximal packet: (2 + 1220 + 2) bytes -> 14 frames of 127. */
+#define BH_SMP_MAX_ENCODED          (((BH_SMP_MAX_PACKET + 4 + BH_SMP_FRAME_RAW - 1) / BH_SMP_FRAME_RAW) * BH_SMP_FRAME_MAX)
+#define BH_SMP_DEFAULT_BUF_SIZE     256     /* assumed when the loader does not answer the params request */
+/* Pause between serial lines when sending. The loader keeps only CONFIG_UART_MCUMGR_RX_BUF_COUNT (2)
+ * 128-byte line buffers and drops lines that arrive before its work queue decoded the previous ones,
+ * so a multi-line upload packet sent back to back never completes and gets no reply. */
+#define BH_SMP_LINE_DELAY_US        2000
+
+typedef struct bh_smp_hdr {
+    uint8_t  op;
+    uint8_t  flags;
+    uint16_t len;       /**< payload (CBOR) length */
+    uint16_t group;
+    uint8_t  seq;
+    uint8_t  id;
+} bh_smp_hdr;
+
+/** CRC-16/XMODEM (poly 0x1021, init 0), the checksum mcumgr serial uses. */
+uint16_t bh_crc16_xmodem(uint16_t seed, const uint8_t *data, size_t len);
+
+/** Encode header + CBOR payload into serial line bytes. @return bytes written, 0 if out_cap is too small. */
+size_t bh_smp_encode(const bh_smp_hdr *hdr, const uint8_t *payload, size_t payload_len,
+                     uint8_t *out, size_t out_cap);
+
+typedef void (*bh_smp_packet_cb)(void *ctx, const bh_smp_hdr *hdr, const uint8_t *payload, size_t len);
+
+typedef struct bh_smp_deframer {
+    uint8_t line[BH_SMP_FRAME_MAX + 1];
+    size_t  line_len;
+    uint8_t pkt[BH_SMP_MAX_PACKET + 4];
+    size_t  pkt_len;
+    size_t  expect_len;     /**< from the be16 length field, 0 = no packet in progress */
+} bh_smp_deframer;
+
+void bh_smp_deframer_init(bh_smp_deframer *d);
+/** Feed serial bytes; @p cb is called once per complete, CRC-valid packet. Bad frames are dropped. */
+void bh_smp_deframer_feed(bh_smp_deframer *d, const uint8_t *data, size_t len,
+                          bh_smp_packet_cb cb, void *ctx);
+
+/** Largest image chunk whose upload request still fits a packet of @p buf_size bytes. */
+size_t bh_smp_upload_chunk_max(size_t buf_size);
+
+/* Request builders: each writes the complete serial line bytes and returns their length (0 = too small). */
+size_t bh_smp_req_params(uint8_t seq, uint8_t *out, size_t out_cap);
+size_t bh_smp_req_image_state(uint8_t seq, uint8_t *out, size_t out_cap);
+size_t bh_smp_req_reset(uint8_t seq, uint8_t *out, size_t out_cap);
+/** First chunk (off == 0) also carries the total image length. */
+size_t bh_smp_req_image_upload(uint8_t seq, uint32_t off, uint32_t total_len,
+                               const uint8_t *data, size_t data_len, uint8_t *out, size_t out_cap);
+
+/* Response parsers (CBOR payload of a packet). */
+/** "rc" (0 when absent) and "off" (unchanged when absent). @return false if the payload is not a CBOR map. */
+bool bh_smp_rsp_status(const uint8_t *cbor, size_t len, int32_t *rc, uint32_t *off);
+bool bh_smp_rsp_params(const uint8_t *cbor, size_t len, uint32_t *buf_size, uint32_t *buf_count);
+
+typedef struct bh_smp_image {
+    uint8_t slot;
+    char    version[32];
+    uint8_t hash[32];
+    bool    has_hash;
+    bool    bootable;
+    bool    active;
+    bool    confirmed;
+    bool    pending;
+} bh_smp_image;
+/** @return number of images parsed from an image-state response, -1 on malformed input. */
+int bh_smp_rsp_images(const uint8_t *cbor, size_t len, bh_smp_image *out, size_t max_images);
+
 #ifdef __cplusplus
 }
 #endif

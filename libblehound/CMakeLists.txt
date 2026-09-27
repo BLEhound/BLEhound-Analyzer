@@ -12,6 +12,7 @@ add_library(blehound STATIC
 	src/rpa.c
 	src/ccm.c
 	src/decrypt.c
+	src/smp.c
 )
 target_include_directories(blehound PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set_target_properties(blehound PROPERTIES
@@ -34,3 +35,8 @@ set_target_properties(blehound_tri2pcap PROPERTIES FOLDER "Tests")
 add_executable(blehound_pcap_decrypt tests/pcap_decrypt.c)
 target_link_libraries(blehound_pcap_decrypt blehound)
 set_target_properties(blehound_pcap_decrypt PROPERTIES FOLDER "Tests")
+
+# Command-line USB DFU (the same libblehound SMP code the GUI uses), for scripted tests.
+add_executable(blehound_dfu tests/dfu_cli.c)
+target_link_libraries(blehound_dfu blehound)
+set_target_properties(blehound_dfu PROPERTIES FOLDER "Tests")
