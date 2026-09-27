@@ -16,7 +16,7 @@ Documentation and screenshots: **https://blehound.github.io/analyzer/**
 
 ## Download
 
-Installers are on the [Releases](../../releases) page:
+Installers are on the [Releases](https://github.com/BLEhound/BLEhound-Analyzer/releases) page:
 
 - Windows 10/11 (x64): `BLEhound-Analyzer-<version>-x64.exe` — installs side by
   side with a stock Wireshark, no Npcap needed.
