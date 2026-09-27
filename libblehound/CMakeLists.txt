@@ -37,6 +37,9 @@ target_link_libraries(blehound_pcap_decrypt blehound)
 set_target_properties(blehound_pcap_decrypt PROPERTIES FOLDER "Tests")
 
 # Command-line USB DFU (the same libblehound SMP code the GUI uses), for scripted tests.
-add_executable(blehound_dfu tests/dfu_cli.c)
-target_link_libraries(blehound_dfu blehound)
-set_target_properties(blehound_dfu PROPERTIES FOLDER "Tests")
+# It talks to the serial port with termios/poll, so POSIX only; the GUI's DFU works everywhere.
+if(NOT WIN32)
+	add_executable(blehound_dfu tests/dfu_cli.c)
+	target_link_libraries(blehound_dfu blehound)
+	set_target_properties(blehound_dfu PROPERTIES FOLDER "Tests")
+endif()

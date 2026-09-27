@@ -19,6 +19,7 @@
 #include <QThread>
 
 #include "blehound_advertiser_model.h"
+#include "blehound_socket.h"
 
 class QSerialPort;
 
@@ -72,8 +73,8 @@ protected:
 private:
     enum class Result { ClientGone, Stopped };
 
-    Result streamToClient(int client_fd);
-    Result captureLoop(int client_fd);
+    Result streamToClient(Socket::Client client);
+    Result captureLoop(Socket::Client client);
     bool openAndConfigure(QSerialPort &port, const CaptureConfig &config);
     void stopScan(QSerialPort &port);
     void reportState(bool capturing);

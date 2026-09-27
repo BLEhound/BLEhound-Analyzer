@@ -11,8 +11,10 @@
 #include "blehound_tri_streamer.h"
 
 #include <string.h>
+#ifndef _WIN32
 #include <sys/stat.h>
 #include <unistd.h>
+#endif
 
 #include <wsutil/wslog.h>
 
@@ -170,16 +172,43 @@ void DeviceManager::startWatching()
 DeviceManager::DeviceManager(QObject *parent) :
     QObject(parent)
 {
+#ifdef _WIN32
+    // Named pipes share one flat namespace, so key ours by user. dumpcap
+    // opens anything under \\.\pipe\ as a pipe interface.
+    QString user = qEnvironmentVariable("USERNAME", QStringLiteral("user"));
+    user.remove(QLatin1Char('\\'));
+    socket_dir_ = QStringLiteral("\\\\.\\pipe\\blehound-%1").arg(user);
+#else
     // Unix socket paths are limited to ~104 bytes, so avoid the long
     // per-user temp directory on macOS.
     socket_dir_ = QStringLiteral("/tmp/blehound-%1").arg(getuid());
     QByteArray dir = socket_dir_.toLocal8Bit();
     mkdir(dir.constData(), 0700);
     chmod(dir.constData(), 0700);
+#endif
 
-    tri_streamer_ = new TriStreamer(socket_dir_ + QStringLiteral("/aggregated.sock"), this);
+    tri_streamer_ = new TriStreamer(endpointPath(QStringLiteral("aggregated")), this);
     tri_streamer_->start();
 
+}
+
+/* Every endpoint we serve starts with this, which is how stale ones are told apart. */
+QString DeviceManager::endpointPrefix() const
+{
+#ifdef _WIN32
+    return socket_dir_ + QStringLiteral("-");
+#else
+    return socket_dir_ + QStringLiteral("/");
+#endif
+}
+
+QString DeviceManager::endpointPath(const QString &name) const
+{
+#ifdef _WIN32
+    return endpointPrefix() + name;
+#else
+    return endpointPrefix() + name + QStringLiteral(".sock");
+#endif
 }
 
 DeviceManager::~DeviceManager()
@@ -213,7 +242,7 @@ QStringList DeviceManager::connectedPorts()
 
 QString DeviceManager::socketPathFor(const QString &location) const
 {
-    return QStringLiteral("%1/%2.sock").arg(socket_dir_, QFileInfo(location).fileName());
+    return endpointPath(QFileInfo(location).fileName());
 }
 
 void DeviceManager::syncStreamers(const QStringList &ports)
@@ -300,7 +329,7 @@ void DeviceManager::ensureInterface(const QByteArray &name, const QByteArray &di
  * remove our pipes whose socket is no longer served. */
 void DeviceManager::removeStaleInterfaces(const QSet<QString> &valid_names)
 {
-    QByteArray prefix = (socket_dir_ + QStringLiteral("/")).toUtf8();
+    QByteArray prefix = endpointPrefix().toUtf8();
 
     for (int i = (int)global_capture_opts.all_ifaces->len - 1; i >= 0; i--) {
         interface_t device = g_array_index(global_capture_opts.all_ifaces, interface_t, i);

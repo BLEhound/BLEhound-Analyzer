@@ -33,7 +33,9 @@
 #include <cstdio>
 #include <QVBoxLayout>
 
+#ifndef _WIN32
 #include <unistd.h>
+#endif
 
 namespace BLEhound {
 
@@ -97,7 +99,7 @@ QStringList DfuWorker::loaderPorts()
 void DfuWorker::run()
 {
     QString loader_port;
-    PosixSerial port;
+    NativeSerial port;
     uint8_t seq = 0;
 
     if (!enterLoader(&loader_port)) {
@@ -138,7 +140,7 @@ bool DfuWorker::enterLoader(QString *loader_port)
 
     emit progress(0, localized("Switching the board to update mode…", "正在让板子进入升级模式…"));
     {
-        PosixSerial app;
+        NativeSerial app;
         QString error;
         if (!app.open(capture_port_, &error)) {
             emit done(false, localized("Cannot open the capture port: ", "打不开抓包串口：") + error);
@@ -181,7 +183,7 @@ bool DfuWorker::enterLoader(QString *loader_port)
     return false;
 }
 
-bool DfuWorker::openLoader(PosixSerial &port, const QString &path)
+bool DfuWorker::openLoader(NativeSerial &port, const QString &path)
 {
     QElapsedTimer timer;
     QString error;
@@ -199,7 +201,7 @@ bool DfuWorker::openLoader(PosixSerial &port, const QString &path)
     return false;
 }
 
-bool DfuWorker::transact(PosixSerial &port, const QByteArray &request, uint8_t seq,
+bool DfuWorker::transact(NativeSerial &port, const QByteArray &request, uint8_t seq,
                          QByteArray *reply_payload, int timeout_ms)
 {
     /* One line at a time with a pause: the loader has only two 128-byte line buffers. */
@@ -241,7 +243,7 @@ bool DfuWorker::transact(PosixSerial &port, const QByteArray &request, uint8_t s
     return false;
 }
 
-bool DfuWorker::upload(PosixSerial &port, uint8_t *seq)
+bool DfuWorker::upload(NativeSerial &port, uint8_t *seq)
 {
     uint8_t line[BH_SMP_MAX_ENCODED];
     QByteArray reply;

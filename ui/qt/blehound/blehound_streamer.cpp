@@ -13,7 +13,6 @@
 #include "blehound_key_store.h"
 
 #include <string.h>
-#include <unistd.h>
 
 #include <glib.h>
 
@@ -202,8 +201,8 @@ Streamer::~Streamer()
 
 void Streamer::run()
 {
-    int listen_fd = Socket::listenOn(socket_path_);
-    if (listen_fd < 0) {
+    Socket::Listener *listener = Socket::listenOn(socket_path_);
+    if (!listener) {
         return;
     }
 
@@ -219,12 +218,12 @@ void Streamer::run()
     gint64 last_query = 0;
 
     while (!stopping()) {
-        int client_fd = Socket::acceptClient(listen_fd, port.isOpen() ? 0 : kAcceptPollMs);
-        if (client_fd >= 0) {
+        Socket::Client client = Socket::acceptClient(listener, port.isOpen() ? 0 : kAcceptPollMs);
+        if (client != Socket::kNoClient) {
             stopScan(port);
             ws_info("BLEhound capture started on %s", qUtf8Printable(serial_location_));
-            streamToClient(client_fd);
-            close(client_fd);
+            streamToClient(client);
+            Socket::closeClient(client);
             ws_info("BLEhound capture ended on %s", qUtf8Printable(serial_location_));
             continue;
         }
@@ -270,8 +269,7 @@ void Streamer::run()
     }
 
     stopScan(port);
-    close(listen_fd);
-    unlink(socket_path_.toLocal8Bit().constData());
+    Socket::closeListener(listener);
 }
 
 bool Streamer::openAndConfigure(QSerialPort &port, const CaptureConfig &config)
@@ -300,7 +298,7 @@ bool Streamer::openAndConfigure(QSerialPort &port, const CaptureConfig &config)
     return true;
 }
 
-Streamer::Result Streamer::streamToClient(int client_fd)
+Streamer::Result Streamer::streamToClient(Socket::Client client)
 {
     // Settings edited in the device panel apply from the next capture on.
     config_ = CaptureSettings::instance()->config();
@@ -310,14 +308,14 @@ Streamer::Result Streamer::streamToClient(int client_fd)
         has_pending_target_ = false;
     }
     reportState(true);
-    Result result = captureLoop(client_fd);
+    Result result = captureLoop(client);
     collector_.flush();
     reportFrames();
     reportState(false);
     return result;
 }
 
-Streamer::Result Streamer::captureLoop(int client_fd)
+Streamer::Result Streamer::captureLoop(Socket::Client client)
 {
     QSerialPort port;
     bh_deframer deframer;
@@ -334,7 +332,7 @@ Streamer::Result Streamer::captureLoop(int client_fd)
 
     uint8_t global_header[BH_PCAP_GLOBAL_HEADER_LEN];
     bh_pcap_global_header(global_header);
-    if (!Socket::sendAll(client_fd, QByteArray(reinterpret_cast<const char *>(global_header), sizeof(global_header)))) {
+    if (!Socket::sendAll(client, QByteArray(reinterpret_cast<const char *>(global_header), sizeof(global_header)))) {
         return Result::ClientGone;
     }
     bh_ts_mapper_init(&ts, (uint64_t)g_get_real_time());
@@ -343,7 +341,7 @@ Streamer::Result Streamer::captureLoop(int client_fd)
         if (!port.isOpen()) {
             if (!openAndConfigure(port, config_)) {
                 // Unplugged or busy: keep the capture alive and retry.
-                if (Socket::clientClosed(client_fd)) {
+                if (Socket::clientClosed(client)) {
                     return Result::ClientGone;
                 }
                 msleep(kReopenDelayMs);
@@ -366,12 +364,12 @@ Streamer::Result Streamer::captureLoop(int client_fd)
         }
 
         if (!out.isEmpty()) {
-            if (!Socket::sendAll(client_fd, out)) {
+            if (!Socket::sendAll(client, out)) {
                 return Result::ClientGone;
             }
             out.clear();
         }
-        if (Socket::clientClosed(client_fd)) {
+        if (Socket::clientClosed(client)) {
             return Result::ClientGone;
         }
         gint64 now = g_get_monotonic_time();
