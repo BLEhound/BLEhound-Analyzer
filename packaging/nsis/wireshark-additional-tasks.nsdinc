@@ -35,15 +35,15 @@ Function fnc_AdditionalTasksPage_Create
   Pop $hCtl_AdditionalTasksPage_ExtensionsLabel
 
   ; === AssociateExtensionsCheckBox (type: Checkbox) ===
-  ${NSD_CreateCheckbox} 14u 78u 267u 9u "Associate trace file extensions with Wireshark"
+  ${NSD_CreateCheckbox} 14u 78u 267u 9u "Associate trace file extensions with ${PROGRAM_NAME}"
   Pop $hCtl_AdditionalTasksPage_AssociateExtensionsCheckBox
 
   ; === DesktopIconCheckBox (type: Checkbox) ===
-  ${NSD_CreateCheckbox} 14u 33u 267u 9u "Wireshark Desktop Icon"
+  ${NSD_CreateCheckbox} 14u 33u 267u 9u "${PROGRAM_NAME} Desktop Icon"
   Pop $hCtl_AdditionalTasksPage_DesktopIconCheckBox
 
   ; === StartMenuCheckBox (type: Checkbox) ===
-  ${NSD_CreateCheckbox} 14u 21u 267u 9u "Wireshark Start Menu Item"
+  ${NSD_CreateCheckbox} 14u 21u 267u 9u "${PROGRAM_NAME} Start Menu Item"
   Pop $hCtl_AdditionalTasksPage_StartMenuCheckBox
 
   ; === FileExtensionsLabel (type: Label) ===

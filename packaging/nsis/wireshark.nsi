@@ -39,11 +39,11 @@ ${UnStrRep}
 ; ============================================================================
 
 ; The file to write
-OutFile "${OUTFILE_DIR}\${PROGRAM_NAME}-${VERSION}-${WIRESHARK_TARGET_PLATFORM}.exe"
+OutFile "${OUTFILE_DIR}\${OUTFILE_BASENAME}-${VERSION}-${WIRESHARK_TARGET_PLATFORM}.exe"
 ; Installer icon
-Icon "${TOP_SRC_DIR}\resources\icons\wiresharkinst.ico"
+Icon "${INSTALLER_ICON}"
 ; Uninstaller icon
-UninstallIcon "${TOP_SRC_DIR}\resources\icons\wiresharkinst.ico"
+UninstallIcon "${INSTALLER_ICON}"
 
 ; ============================================================================
 ; Modern UI
@@ -58,9 +58,13 @@ UninstallIcon "${TOP_SRC_DIR}\resources\icons\wiresharkinst.ico"
 !include "InstallOptions.nsh"
 ;!addplugindir ".\Plugins"
 
-!define MUI_ICON "${TOP_SRC_DIR}\resources\icons\wiresharkinst.ico"
-!define MUI_UNICON "${TOP_SRC_DIR}\resources\icons\wiresharkinst.ico"
+!define MUI_ICON "${INSTALLER_ICON}"
+!define MUI_UNICON "${INSTALLER_ICON}"
+!ifdef BLEHOUND_BRANDING
+BrandingText "${PROGRAM_NAME} Installer"
+!else
 BrandingText "Wireshark${U+00ae} Installer"
+!endif
 
 !define MUI_COMPONENTSPAGE_SMALLDESC
 !define MUI_FINISHPAGE_NOAUTOCLOSE
@@ -90,21 +94,26 @@ BrandingText "Wireshark${U+00ae} Installer"
 
 !insertmacro MUI_PAGE_WELCOME
 
-!define MUI_LICENSEPAGE_TEXT_TOP "Wireshark is distributed under the GNU General Public License."
+!define MUI_LICENSEPAGE_TEXT_TOP "${PROGRAM_NAME} is distributed under the GNU General Public License."
 !define MUI_LICENSEPAGE_TEXT_BOTTOM "This is not an end user license agreement (EULA). It is provided here for informational purposes only."
 !define MUI_LICENSEPAGE_BUTTON "Noted"
 !insertmacro MUI_PAGE_LICENSE "${STAGING_DIR}\COPYING.txt"
 
 ; Page custom DisplayDonatePage
+!ifndef BLEHOUND_BRANDING
 Page custom DisplayCertificationPage
+!endif
 
 !insertmacro MUI_PAGE_COMPONENTS
 !ifdef QT_DIR
 Page custom DisplayAdditionalTasksPage LeaveAdditionalTasksPage
 !endif
 !insertmacro MUI_PAGE_DIRECTORY
+; BLEhound Analyzer captures from its dongles over a pipe; no capture driver is needed.
+!ifndef BLEHOUND_BRANDING
 Page custom DisplayNpcapPage
 Page custom DisplayUSBPcapPage
+!endif
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
 
@@ -251,10 +260,10 @@ ComponentText "The following components are available for installation."
 DirText "Choose a directory in which to install ${PROGRAM_NAME}."
 
 ; The default installation directory
-InstallDir $PROGRAMFILES64\${PROGRAM_NAME}
+InstallDir "$PROGRAMFILES64\${PROGRAM_NAME}"
 
 ; See if this is an upgrade; if so, use the old InstallDir as default
-InstallDirRegKey HKEY_LOCAL_MACHINE SOFTWARE\${PROGRAM_NAME} InstallDir
+InstallDirRegKey HKEY_LOCAL_MACHINE "SOFTWARE\${PROGRAM_NAME}" InstallDir
 
 
 ; ============================================================================
@@ -862,7 +871,7 @@ File "${STAGING_DIR}\wimaxasncp\dictionary.dtd"
 SetOutPath $INSTDIR
 
 ; Write the installation path into the registry for InstallDirRegKey
-WriteRegStr HKEY_LOCAL_MACHINE SOFTWARE\${PROGRAM_NAME} InstallDir "$INSTDIR"
+WriteRegStr HKEY_LOCAL_MACHINE "SOFTWARE\${PROGRAM_NAME}" InstallDir "$INSTDIR"
 
 ; Write the uninstall keys for Windows
 ; https://nsis.sourceforge.io/Add_uninstall_information_to_Add/Remove_Programs
@@ -876,11 +885,15 @@ WriteRegStr HKEY_LOCAL_MACHINE "${UNINSTALL_PATH}" "DisplayIcon" "$INSTDIR\${PRO
 !endif
 WriteRegStr HKEY_LOCAL_MACHINE "${UNINSTALL_PATH}" "DisplayName" "${DISPLAY_NAME}"
 WriteRegStr HKEY_LOCAL_MACHINE "${UNINSTALL_PATH}" "DisplayVersion" "${VERSION}"
-WriteRegStr HKEY_LOCAL_MACHINE "${UNINSTALL_PATH}" "HelpLink" "https://ask.wireshark.org/"
+WriteRegStr HKEY_LOCAL_MACHINE "${UNINSTALL_PATH}" "HelpLink" "${HELP_URL}"
 WriteRegStr HKEY_LOCAL_MACHINE "${UNINSTALL_PATH}" "InstallLocation" "$INSTDIR"
-WriteRegStr HKEY_LOCAL_MACHINE "${UNINSTALL_PATH}" "Publisher" "The Wireshark developer community, https://www.wireshark.org"
-WriteRegStr HKEY_LOCAL_MACHINE "${UNINSTALL_PATH}" "URLInfoAbout" "https://www.wireshark.org"
+WriteRegStr HKEY_LOCAL_MACHINE "${UNINSTALL_PATH}" "Publisher" "${PUBLISHER_NAME}"
+WriteRegStr HKEY_LOCAL_MACHINE "${UNINSTALL_PATH}" "URLInfoAbout" "${PUBLISHER_URL}"
+!ifdef BLEHOUND_BRANDING
+WriteRegStr HKEY_LOCAL_MACHINE "${UNINSTALL_PATH}" "URLUpdateInfo" "${PUBLISHER_URL}"
+!else
 WriteRegStr HKEY_LOCAL_MACHINE "${UNINSTALL_PATH}" "URLUpdateInfo" "https://www.wireshark.org/download.html"
+!endif
 
 WriteRegDWORD HKEY_LOCAL_MACHINE "${UNINSTALL_PATH}" "NoModify" 1
 WriteRegDWORD HKEY_LOCAL_MACHINE "${UNINSTALL_PATH}" "NoRepair" 1
@@ -897,7 +910,7 @@ Delete "$SMPROGRAMS\${PROGRAM_NAME}\Wireshark Web Site.lnk"
 ; Create file extensions if the Associated Tasks page check box
 ; is checked.
 ${If} $FILE_ASSOCIATE_STATE == ${BST_CHECKED}
-WriteRegStr HKCR ${WIRESHARK_ASSOC} "" "Wireshark capture file"
+WriteRegStr HKCR ${WIRESHARK_ASSOC} "" "${PROGRAM_NAME} capture file"
 WriteRegStr HKCR "${WIRESHARK_ASSOC}\Shell\open\command" "" '"$INSTDIR\${PROGRAM_NAME_PATH}" "%1"'
 WriteRegStr HKCR "${WIRESHARK_ASSOC}\DefaultIcon" "" '"$INSTDIR\${PROGRAM_NAME_PATH}",1'
 ; We refresh the icon cache down in -Finally.
@@ -906,6 +919,7 @@ Call Associate
 ; AdditionalTasks page
 ${Endif}
 
+!ifndef BLEHOUND_BRANDING
 ; if running as a silent installer, don't try to install npcap
 IfSilent SecRequired_skip_Npcap
 
@@ -952,6 +966,7 @@ IfFileExists $APPDATA\Ethereal 0 profile_done
 CreateDirectory $APPDATA\Wireshark
 CopyFiles $APPDATA\Ethereal\*.* $APPDATA\Wireshark
 profile_done:
+!endif ; BLEHOUND_BRANDING
 SetShellVarContext all
 
 SectionEnd ; "Required"
@@ -1100,13 +1115,16 @@ File "${STAGING_DIR}\text2pcap.html"
 
 SectionEnd ; "Tools"
 
+!ifdef BUILD_androiddump | BUILD_etwdump | BUILD_randpktdump | BUILD_sshdump | BUILD_udpdump
 SectionGroup /e "External capture tools (extcap)" SecExtcapGroup
 
+!ifdef BUILD_androiddump
 Section /o "Androiddump" SecAndroiddump
 ;-------------------------------------------
   !insertmacro InstallExtcap "androiddump"
 SectionEnd
 !insertmacro CheckExtrasFlag "androiddump"
+!endif
 
 !ifdef BUILD_etwdump
 Section "Etwdump" SecEtwdump
@@ -1116,13 +1134,15 @@ SectionEnd
 !insertmacro CheckExtrasFlag "etwdump"
 !endif
 
+!ifdef BUILD_randpktdump
 Section /o "Randpktdump" SecRandpktdump
 ;-------------------------------------------
   !insertmacro InstallExtcap "randpktdump"
 SectionEnd
 !insertmacro CheckExtrasFlag "randpktdump"
+!endif
 
-!ifdef LIBSSH_FOUND
+!ifdef LIBSSH_FOUND & BUILD_sshdump
 Section /o "Sshdump, Ciscodump, and Wifidump" SecSshdump
 ;-------------------------------------------
   !insertmacro InstallExtcap "sshdump"
@@ -1134,36 +1154,47 @@ SectionEnd
 !insertmacro CheckExtrasFlag "wifidump"
 !endif
 
+!ifdef BUILD_udpdump
 Section /o "UDPdump" SecUDPdump
 ;-------------------------------------------
   !insertmacro InstallExtcap "udpdump"
 SectionEnd
 !insertmacro CheckExtrasFlag "udpdump"
+!endif
 
 SectionGroupEnd ; "External Capture (extcap)"
+!endif
 
 Section "-Write Registry Keys"
   !ifdef QT_DIR
-    !insertmacro ComponentInstalled ${PROGRAM_NAME} ${SecWiresharkQt}
+    !insertmacro ComponentInstalled ${QT_COMPONENT_KEY} ${SecWiresharkQt}
   !endif
   !insertmacro ComponentInstalled "TShark" ${SecTShark}
 
   ; Store whether each extcap was selected or not
-  !insertmacro ComponentInstalled "Extcaps\androiddump" ${SecAndroiddump}
+  !ifdef BUILD_androiddump
+    !insertmacro ComponentInstalled "Extcaps\androiddump" ${SecAndroiddump}
+  !endif
   !ifdef BUILD_etwdump
     !insertmacro ComponentInstalled "Extcaps\etwdump" ${SecEtwdump}
   !endif
-  !insertmacro ComponentInstalled "Extcaps\randpktdump" ${SecRandpktdump}
+  !ifdef BUILD_randpktdump
+    !insertmacro ComponentInstalled "Extcaps\randpktdump" ${SecRandpktdump}
+  !endif
   ; Ciscodump and Wifidump are combined with sshdump
-  !ifdef LIBSSH_FOUND
+  !ifdef LIBSSH_FOUND & BUILD_sshdump
     !insertmacro ComponentInstalled "Extcaps\sshdump" ${SecSshdump}
   !endif
-  !insertmacro ComponentInstalled "Extcaps\udpdump" ${SecUdpdump}
+  !ifdef BUILD_udpdump
+    !insertmacro ComponentInstalled "Extcaps\udpdump" ${SecUdpdump}
+  !endif
 SectionEnd
 
+!ifdef BUILD_androiddump | BUILD_etwdump | BUILD_randpktdump | BUILD_sshdump | BUILD_udpdump
 Section "-Clear Partial Selected"
 !insertmacro ClearSectionFlag ${SecExtcapGroup} ${SF_PSELECTED}
 SectionEnd
+!endif
 
 !ifdef DOC_DIR
 Section "-Documentation"
@@ -1202,7 +1233,7 @@ Function .onInit
   StrCmp $OLD_UNINSTALLER "" check_wix
 
   ReadRegStr $OLD_INSTDIR HKLM \
-    "Software\Microsoft\Windows\CurrentVersion\App Paths\${PROGRAM_NAME}.exe" \
+    "Software\Microsoft\Windows\CurrentVersion\App Paths\${PROGRAM_NAME_PATH}" \
     "Path"
   StrCmp $OLD_INSTDIR "" check_wix
 
@@ -1216,10 +1247,10 @@ Function .onInit
   ; (we use the "all users" start menu, so select it first)
   SetShellVarContext all
   ; MessageBox MB_OK|MB_ICONINFORMATION "oninit 1 sm $START_MENU_STATE di $DESKTOP_ICON_STATE"
-  ${IfNot} ${FileExists} $SMPROGRAMS\${PROGRAM_NAME}.lnk
+  ${IfNot} ${FileExists} "$SMPROGRAMS\${PROGRAM_NAME}.lnk"
     StrCpy $START_MENU_STATE ${BST_UNCHECKED}
   ${Endif}
-  ${If} ${FileExists} $DESKTOP\${PROGRAM_NAME}.lnk
+  ${If} ${FileExists} "$DESKTOP\${PROGRAM_NAME}.lnk"
     StrCpy $DESKTOP_ICON_STATE ${BST_CHECKED}
   ${Endif}
   ; Leave FILE_ASSOCIATE_STATE checked.
@@ -1227,21 +1258,27 @@ Function .onInit
   ;   $\ndi $DESKTOP_ICON_STATE $DESKTOP\${PROGRAM_NAME}.lnk
 
   !ifdef QT_DIR
-    !insertMacro ComponentPrevInstalled "${PROGRAM_NAME}" ${SecWiresharkQt}
+    !insertMacro ComponentPrevInstalled ${QT_COMPONENT_KEY} ${SecWiresharkQt}
   !endif
   !insertmacro ComponentPrevInstalled "TShark" ${SecTShark}
 
   ; Check if each extcap was previously installed
-  !insertmacro ComponentPrevInstalled "Extcaps\androiddump" ${SecAndroiddump}
+  !ifdef BUILD_androiddump
+    !insertmacro ComponentPrevInstalled "Extcaps\androiddump" ${SecAndroiddump}
+  !endif
   !ifdef BUILD_etwdump
     !insertmacro ComponentPrevInstalled "Extcaps\etwdump" ${SecEtwdump}
   !endif
-  !insertmacro ComponentPrevInstalled "Extcaps\randpktdump" ${SecRandpktdump}
-  !ifdef LIBSSH_FOUND
+  !ifdef BUILD_randpktdump
+    !insertmacro ComponentPrevInstalled "Extcaps\randpktdump" ${SecRandpktdump}
+  !endif
+  !ifdef LIBSSH_FOUND & BUILD_sshdump
     ; Ciscodump and Wifidump are combined with sshdump
     !insertmacro ComponentPrevInstalled "Extcaps\sshdump" ${SecSshdump}
   !endif
-  !insertmacro ComponentPrevInstalled "Extcaps\udpdump" ${SecUdpdump}
+  !ifdef BUILD_udpdump
+    !insertmacro ComponentPrevInstalled "Extcaps\udpdump" ${SecUdpdump}
+  !endif
 
   MessageBox MB_YESNOCANCEL|MB_ICONQUESTION \
     "$OLD_DISPLAYNAME is already installed.\
@@ -1447,7 +1484,7 @@ ${Loop}
 
 DeleteRegKey HKEY_LOCAL_MACHINE "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PROGRAM_NAME}"
 DeleteRegKey HKEY_LOCAL_MACHINE "Software\${PROGRAM_NAME}"
-DeleteRegKey HKEY_LOCAL_MACHINE "Software\Microsoft\Windows\CurrentVersion\App Paths\${PROGRAM_NAME}.exe"
+DeleteRegKey HKEY_LOCAL_MACHINE "Software\Microsoft\Windows\CurrentVersion\App Paths\${PROGRAM_NAME_PATH}"
 
 Call un.Disassociate
 
@@ -1632,16 +1669,24 @@ SectionEnd
 !endif
   !insertmacro MUI_DESCRIPTION_TEXT ${SecTShark} "Text based network protocol analyzer."
 
+  !ifdef BUILD_androiddump | BUILD_etwdump | BUILD_randpktdump | BUILD_sshdump | BUILD_udpdump
   !insertmacro MUI_DESCRIPTION_TEXT ${SecExtcapGroup} "External Capture Interfaces"
+  !endif
+  !ifdef BUILD_androiddump
   !insertmacro MUI_DESCRIPTION_TEXT ${SecAndroiddump} "Provide capture interfaces from Android devices."
+  !endif
   !ifdef BUILD_etwdump
   !insertmacro MUI_DESCRIPTION_TEXT ${SecEtwdump} "Provide an interface to read Event Tracing for Windows (ETW) event trace (ETL)."
   !endif
+  !ifdef BUILD_randpktdump
   !insertmacro MUI_DESCRIPTION_TEXT ${SecRandpktdump} "Provide an interface to the random packet generator. (see also randpkt)"
-  !ifdef LIBSSH_FOUND
+  !endif
+  !ifdef LIBSSH_FOUND & BUILD_sshdump
   !insertmacro MUI_DESCRIPTION_TEXT ${SecSshdump} "Provide remote capture through SSH. (tcpdump, Cisco EPC, wifi)"
   !endif
+  !ifdef BUILD_udpdump
   !insertmacro MUI_DESCRIPTION_TEXT ${SecUDPdump} "Provide capture interface to receive UDP packets streamed from network devices."
+  !endif
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 

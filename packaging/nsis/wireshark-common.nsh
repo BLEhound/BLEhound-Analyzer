@@ -23,10 +23,31 @@ ManifestDPIAware true
 !define DISPLAY_NAME "${PROGRAM_NAME} ${VERSION} ${WIRESHARK_TARGET_PLATFORM}"
 Name "${DISPLAY_NAME}"
 
+!ifdef BLEHOUND_BRANDING
+; The executable keeps its upstream file name; everything the user sees is branded.
+!define PROGRAM_FULL_NAME "${PROGRAM_NAME} - Bluetooth LE Protocol Analyzer"
+!define PROGRAM_NAME_PATH "Wireshark.exe"
+!define UNINSTALLER_NAME "uninstall-blehound-analyzer.exe"
+!define OUTFILE_BASENAME "BLEhound-Analyzer"
+!define INSTALLER_ICON "${TOP_SRC_DIR}\resources\icons\blehound\blehound.ico"
+!define PUBLISHER_NAME "The BLEhound developers"
+!define PUBLISHER_URL "https://blehound.github.io"
+!define HELP_URL "https://blehound.github.io"
+; Registry sub-key remembering whether the GUI component was installed (also used as a label, so no spaces).
+!define QT_COMPONENT_KEY "BLEhoundAnalyzer"
+!else
 !define PROGRAM_FULL_NAME "The ${PROGRAM_NAME} Network Protocol Analyzer"
 !define PROGRAM_NAME_PATH "${PROGRAM_NAME}.exe"
-
 !define UNINSTALLER_NAME "uninstall-wireshark.exe"
+!define OUTFILE_BASENAME "${PROGRAM_NAME}"
+!define INSTALLER_ICON "${TOP_SRC_DIR}\resources\icons\wiresharkinst.ico"
+!define PUBLISHER_NAME "The Wireshark developer community, https://www.wireshark.org"
+!define PUBLISHER_URL "https://www.wireshark.org"
+!define HELP_URL "https://ask.wireshark.org/"
+!define QT_COMPONENT_KEY "${PROGRAM_NAME}"
+!endif
+; wsutil/file_util.c names the running-instance mutex after Wireshark whatever the branding.
+!define RUNNING_MUTEX_NAME "Wireshark"
 
 VIAddVersionKey "ProductName" "${PROGRAM_NAME}"
 VIAddVersionKey "Comments" "It's a great product with a great story to tell. I'm pumped!"
@@ -89,7 +110,11 @@ Exec '"$SYSDIR\ie4uinit.exe" -ClearIconCache'
 ; ============================================================================
 
 ; Used to add associations between file extensions and Wireshark
+!ifdef BLEHOUND_BRANDING
+!define WIRESHARK_ASSOC "blehound-capture-file"
+!else
 !define WIRESHARK_ASSOC "wireshark-capture-file"
+!endif
 
 !define FILE_EXTENSION_MARKER "FILE_EXTENSION_MARKER"
 
@@ -133,13 +158,13 @@ Exec '"$SYSDIR\ie4uinit.exe" -ClearIconCache'
 ; https://nsis.sourceforge.io/Check_whether_your_application_is_running
 ${Do}
 
-  System::Call 'kernel32::OpenMutex(i 0x100000, b 0, t "Global\${PROGRAM_NAME}-is-running-{9CA78EEA-EA4D-4490-9240-FC01FCEF464B}") i .R0'
+  System::Call 'kernel32::OpenMutex(i 0x100000, b 0, t "Global\${RUNNING_MUTEX_NAME}-is-running-{9CA78EEA-EA4D-4490-9240-FC01FCEF464B}") i .R0'
     IntCmp $R0 0 checkRunningSession
     System::Call 'kernel32::CloseHandle(i $R0)'
     Goto isRunning
 
 checkRunningSession:
-  System::Call 'kernel32::OpenMutex(i 0x100000, b 0, t "${PROGRAM_NAME}-is-running-{9CA78EEA-EA4D-4490-9240-FC01FCEF464B}") i .R0'
+  System::Call 'kernel32::OpenMutex(i 0x100000, b 0, t "${RUNNING_MUTEX_NAME}-is-running-{9CA78EEA-EA4D-4490-9240-FC01FCEF464B}") i .R0'
     IntCmp $R0 0 notRunning
     System::Call 'kernel32::CloseHandle(i $R0)'
 
