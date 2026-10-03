@@ -37,6 +37,7 @@ static int proto_btle_rf;
 
 static int hf_btle_rf_signed_byte_unused;
 static int hf_btle_rf_unsigned_byte_unused;
+static int hf_btle_rf_blehound_board;
 static int hf_btle_rf_word_unused;
 static int hf_btle_rf_channel;
 static int hf_btle_rf_signal_dbm;
@@ -263,6 +264,10 @@ dissect_btle_rf(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree, void *data)
             context.aa_category = E_AA_MATCHED;
         }
     }
+    else if (tvb_get_uint8(tvb, 3) != 0) {
+        /* BLEhound aggregated captures: receiving board + 1 in the unused byte. */
+        proto_tree_add_uint(btle_rf_tree, hf_btle_rf_blehound_board, tvb, 3, 1, tvb_get_uint8(tvb, 3) - 1);
+    }
     else {
         proto_tree_add_item(btle_rf_tree, hf_btle_rf_unsigned_byte_unused, tvb, 3, 1, ENC_LITTLE_ENDIAN);
     }
@@ -295,6 +300,12 @@ proto_register_btle_rf(void)
             FT_UINT8, BASE_DEC,
             NULL, 0x0,
             NULL, HFILL }
+        },
+        { &hf_btle_rf_blehound_board,
+          { "Receiving board (BLEhound)", "btle_rf.blehound_board",
+            FT_UINT8, BASE_DEC,
+            NULL, 0x0,
+            "Dongle that heard this packet in an aggregated capture (0/1/2 guard channels 37/38/39)", HFILL }
         },
         { &hf_btle_rf_word_unused,
           { "Unused word", "btle_rf.word_unused",

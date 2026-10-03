@@ -67,6 +67,7 @@ static void pair_board(bh_sync_clock *c, uint8_t board)
     const bh_sync_edge *rh = c->hist[c->ref_board];
     int64_t best = -1;
     uint32_t offset = 0;
+    uint32_t ref_tick = 0;
 
     /* Newest board edge first, so the offset follows the clocks' drift; among
      * the reference edges inside the window take the one heard closest. */
@@ -79,16 +80,20 @@ static void pair_board(bh_sync_clock *c, uint8_t board)
             if (best < 0 || gap < best) {
                 best = gap;
                 offset = bh[i].tick - rh[j].tick;
+                ref_tick = rh[j].tick;
             }
         }
     }
     if (best < 0) {
+        c->pair_miss[board]++;
         return;
     }
     if (!c->has_offset[board]) {
         c->offset[board] = offset;
         c->has_offset[board] = true;
         c->cand_hits[board] = 0;
+        c->paired_ref_tick[board] = ref_tick;
+        c->pair_ok[board]++;
         return;
     }
     int32_t diff = (int32_t)(offset - c->offset[board]);
@@ -98,8 +103,13 @@ static void pair_board(bh_sync_clock *c, uint8_t board)
     if (diff <= BH_SYNC_OFFSET_TOL_US) {
         c->offset[board] = offset;          /* same edge: follow the drift */
         c->cand_hits[board] = 0;
+        if (bh_sdiff32(ref_tick, c->paired_ref_tick[board]) > 0) {
+            c->paired_ref_tick[board] = ref_tick;
+        }
+        c->pair_ok[board]++;
         return;
     }
+    c->pair_reject[board]++;
     /* A different offset: real (board restarted) only if it keeps coming back. */
     int32_t cdiff = (int32_t)(offset - c->cand_offset[board]);
     if (cdiff < 0) {
@@ -114,6 +124,8 @@ static void pair_board(bh_sync_clock *c, uint8_t board)
     if (c->cand_hits[board] >= BH_SYNC_SWITCH_AFTER) {
         c->offset[board] = offset;
         c->cand_hits[board] = 0;
+        c->paired_ref_tick[board] = ref_tick;
+        c->switches[board]++;
     }
 }
 
@@ -157,6 +169,20 @@ bool bh_sync_clock_offset(const bh_sync_clock *c, uint8_t board_id, uint32_t *of
         return false;
     }
     *offset = c->offset[board_id];
+    return true;
+}
+
+bool bh_sync_clock_offset_age(const bh_sync_clock *c, uint8_t board_id, uint32_t ref_now, uint32_t *age_us)
+{
+    if (board_id == c->ref_board) {
+        *age_us = 0;
+        return true;
+    }
+    if (!c->has_offset[board_id]) {
+        return false;
+    }
+    int32_t age = bh_sdiff32(ref_now, c->paired_ref_tick[board_id]);
+    *age_us = age > 0 ? (uint32_t)age : 0;
     return true;
 }
 

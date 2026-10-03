@@ -194,6 +194,11 @@ size_t bh_btle_rf_record_ex(const bh_packet *pkt, uint16_t extra_flags, uint8_t 
     return o;
 }
 
+void bh_btle_rf_set_board(uint8_t *rec, uint8_t board_id)
+{
+    rec[BH_RF_BOARD_BYTE] = (uint8_t)(board_id + 1);
+}
+
 void bh_ts_mapper_init(bh_ts_mapper *m, uint64_t host_epoch_us)
 {
     memset(m, 0, sizeof(*m));

@@ -114,6 +114,7 @@ private:
 
     void streamToClient(Socket::Client client);
     bool stopping() const { return stop_requested_.loadRelaxed() != 0; }
+    void logSyncState(const bh_aggregator *agg, bool periodic);
 
     void reportState(const QStringList &ports, bool capturing);
 
@@ -129,10 +130,15 @@ private:
     QMutex ports_mutex_;
     QStringList ports_;
 
-    /* Readers -> aggregator thread. */
+    /* Readers -> aggregator thread: packets, and SYNC heartbeats (is_sync,
+     * with board_id / sync_epoch / host_us filled in). */
+    struct QueueItem {
+        bool is_sync;
+        bh_agg_packet pkt;
+    };
     QMutex queue_mutex_;
     QWaitCondition queue_cond_;
-    QQueue<bh_agg_packet> queue_;
+    QQueue<QueueItem> queue_;
     quint64 dropped_ = 0;
 
     /* Follow relay, used from reader threads. */
@@ -144,6 +150,8 @@ private:
     bh_ts_mapper ts_;
     QByteArray out_;
     bh_decryptor decryptor_;
+    uint32_t last_aligned_ = 0;             /**< reference tick of the newest emitted packet */
+    bool stale_[BH_MAX_BOARDS] = {};        /**< board offset reported as unconfirmed */
 };
 
 } // namespace BLEhound
