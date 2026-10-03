@@ -61,6 +61,7 @@ file(TO_NATIVE_PATH "${CMAKE_SOURCE_DIR}" TOP_SRC_DIR)
 # (requires Asciidoctor and xsltproc); wireshark.nsi checks DOC_DIR.
 if(TARGET user_guide_html)
 	file(TO_NATIVE_PATH "${CMAKE_BINARY_DIR}/doc" DOC_DIR)
+	set(_nsis_user_guide user_guide_html)
 endif()
 set (MMDBRESOLVE_EXE ${MAXMINDDB_FOUND})
 
@@ -295,7 +296,7 @@ macro( ADD_NSIS_PACKAGE_TARGETS )
 			DEPENDS
 				${WIRESHARK_NSIS_FILES}
 				copy_data_files
-				user_guide_html
+				${_nsis_user_guide}
 				release_notes_html
 		)
 		set_target_properties(wireshark_nsis_prep PROPERTIES
@@ -340,7 +341,7 @@ macro( ADD_NSIS_PACKAGE_TARGETS )
 			DEPENDS
 				${STRATOSHARK_NSIS_FILES}
 				copy_data_files
-				user_guide_html
+				${_nsis_user_guide}
 				${DATAFILE_DIR}/uninstall-stratoshark.exe
 		)
 		set_target_properties(stratoshark_nsis_prep PROPERTIES
