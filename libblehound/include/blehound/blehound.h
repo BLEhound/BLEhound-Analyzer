@@ -185,6 +185,13 @@ size_t bh_btle_rf_record_ex(const bh_packet *pkt, uint16_t extra_flags, uint8_t 
 /** Flags describing a packet the decryptor handled: decrypted, MIC valid, direction. */
 uint16_t bh_rf_flags_for_decrypted(uint8_t direction);
 
+/* Byte 3 of the BTLE_RF pseudo-header (access address offenses) is unused while
+ * BTLE_RF's AA-offenses-valid flag is clear; aggregated captures store the
+ * receiving board there as board_id + 1 (0 = not recorded). */
+#define BH_RF_BOARD_BYTE            3
+/** Record which board heard the packet in a record built by bh_btle_rf_record*(). */
+void bh_btle_rf_set_board(uint8_t *rec, uint8_t board_id);
+
 /* ------------------------------------------------------------ timestamps */
 
 /**
@@ -383,9 +390,15 @@ void bh_format_mac(const uint8_t mac_le[6], char out[18]);
 #define BH_SYNC_HIST            4
 #define BH_NO_HOST_TIME         INT64_MIN
 #define BH_SYNC_PAIR_WINDOW_US  500000
-#define BH_AGG_DEDUP_US         100         /* < T_IFS (150 µs), > inter-board error (~75 µs) */
+#define BH_AGG_DEDUP_US         130         /* < T_IFS (150 µs), > inter-board error (seen up to ~101 µs) */
 #define BH_AGG_REORDER_US       300000      /* covers USB arrival skew between boards */
 #define BH_AGG_PENDING_TIMEOUT_US 3000000   /* no SYNC in 3 s: degrade to raw ticks */
+/* While a board's offset goes unconfirmed its clock drifts away from the
+ * reference (a few ppm between two crystals), so copies heard by different
+ * boards drift apart; the dedup window grows with the offset's age at this
+ * rate, up to the cap, which stays well below a connection interval. */
+#define BH_AGG_STALE_DRIFT_PPM  20
+#define BH_AGG_DEDUP_STALE_MAX_US 10000
 
 /** 32-bit circular signed difference a - b. */
 int32_t bh_sdiff32(uint32_t a, uint32_t b);
@@ -416,6 +429,12 @@ typedef struct bh_sync_clock {
     bool         has_offset[BH_MAX_BOARDS];
     uint32_t     cand_offset[BH_MAX_BOARDS];   /**< an offset that disagrees with the established one */
     uint8_t      cand_hits[BH_MAX_BOARDS];     /**< how many times in a row it was seen */
+    /* Diagnostics: when the offset was last confirmed, and how pairing went. */
+    uint32_t     paired_ref_tick[BH_MAX_BOARDS]; /**< reference tick of the edge that last set/confirmed the offset */
+    uint32_t     pair_ok[BH_MAX_BOARDS];       /**< pairings that set or confirmed the offset */
+    uint32_t     pair_miss[BH_MAX_BOARDS];     /**< new edges with no reference edge inside the window */
+    uint32_t     pair_reject[BH_MAX_BOARDS];   /**< pairings that disagreed with the offset (debounced) */
+    uint32_t     switches[BH_MAX_BOARDS];      /**< offset replaced after consistent disagreement */
 } bh_sync_clock;
 
 #define BH_SYNC_OFFSET_TOL_US   20000      /* offsets closer than this are the same edge */
@@ -431,6 +450,13 @@ bool bh_sync_clock_offset(const bh_sync_clock *c, uint8_t board_id, uint32_t *of
 
 /** Convert a board tick to the reference time base. @return false if unknown. */
 bool bh_sync_clock_to_ref(const bh_sync_clock *c, uint8_t board_id, uint32_t tick, uint32_t *ref_tick);
+
+/**
+ * How long ago, in reference time at @p ref_now, the board's offset was last
+ * confirmed by a SYNC edge pair (0 for the reference board).
+ * @return false while the offset is unknown.
+ */
+bool bh_sync_clock_offset_age(const bh_sync_clock *c, uint8_t board_id, uint32_t ref_now, uint32_t *age_us);
 
 /** A captured packet with its own copy of the PDU, as stored by the aggregator. */
 typedef struct bh_agg_packet {
@@ -480,7 +506,24 @@ void bh_aggregator_add(bh_aggregator *a, const bh_agg_packet *pkt, bh_agg_emit_c
 /** Emit everything still buffered, in order. */
 void bh_aggregator_flush(bh_aggregator *a, bh_agg_emit_cb cb, void *ctx);
 
+/**
+ * Feed a board's SYNC heartbeat (bh_sync_frame). Heartbeats come after every
+ * edge even when no packet passes the board's filters, so offsets keep being
+ * confirmed while the reference board, or any board, hears nothing.
+ */
+void bh_aggregator_observe_sync(bh_aggregator *a, uint8_t board_id, uint32_t sync_epoch, int64_t host_us,
+                                bh_agg_emit_cb cb, void *ctx);
+
 const bh_sync_clock *bh_aggregator_clock(const bh_aggregator *a);
+
+typedef struct bh_agg_stats {
+    uint64_t emitted;
+    uint64_t duplicates;        /**< copies dropped */
+    uint64_t duplicates_stale;  /**< ... of which only the widened (stale offset) window caught */
+    uint32_t max_window_us;     /**< widest dedup window used so far */
+} bh_agg_stats;
+
+void bh_aggregator_stats(const bh_aggregator *a, bh_agg_stats *out);
 
 /* ------------------------------------------------------- follow relay */
 

@@ -24,11 +24,13 @@ typedef struct heap_item {
     uint32_t idx;
 } heap_item;
 
-/* Output-side dedup: last emitted tick per (AA, CRC, PDU). Entries older
+/* Output-side dedup: last emitted tick per (AA, channel, CRC, PDU). Entries older
  * than the horizon are dropped after every emitted batch, so the list stays
  * short (one reorder window of traffic) and a linear scan is enough. */
 typedef struct emitted_entry {
     uint32_t access_addr;
+    uint8_t  channel;
+    uint8_t  board_id;          /* board of the copy that was emitted */
     uint32_t crc;
     uint8_t  pdu_len;
     uint8_t  pdu[BH_MAX_PDU_LEN];
@@ -66,6 +68,8 @@ struct bh_aggregator {
     emitted_entry *emitted;
     uint32_t emitted_len;
     uint32_t emitted_cap;
+
+    bh_agg_stats stats;
 };
 
 /* ------------------------------------------------------------- packets */
@@ -138,6 +142,11 @@ void bh_aggregator_free(bh_aggregator *a)
 const bh_sync_clock *bh_aggregator_clock(const bh_aggregator *a)
 {
     return &a->clock;
+}
+
+void bh_aggregator_stats(const bh_aggregator *a, bh_agg_stats *out)
+{
+    *out = a->stats;
 }
 
 /* ---------------------------------------------------------- pool/heap */
@@ -230,12 +239,37 @@ static emitted_entry *find_emitted(bh_aggregator *a, const bh_agg_packet *p)
 {
     for (uint32_t i = 0; i < a->emitted_len; i++) {
         emitted_entry *e = &a->emitted[i];
-        if (e->access_addr == p->access_addr && e->crc == p->crc &&
+        if (e->access_addr == p->access_addr && e->channel == p->channel && e->crc == p->crc &&
                 e->pdu_len == p->pdu_len && memcmp(e->pdu, p->pdu, p->pdu_len) == 0) {
             return e;
         }
     }
     return NULL;
+}
+
+/* Copies from two boards are compared with a window that grows with the
+ * age of the older of their two offsets: an unconfirmed offset lets the
+ * boards' clocks drift apart. One board never reports a packet twice, so
+ * same-board pairs (in-event retransmissions) keep the base window. */
+static uint32_t dedup_window(const bh_aggregator *a, uint8_t b1, uint8_t b2, uint32_t ref_now)
+{
+    uint32_t age = 0, x;
+    uint64_t w;
+
+    if (b1 == b2) {
+        return a->dedup_us;
+    }
+    if (bh_sync_clock_offset_age(&a->clock, b1, ref_now, &x) && x > age) {
+        age = x;
+    }
+    if (bh_sync_clock_offset_age(&a->clock, b2, ref_now, &x) && x > age) {
+        age = x;
+    }
+    w = a->dedup_us + (uint64_t)age * BH_AGG_STALE_DRIFT_PPM / 1000000u;
+    if (w > BH_AGG_DEDUP_STALE_MAX_US) {
+        w = a->dedup_us > BH_AGG_DEDUP_STALE_MAX_US ? a->dedup_us : BH_AGG_DEDUP_STALE_MAX_US;
+    }
+    return (uint32_t)w;
 }
 
 /* Same air packet already emitted from another board within the window?
@@ -246,10 +280,19 @@ static bool is_duplicate(bh_aggregator *a, const bh_agg_packet *p)
 
     if (e != NULL) {
         uint64_t d = p->key64 > e->key64 ? p->key64 - e->key64 : e->key64 - p->key64;
-        if (d <= a->dedup_us) {
+        uint32_t window = dedup_window(a, p->board_id, e->board_id, p->aligned);
+        if (window > a->stats.max_window_us) {
+            a->stats.max_window_us = window;
+        }
+        if (d <= window) {
+            a->stats.duplicates++;
+            if (d > a->dedup_us) {
+                a->stats.duplicates_stale++;
+            }
             return true;
         }
         e->key64 = p->key64;
+        e->board_id = p->board_id;
         return false;
     }
     if (a->emitted_len == a->emitted_cap) {
@@ -263,6 +306,8 @@ static bool is_duplicate(bh_aggregator *a, const bh_agg_packet *p)
     }
     e = &a->emitted[a->emitted_len++];
     e->access_addr = p->access_addr;
+    e->channel = p->channel;
+    e->board_id = p->board_id;
     e->crc = p->crc;
     e->pdu_len = p->pdu_len;
     memcpy(e->pdu, p->pdu, p->pdu_len);
@@ -325,6 +370,7 @@ static void release(bh_aggregator *a, bool final, bh_agg_emit_cb cb, void *ctx)
         any = true;
         newest = item.key64;
         if (!is_duplicate(a, p)) {
+            a->stats.emitted++;
             cb(ctx, p);
         }
         pool_release(a, item.idx);
@@ -417,6 +463,20 @@ void bh_aggregator_add(bh_aggregator *a, const bh_agg_packet *pkt, bh_agg_emit_c
 
     pending_drain(a, b, true, cb, ctx);
     ingest(a, pkt, aligned, cb, ctx);
+}
+
+void bh_aggregator_observe_sync(bh_aggregator *a, uint8_t board_id, uint32_t sync_epoch, int64_t host_us,
+                                bh_agg_emit_cb cb, void *ctx)
+{
+    bh_sync_clock_observe(&a->clock, board_id, sync_epoch, host_us);
+
+    /* A reference edge can complete the pairing of any board that was waiting. */
+    for (int b = 0; b < BH_MAX_BOARDS; b++) {
+        uint32_t off;
+        if (a->pending_len[b] > 0 && bh_sync_clock_offset(&a->clock, (uint8_t)b, &off)) {
+            pending_drain(a, (uint8_t)b, true, cb, ctx);
+        }
+    }
 }
 
 void bh_aggregator_flush(bh_aggregator *a, bh_agg_emit_cb cb, void *ctx)

@@ -27,6 +27,8 @@ static const int kConfigSettleMs = 50;
 static const int kQueueWaitMs = 200;
 static const int kQueueMax = 10000;
 static const qint64 kReportIntervalUs = 500000;
+static const qint64 kSyncLogIntervalUs = 10000000;
+static const uint32_t kSyncStaleUs = 5000000;   /* SYNC edges come once a second */
 
 /* ---------------------------------------------------------- BoardReader */
 
@@ -286,6 +288,20 @@ void TriStreamer::onSyncFrame(BoardReader *reader, const bh_sync_frame &sf, int6
 {
     const CaptureConfig config = this->config();
 
+    {
+        /* The aggregator pairs time bases from these too, so that a board
+         * (the reference included) that hears nothing keeps its offset. */
+        QueueItem item;
+        memset(&item, 0, sizeof(item));
+        item.is_sync = true;
+        item.pkt.board_id = sf.board_id;
+        item.pkt.sync_epoch = sf.sync_epoch;
+        item.pkt.host_us = host_us;
+        QMutexLocker locker(&queue_mutex_);
+        queue_.enqueue(item);                       /* one a second per board: never dropped */
+        queue_cond_.wakeOne();
+    }
+
     if (config.follow_relay && (!config.single_target || config.target_mac_le.size() == 6)) {
         QMutexLocker locker(&relay_mutex_);
         boards_[sf.board_id] = reader;
@@ -337,15 +353,16 @@ void TriStreamer::onFrame(BoardReader *reader, const bh_packet &pkt, int64_t hos
         return;
     }
 
-    bh_agg_packet rec;
-    bh_agg_packet_from(&rec, &pkt, host_us);
+    QueueItem item;
+    item.is_sync = false;
+    bh_agg_packet_from(&item.pkt, &pkt, host_us);
 
     QMutexLocker locker(&queue_mutex_);
     if (queue_.size() >= kQueueMax) {
         dropped_++;                                 /* never block a reader on the writer */
         return;
     }
-    queue_.enqueue(rec);
+    queue_.enqueue(item);
     queue_cond_.wakeOne();
 }
 
@@ -369,9 +386,58 @@ void TriStreamer::emitPacket(void *ctx, const bh_agg_packet *pkt)
     if (n == 0) {
         return;
     }
+    bh_btle_rf_set_board(rec, pkt->board_id);
+    self->last_aligned_ = pkt->aligned;
     bh_pcap_record_header((uint64_t)bh_ts_mapper_map_mono(&self->ts_, pkt->key64), (uint32_t)n, hdr);
     self->out_.append(reinterpret_cast<const char *>(hdr), sizeof(hdr));
     self->out_.append(reinterpret_cast<const char *>(rec), (qsizetype)n);
+}
+
+/* Per board: is the offset still being confirmed by SYNC edge pairs, and how
+ * pairing goes. Warns once when a board's offset goes unconfirmed (its
+ * clock then drifts and copies of a packet stop being merged). */
+void TriStreamer::logSyncState(const bh_aggregator *agg, bool periodic)
+{
+    const bh_sync_clock *c = bh_aggregator_clock(agg);
+    uint32_t now = last_aligned_;
+
+    if (c->hist_len[c->ref_board] > 0) {
+        uint32_t ref_edge = c->hist[c->ref_board][c->hist_len[c->ref_board] - 1].tick;
+        if (bh_sdiff32(ref_edge, now) > 0) {
+            now = ref_edge;
+        }
+    }
+    for (int b = 0; b < BH_MAX_BOARDS; b++) {
+        if (c->hist_len[b] == 0) {
+            continue;
+        }
+        const bh_sync_edge &edge = c->hist[b][c->hist_len[b] - 1];
+        long long edge_host_age_ms = edge.host_us == BH_NO_HOST_TIME ? -1 :
+                                     (long long)((g_get_real_time() - edge.host_us) / 1000);   /* host_us is real time */
+        uint32_t age = 0, offset = 0;
+        bool known = bh_sync_clock_offset_age(c, (uint8_t)b, now, &age);
+        bh_sync_clock_offset(c, (uint8_t)b, &offset);
+
+        if (b != c->ref_board && known) {
+            bool stale = age > kSyncStaleUs;
+            if (stale && !stale_[b]) {
+                ws_warning("BLEhound sync: board %d offset unconfirmed for %u ms (last edge %lld ms ago; "
+                           "pair ok %u miss %u reject %u) -- its packets drift, duplicates may slip through",
+                           b, age / 1000, edge_host_age_ms,
+                           c->pair_ok[b], c->pair_miss[b], c->pair_reject[b]);
+            } else if (!stale && stale_[b]) {
+                ws_message("BLEhound sync: board %d offset confirmed again", b);
+            }
+            stale_[b] = stale;
+        }
+        if (periodic) {
+            ws_info("BLEhound sync: board %d%s edge %u (%lld ms ago), offset %s%d us, confirmed %u ms ago, "
+                    "pair ok %u miss %u reject %u switch %u",
+                    b, b == c->ref_board ? " (ref)" : "", edge.tick, edge_host_age_ms,
+                    known ? "" : "unknown ", (int32_t)offset, age / 1000,
+                    c->pair_ok[b], c->pair_miss[b], c->pair_reject[b], c->switches[b]);
+        }
+    }
 }
 
 void TriStreamer::run()
@@ -454,6 +520,9 @@ void TriStreamer::streamToClient(Socket::Client client)
     if (agg == nullptr) {
         return;
     }
+    last_aligned_ = 0;
+    memset(stale_, 0, sizeof(stale_));
+    gint64 last_sync_log = g_get_monotonic_time();
 
     bh_pcap_global_header(global_header);
     if (Socket::sendAll(client, QByteArray(reinterpret_cast<const char *>(global_header), sizeof(global_header)))) {
@@ -470,7 +539,7 @@ void TriStreamer::streamToClient(Socket::Client client)
         }
 
         while (!stopping()) {
-            QList<bh_agg_packet> batch;
+            QList<QueueItem> batch;
             {
                 QMutexLocker locker(&queue_mutex_);
                 if (queue_.isEmpty()) {
@@ -480,8 +549,21 @@ void TriStreamer::streamToClient(Socket::Client client)
                     batch << queue_.dequeue();
                 }
             }
-            foreach (const bh_agg_packet &pkt, batch) {
-                bh_aggregator_add(agg, &pkt, emitPacket, this);
+            foreach (const QueueItem &item, batch) {
+                if (item.is_sync) {
+                    bh_aggregator_observe_sync(agg, item.pkt.board_id, item.pkt.sync_epoch, item.pkt.host_us,
+                                               emitPacket, this);
+                } else {
+                    bh_aggregator_add(agg, &item.pkt, emitPacket, this);
+                }
+            }
+            {
+                gint64 now = g_get_monotonic_time();
+                bool periodic = now - last_sync_log >= kSyncLogIntervalUs;
+                if (periodic) {
+                    last_sync_log = now;
+                }
+                logSyncState(agg, periodic);
             }
             if (!out_.isEmpty()) {
                 if (!Socket::sendAll(client, out_)) {
@@ -506,6 +588,15 @@ void TriStreamer::streamToClient(Socket::Client client)
     {
         QMutexLocker locker(&relay_mutex_);
         boards_.clear();
+    }
+    {
+        bh_agg_stats st;
+        bh_aggregator_stats(agg, &st);
+        logSyncState(agg, true);
+        ws_info("BLEhound aggregator: %llu packets out, %llu duplicates dropped (%llu only by the widened "
+                "window for unconfirmed offsets), widest window %u us",
+                (unsigned long long)st.emitted, (unsigned long long)st.duplicates,
+                (unsigned long long)st.duplicates_stale, st.max_window_us);
     }
     bh_aggregator_free(agg);
     reportState(ports, false);

@@ -413,6 +413,103 @@ static void test_reorder_window(void)
     bh_aggregator_free(agg);
 }
 
+static void test_sync_from_heartbeats(void)
+{
+    /* The reference board passes no packet at all (nothing matches its
+     * filter), only SYNC heartbeats: another board's packets must still be
+     * aligned from those, not held and then emitted on raw ticks. */
+    const uint8_t pdu[] = { 0x01, 0x00 };
+    struct agg_log log = { 0 };
+    bh_aggregator *agg = bh_aggregator_new(BH_AGG_DEDUP_US, 5000, 0);
+    bh_agg_packet p;
+    bh_agg_stats st;
+    uint32_t age;
+
+    p = mk_pkt(1, 5000, 4000, 0xAABBCCDD, 1, pdu, sizeof(pdu));
+    bh_aggregator_add(agg, &p, collect, &log);
+    CHECK(log.count == 0);                                  /* held: offset unknown */
+    bh_aggregator_observe_sync(agg, 0, 1000, BH_NO_HOST_TIME, collect, &log);
+    bh_aggregator_flush(agg, collect, &log);
+    CHECK(log.count == 1 && log.out[0].aligned == 2000);
+    CHECK(bh_sync_clock_offset_age(bh_aggregator_clock(agg), 1, 2000, &age) && age == 1000);
+    CHECK(bh_aggregator_clock(agg)->pair_ok[1] == 1);
+    bh_aggregator_stats(agg, &st);
+    CHECK(st.emitted == 1 && st.duplicates == 0);
+    bh_aggregator_free(agg);
+}
+
+static void test_dedup_stale_offsets(void)
+{
+    /* Two boards follow one connection; their offsets were last confirmed
+     * 200 s ago and board 2 has drifted 2 ms since (10 ppm). Copies of the
+     * same packet are still merged; board 1's own in-event retransmission
+     * 1.1 ms later (same content, same channel) is kept. */
+    const uint8_t pdu[] = { 0x0d, 0x00 };
+    struct agg_log log = { 0 };
+    bh_aggregator *agg = bh_aggregator_new(BH_AGG_DEDUP_US, 5000, 0);
+    bh_agg_packet p;
+    bh_agg_stats st;
+    const uint32_t T = 201000000;                           /* reference time of the packet */
+
+    bh_aggregator_observe_sync(agg, 0, 1000000, BH_NO_HOST_TIME, collect, &log);
+    bh_aggregator_observe_sync(agg, 1, 3000000, BH_NO_HOST_TIME, collect, &log);   /* offset 2 s */
+    bh_aggregator_observe_sync(agg, 2, 5000000, BH_NO_HOST_TIME, collect, &log);   /* offset 4 s */
+
+    p = mk_pkt(1, T + 2000000, 3000000, 0x9e166cb1, 0x568dd8, pdu, sizeof(pdu));
+    bh_aggregator_add(agg, &p, collect, &log);
+    p = mk_pkt(1, T + 2000000 + 1100, 3000000, 0x9e166cb1, 0x568dd8, pdu, sizeof(pdu));
+    bh_aggregator_add(agg, &p, collect, &log);
+    p = mk_pkt(2, T + 4000000 + 2000, 5000000, 0x9e166cb1, 0x568dd8, pdu, sizeof(pdu));
+    bh_aggregator_add(agg, &p, collect, &log);
+    p = mk_pkt(2, T + 4000000 + 2000 + 1100, 5000000, 0x9e166cb1, 0x568dd8, pdu, sizeof(pdu));
+    bh_aggregator_add(agg, &p, collect, &log);
+    bh_aggregator_flush(agg, collect, &log);
+    CHECK(log.count == 2);
+    CHECK(log.out[0].board_id == 1 && log.out[1].board_id == 1);
+    CHECK(log.out[1].aligned - log.out[0].aligned == 1100);
+    bh_aggregator_stats(agg, &st);
+    CHECK(st.duplicates == 2 && st.duplicates_stale == 2);
+    CHECK(st.max_window_us > 2000 && st.max_window_us <= BH_AGG_DEDUP_STALE_MAX_US);
+    bh_aggregator_free(agg);
+
+    /* Freshly confirmed offsets keep the base window: the same content from
+     * two boards 1 ms apart is two packets. A different channel never merges. */
+    memset(&log, 0, sizeof(log));
+    agg = bh_aggregator_new(BH_AGG_DEDUP_US, 5000, 0);
+    bh_aggregator_observe_sync(agg, 0, 1000000, BH_NO_HOST_TIME, collect, &log);
+    bh_aggregator_observe_sync(agg, 1, 3000000, BH_NO_HOST_TIME, collect, &log);
+    bh_aggregator_observe_sync(agg, 2, 5000000, BH_NO_HOST_TIME, collect, &log);
+    p = mk_pkt(1, 3100000, 3000000, 0x9e166cb1, 0x568dd8, pdu, sizeof(pdu));
+    bh_aggregator_add(agg, &p, collect, &log);
+    p = mk_pkt(2, 5101000, 5000000, 0x9e166cb1, 0x568dd8, pdu, sizeof(pdu));
+    bh_aggregator_add(agg, &p, collect, &log);
+    p = mk_pkt(2, 5100000, 5000000, 0x9e166cb1, 0x568dd8, pdu, sizeof(pdu));
+    p.channel = 12;
+    bh_aggregator_add(agg, &p, collect, &log);
+    p = mk_pkt(2, 5100101, 5000000, 0x9e166cb1, 0x568dd8, pdu, sizeof(pdu));   /* true copy, 101 us off as seen */
+    bh_aggregator_add(agg, &p, collect, &log);
+    bh_aggregator_flush(agg, collect, &log);
+    CHECK(log.count == 3);
+    bh_aggregator_stats(agg, &st);
+    CHECK(st.duplicates == 1 && st.duplicates_stale == 0);
+    bh_aggregator_free(agg);
+}
+
+static void test_record_board(void)
+{
+    const uint8_t pdu[] = { 0x01, 0x00 };
+    bh_agg_packet a = mk_pkt(2, 1000, 0, 0x9e166cb1, 0x568dd8, pdu, sizeof(pdu));
+    bh_packet view;
+    uint8_t rec[BH_MAX_RECORD_LEN];
+
+    bh_agg_packet_view(&a, &view);
+    size_t n = bh_btle_rf_record(&view, rec, sizeof(rec));
+    CHECK(n > 0 && rec[BH_RF_BOARD_BYTE] == 0);
+    CHECK(((rec[8] | rec[9] << 8) & 0x0020) == 0);          /* AA-offenses-valid stays clear */
+    bh_btle_rf_set_board(rec, 2);
+    CHECK(rec[BH_RF_BOARD_BYTE] == 3);
+}
+
 static void test_guard_channel(void)
 {
     uint8_t ch;
@@ -1151,6 +1248,9 @@ int main(void)
     test_aggregate();
     test_hold_until_synced();
     test_reorder_window();
+    test_sync_from_heartbeats();
+    test_dedup_stale_offsets();
+    test_record_board();
     test_guard_channel();
     test_follow_relay();
     test_ts_mapper_mono();
