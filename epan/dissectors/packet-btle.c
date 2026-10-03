@@ -3549,6 +3549,35 @@ dissect_btle_acl(tvbuff_t *tvb,
         }
     }
 
+    if (!connection_info) {
+        /* No CONNECT_IND in this file (e.g. a ring-buffer file opened on its
+         * own): still name both ends by access address and direction. */
+        const size_t str_addr_len = sizeof("Peripheral_0x12345678");
+        char *str_addr_src = (char *) wmem_alloc(pinfo->pool, str_addr_len);
+        char *str_addr_dst = (char *) wmem_alloc(pinfo->pool, str_addr_len);
+
+        switch (direction) {
+        case BTLE_DIR_CENTRAL_PERIPHERAL:
+            snprintf(str_addr_src, str_addr_len, "Central_0x%08x", access_address);
+            snprintf(str_addr_dst, str_addr_len, "Peripheral_0x%08x", access_address);
+            break;
+        case BTLE_DIR_PERIPHERAL_CENTRAL:
+            snprintf(str_addr_src, str_addr_len, "Peripheral_0x%08x", access_address);
+            snprintf(str_addr_dst, str_addr_len, "Central_0x%08x", access_address);
+            break;
+        default:
+            snprintf(str_addr_src, str_addr_len, "Unknown_0x%08x", access_address);
+            snprintf(str_addr_dst, str_addr_len, "Unknown_0x%08x", access_address);
+            break;
+        }
+
+        set_address(&pinfo->net_src, AT_STRINGZ, (int)strlen(str_addr_src)+1, str_addr_src);
+        copy_address_shallow(&pinfo->src, &pinfo->net_src);
+
+        set_address(&pinfo->net_dst, AT_STRINGZ, (int)strlen(str_addr_dst)+1, str_addr_dst);
+        copy_address_shallow(&pinfo->dst, &pinfo->net_dst);
+    }
+
     if (btle_frame_info == NULL) {
         btle_frame_info = &empty_btle_frame_info;
     }
