@@ -29,19 +29,23 @@ namespace BLEhound {
 namespace {
 
 /* Custom columns the views switch on and off. Titles are the key they are
- * found by in the saved preferences, so they stay in English. */
+ * found by in the saved preferences, so they stay in English. A column
+ * with before_protocol set is inserted to the left of the Protocol column
+ * when first added; the others go after the built-in columns. */
 struct LayerColumn {
     const char *title;
     const char *fields;
+    bool before_protocol;
 };
 const LayerColumn kColumns[] = {
-    { "Opcode",      "btle.control_opcode || btatt.opcode || btsmp.opcode || btl2cap.cmd_code" },
-    { "Handle",      "btatt.handle" },
-    { "Response in", "btle.response_in_frame || btatt.response_in_frame" },
-    { "L2CAP ident", "btl2cap.cmd_ident" },
-    { "Payload",     "blehound.payload_summary" },
+    { "Opcode",      "btle.control_opcode || btatt.opcode || btsmp.opcode || btl2cap.cmd_code", false },
+    { "Handle",      "btatt.handle", false },
+    { "Response in", "btle.response_in_frame || btatt.response_in_frame", false },
+    { "L2CAP ident", "btl2cap.cmd_ident", false },
+    { "Payload",     "blehound.payload_summary", false },
+    { "RF Channel",  "btle_rf.channel_summary", true },
 };
-enum { ColOpcode = 1, ColHandle = 2, ColResponse = 4, ColIdent = 8, ColPayload = 16 };
+enum { ColOpcode = 1, ColHandle = 2, ColResponse = 4, ColIdent = 8, ColPayload = 16, ColChannel = 32 };
 
 struct LayerView {
     const char *id;
@@ -55,34 +59,34 @@ struct LayerView {
 };
 const LayerView kViews[] = {
     { "all", "all", "All layers", "全部",
-      "Everything, as captured.", "所有包，不过滤。", "", ColPayload },
+      "Everything, as captured.", "所有包，不过滤。", "", ColPayload | ColChannel },
     { "packets", "packets", "Packets", "包",
       "Every packet on the air, including empty and CRC-bad ones.", "空口上的每一个包，含空包和 CRC 错包。",
-      "btle", ColPayload },
+      "btle", ColPayload | ColChannel },
     { "link", "link", "Link Layer", "链路层",
       "Advertising, scanning, connection setup and link-layer control; empty data PDUs and higher layers hidden.",
       "广播、扫描、建连与链路层控制；隐藏空数据包和上层协议。",
-      "btle && !btl2cap && !(btle.data_header.length == 0)", ColPayload },
+      "btle && !btl2cap && !(btle.data_header.length == 0)", ColPayload | ColChannel },
     { "llcp", "llcp", "LLCP Packets", "LLCP 包",
       "Link-layer control PDUs only.", "只看链路层控制 PDU。",
-      "btle.control_opcode", ColOpcode | ColPayload },
+      "btle.control_opcode", ColOpcode | ColPayload | ColChannel },
     { "llcp-tx", "llcp-tx", "LLCP Transactions", "LLCP 事务",
       "One row per control procedure: the request, with the frame its response is in.",
       "每个控制流程一行：请求包，并标出响应在哪一帧。",
-      "btle.control_opcode && !btle.request_in_frame", ColOpcode | ColResponse | ColPayload },
+      "btle.control_opcode && !btle.request_in_frame", ColOpcode | ColResponse | ColPayload | ColChannel },
     { "l2cap", "l2cap", "L2CAP Transactions", "L2CAP 事务",
       "L2CAP signalling commands.", "L2CAP 信令命令。",
-      "btl2cap.cmd_code", ColOpcode | ColIdent | ColPayload },
+      "btl2cap.cmd_code", ColOpcode | ColIdent | ColPayload | ColChannel },
     { "smp", "smp", "SMP Transactions", "SMP 事务",
       "Pairing: requests, confirms, key distribution.", "配对流程：请求、确认、密钥分发。",
-      "btsmp", ColOpcode | ColPayload },
+      "btsmp", ColOpcode | ColPayload | ColChannel },
     { "att", "att", "ATT Packets", "ATT 包",
       "Attribute protocol PDUs only.", "只看 ATT PDU。",
-      "btatt", ColOpcode | ColHandle | ColPayload },
+      "btatt", ColOpcode | ColHandle | ColPayload | ColChannel },
     { "att-tx", "att-tx", "ATT Transactions", "ATT 事务",
       "One row per ATT request, with the frame its response is in.",
       "每个 ATT 请求一行，并标出响应在哪一帧。",
-      "btatt && !btatt.request_in_frame", ColOpcode | ColHandle | ColResponse | ColPayload },
+      "btatt && !btatt.request_in_frame", ColOpcode | ColHandle | ColResponse | ColPayload | ColChannel },
 };
 
 QString g_layer_filter;
@@ -117,12 +121,17 @@ void applyFilter()
 /* Index of our custom column with this title, adding it if missing. */
 int ensureColumn(const LayerColumn &column)
 {
+    int position = -1;
+
     for (int i = 0; i < prefs.num_cols; i++) {
         if (get_column_format(i) == COL_CUSTOM && g_strcmp0(get_column_title(i), column.title) == 0) {
             return i;
         }
+        if (column.before_protocol && position < 0 && get_column_format(i) == COL_PROTOCOL) {
+            position = i;
+        }
     }
-    return column_prefs_add_custom(COL_CUSTOM, column.title, column.fields, -1);
+    return column_prefs_add_custom(COL_CUSTOM, column.title, column.fields, position);
 }
 
 void showColumns(int wanted)

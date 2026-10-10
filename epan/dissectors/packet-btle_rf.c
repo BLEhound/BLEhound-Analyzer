@@ -40,6 +40,7 @@ static int hf_btle_rf_unsigned_byte_unused;
 static int hf_btle_rf_blehound_board;
 static int hf_btle_rf_word_unused;
 static int hf_btle_rf_channel;
+static int hf_btle_rf_channel_summary;
 static int hf_btle_rf_signal_dbm;
 static int hf_btle_rf_noise_dbm;
 static int hf_btle_rf_access_address_offenses;
@@ -229,6 +230,18 @@ dissect_btle_rf(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree, void *data)
                            btle_rf_channel_index(rf_channel));
     context.channel = btle_rf_channel_index(rf_channel);
 
+    /* One-line form for a packet-list column: physical channel and its
+     * frequency, then the logical channel the link layer hops over
+     * ("21 (2444 MHz), Data 19", "0 (2402 MHz), Adv 37"). */
+    if (rf_channel <= 39) {
+        proto_item *summary = proto_tree_add_string(btle_rf_tree, hf_btle_rf_channel_summary, tvb, 0, 1,
+                wmem_strdup_printf(pinfo->pool, "%u (%u MHz), %s %u",
+                                   rf_channel, 2402 + 2 * rf_channel,
+                                   context.channel >= 37 ? "Adv" : "Data",
+                                   context.channel));
+        proto_item_set_generated(summary);
+    }
+
     if (flags & LE_CHANNEL_ALIASED) {
         proto_item_append_text(ti, " [aliased]");
     }
@@ -318,6 +331,12 @@ proto_register_btle_rf(void)
             FT_UINT8, BASE_DEC,
             NULL, 0x0,
             NULL, HFILL }
+        },
+        { &hf_btle_rf_channel_summary,
+          { "RF Channel Summary", "btle_rf.channel_summary",
+            FT_STRING, BASE_NONE,
+            NULL, 0x0,
+            "RF channel with its frequency and the logical advertising/data channel, for the packet list", HFILL }
         },
         { &hf_btle_rf_signal_dbm,
           { "Signal dBm", "btle_rf.signal_dbm",
