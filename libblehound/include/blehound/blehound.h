@@ -520,6 +520,7 @@ typedef struct bh_agg_stats {
     uint64_t emitted;
     uint64_t duplicates;        /**< copies dropped */
     uint64_t duplicates_stale;  /**< ... of which only the widened (stale offset) window caught */
+    uint64_t duplicates_bad_crc; /**< ... of which were CRC-failed copies matched by AA + channel + time */
     uint32_t max_window_us;     /**< widest dedup window used so far */
 } bh_agg_stats;
 

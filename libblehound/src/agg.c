@@ -272,12 +272,57 @@ static uint32_t dedup_window(const bh_aggregator *a, uint8_t b1, uint8_t b2, uin
     return (uint32_t)w;
 }
 
+/* CRC-failed copies of one air packet differ from board to board (each board
+ * has its own bit errors, often in the length byte too), so they never match
+ * byte for byte. For them "same packet" is same AA + channel within the base
+ * window: consecutive real packets on one channel are at least T_IFS plus an
+ * empty PDU apart (~190 µs at 2M), the window is 130 µs. The widened stale
+ * window is not used here because without the content match it would start
+ * eating real packets. */
+static bool emitted_air_within(const bh_aggregator *a, const bh_agg_packet *p, uint32_t window)
+{
+    for (uint32_t i = 0; i < a->emitted_len; i++) {
+        const emitted_entry *e = &a->emitted[i];
+        if (e->access_addr == p->access_addr && e->channel == p->channel) {
+            uint64_t d = p->key64 > e->key64 ? p->key64 - e->key64 : e->key64 - p->key64;
+            if (d <= window) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+/* A CRC-correct copy of this air packet still waiting in the reorder buffer?
+ * Then this CRC-failed copy is dropped in favour of it (the good copy is then
+ * emitted by the content rule). With only bad copies the first one is kept,
+ * like for good packets, and the later ones fall to emitted_air_within(). */
+static bool pending_good_air_within(const bh_aggregator *a, const bh_agg_packet *p, uint32_t window)
+{
+    for (uint32_t i = 0; i < a->heap_len; i++) {
+        const bh_agg_packet *o = &a->pool[a->heap[i].idx];
+        if (o != p && o->crc_ok && o->access_addr == p->access_addr && o->channel == p->channel) {
+            uint64_t d = o->key64 > p->key64 ? o->key64 - p->key64 : p->key64 - o->key64;
+            if (d <= window) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 /* Same air packet already emitted from another board within the window?
  * If not, this packet becomes the reference copy for its key. */
 static bool is_duplicate(bh_aggregator *a, const bh_agg_packet *p)
 {
     emitted_entry *e = find_emitted(a, p);
 
+    if (e == NULL && !p->crc_ok &&
+            (emitted_air_within(a, p, a->dedup_us) || pending_good_air_within(a, p, a->dedup_us))) {
+        a->stats.duplicates++;
+        a->stats.duplicates_bad_crc++;
+        return true;
+    }
     if (e != NULL) {
         uint64_t d = p->key64 > e->key64 ? p->key64 - e->key64 : e->key64 - p->key64;
         uint32_t window = dedup_window(a, p->board_id, e->board_id, p->aligned);

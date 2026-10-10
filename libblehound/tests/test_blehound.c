@@ -354,6 +354,59 @@ static void test_aggregate(void)
     bh_aggregator_free(agg);
 }
 
+static void test_dedup_crc_errors(void)
+{
+    /* A CRC-failed packet heard by three boards arrives as three different byte
+     * strings (each board's own bit errors), so the content match cannot pair
+     * them. They are one air packet: same AA, same channel, a few µs apart. */
+    const uint8_t bad0[] = { 0x02, 0x06, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66 };
+    const uint8_t bad1[] = { 0x02, 0x06, 0x11, 0x2A, 0x33, 0x44, 0x55, 0x66 };
+    const uint8_t bad2[] = { 0x02, 0x07, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66 };
+    const uint8_t good[] = { 0x02, 0x06, 0x11, 0x22, 0x33, 0x44, 0x55, 0x67 };
+    struct agg_log log = { 0 };
+    bh_agg_stats st;
+    bh_aggregator *agg = bh_aggregator_new(130, 5000, 0);
+    bh_agg_packet p;
+
+    /* Board offsets: board 1 = +3000, board 2 = +6000 (from the SYNC epochs). */
+    /* 1. three bad copies -> one packet */
+    p = mk_pkt(0, 2000, 1000, 0xAABBCCDD, 0x111111, bad0, sizeof(bad0)); p.crc_ok = false;
+    bh_aggregator_add(agg, &p, collect, &log);
+    p = mk_pkt(1, 5005, 4000, 0xAABBCCDD, 0x222222, bad1, sizeof(bad1)); p.crc_ok = false;
+    bh_aggregator_add(agg, &p, collect, &log);
+    p = mk_pkt(2, 8016, 7000, 0xAABBCCDD, 0x333333, bad2, sizeof(bad2)); p.crc_ok = false;
+    bh_aggregator_add(agg, &p, collect, &log);
+    /* 2. a genuinely different bad packet 400 µs later on the same channel stays */
+    p = mk_pkt(0, 2400, 1000, 0xAABBCCDD, 0x444444, bad1, sizeof(bad1)); p.crc_ok = false;
+    bh_aggregator_add(agg, &p, collect, &log);
+    /* 3. one good copy among bad ones: the good one is the one emitted */
+    p = mk_pkt(0, 3000, 1000, 0xAABBCCDD, 0x555555, bad0, sizeof(bad0)); p.crc_ok = false;
+    bh_aggregator_add(agg, &p, collect, &log);
+    p = mk_pkt(1, 6003, 4000, 0xAABBCCDD, 0x666666, good, sizeof(good));
+    bh_aggregator_add(agg, &p, collect, &log);
+    p = mk_pkt(2, 9008, 7000, 0xAABBCCDD, 0x777777, bad2, sizeof(bad2)); p.crc_ok = false;
+    bh_aggregator_add(agg, &p, collect, &log);
+    /* 4. a bad copy trailing an already emitted good packet by 50 µs is a copy of it */
+    p = mk_pkt(0, 4000, 1000, 0xAABBCCDD, 0x666666, good, sizeof(good));
+    bh_aggregator_add(agg, &p, collect, &log);
+    p = mk_pkt(2, 10050, 7000, 0xAABBCCDD, 0x888888, bad1, sizeof(bad1)); p.crc_ok = false;
+    bh_aggregator_add(agg, &p, collect, &log);
+    /* 5. a bad packet on another channel at the same time is unrelated */
+    p = mk_pkt(1, 7000, 4000, 0xAABBCCDD, 0x999999, bad0, sizeof(bad0)); p.crc_ok = false; p.channel = 12;
+    bh_aggregator_add(agg, &p, collect, &log);
+    bh_aggregator_flush(agg, collect, &log);
+
+    CHECK(log.count == 5);
+    CHECK(log.count >= 5 && !log.out[0].crc_ok && log.out[0].aligned == 2000);
+    CHECK(log.count >= 5 && !log.out[1].crc_ok && log.out[1].aligned == 2400);
+    CHECK(log.count >= 5 && log.out[2].crc_ok && log.out[2].crc == 0x666666 && log.out[2].aligned == 3003);
+    CHECK(log.count >= 5 && log.out[3].crc_ok && log.out[3].aligned == 4000);
+    CHECK(log.count >= 5 && !log.out[4].crc_ok && log.out[4].channel == 12);
+    bh_aggregator_stats(agg, &st);
+    CHECK(st.duplicates_bad_crc == 5);
+    bh_aggregator_free(agg);
+}
+
 static void test_hold_until_synced(void)
 {
     /* A non-reference board's packets are held until its offset is known,
@@ -1225,6 +1278,7 @@ static void test_smp_responses(void)
 
 int main(void)
 {
+    test_dedup_crc_errors();
     test_smp_crc_and_framing();
     test_smp_responses();
     test_sync_clock_extra_edge();
