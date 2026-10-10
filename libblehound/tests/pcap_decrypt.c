@@ -56,7 +56,10 @@ int main(int argc, char **argv)
         uint16_t flags = (uint16_t)(body[8] | body[9] << 8);
         bool coded = (flags >> 14) == 2;             /* BH_PHY_CODED_S8 == 2 */
         size_t off = 10 + 4 + (coded ? 1 : 0);
-        if (caplen < off + 2 + 3) {
+        /* Frames the capture pipeline already decrypted carry no MIC any more;
+         * pass them through untouched instead of counting a bogus failure. */
+        bool already_decrypted = (flags & BH_RF_FLAG_DECRYPTED) != 0;
+        if (caplen < off + 2 + 3 || already_decrypted) {
             fwrite(rh, 1, 16, out); fwrite(body, 1, caplen, out);
             continue;
         }
