@@ -76,13 +76,13 @@ void ChannelHeatmap::paintEvent(QPaintEvent *)
         if (n == 0) {
             fill = dark ? QColor(60, 60, 60) : QColor(225, 225, 225);
         } else {
-            double level = 0.25 + 0.75 * (double)n / peak;
+            /* level in [0.25, 1]: HSV components must stay within [0, 1] or Qt warns on every repaint */
+            float level = (float)qBound(0.25, 0.25 + 0.75 * (double)n / peak, 1.0);
             double bad = (double)e / n;
             if (bad > 0.2) {
-                fill = QColor::fromHsvF(0.0, 0.7, dark ? 0.45 + 0.5 * level : 0.9);
+                fill = QColor::fromHsvF(0.0f, 0.7f, dark ? 0.45f + 0.5f * level : 0.9f);
             } else {
-                fill = QColor::fromHsvF(0.36, 0.55, dark ? 0.35 + 0.55 * level : 0.85 - 0.35 * level + 0.35);
-                fill = QColor::fromHsvF(0.36, 0.25 + 0.6 * level, dark ? 0.35 + 0.55 * level : 0.9);
+                fill = QColor::fromHsvF(0.36f, 0.25f + 0.6f * level, dark ? 0.35f + 0.55f * level : 0.9f);
             }
         }
         p.fillRect(r, fill);
