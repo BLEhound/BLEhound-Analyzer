@@ -41,6 +41,7 @@ static int hf_btle_rf_blehound_board;
 static int hf_btle_rf_word_unused;
 static int hf_btle_rf_channel;
 static int hf_btle_rf_channel_summary;
+static int hf_btle_rf_status;
 static int hf_btle_rf_signal_dbm;
 static int hf_btle_rf_noise_dbm;
 static int hf_btle_rf_access_address_offenses;
@@ -294,6 +295,23 @@ dissect_btle_rf(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree, void *data)
 
     proto_tree_add_bitmask_with_flags(btle_rf_tree, tvb, 8, hf_btle_rf_flags, ett_btle_rf_flags,  hfs_btle_rf_flags, ENC_LITTLE_ENDIAN, BMT_NO_APPEND);
 
+    /* One word for a packet-list column: the capture device's verdict on the frame. */
+    {
+        const char *status;
+
+        if (!(flags & LE_CRC_CHECKED)) {
+            status = "CRC not checked";
+        } else if (!(flags & LE_CRC_VALID)) {
+            status = "CRC error";
+        } else if ((flags & LE_MIC_CHECKED) && !(flags & LE_MIC_VALID)) {
+            status = "MIC error";
+        } else {
+            status = "CRC OK";
+        }
+        ti = proto_tree_add_string(btle_rf_tree, hf_btle_rf_status, tvb, 8, 2, status);
+        proto_item_set_generated(ti);
+    }
+
     btle_tvb = tvb_new_subset_remaining(tvb, BTLE_RF_OCTETS);
     return BTLE_RF_OCTETS+call_dissector_with_data(btle_handle, btle_tvb, pinfo, tree, &context);
 }
@@ -337,6 +355,12 @@ proto_register_btle_rf(void)
             FT_STRING, BASE_NONE,
             NULL, 0x0,
             "RF channel with its frequency and the logical advertising/data channel, for the packet list", HFILL }
+        },
+        { &hf_btle_rf_status,
+          { "Status", "btle_rf.status",
+            FT_STRING, BASE_NONE,
+            NULL, 0x0,
+            "CRC / MIC verdict of the capture device (CRC OK, CRC error, MIC error), for the packet list", HFILL }
         },
         { &hf_btle_rf_signal_dbm,
           { "Signal dBm", "btle_rf.signal_dbm",
