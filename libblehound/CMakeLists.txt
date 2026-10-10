@@ -36,10 +36,14 @@ add_executable(blehound_pcap_decrypt tests/pcap_decrypt.c)
 target_link_libraries(blehound_pcap_decrypt blehound)
 set_target_properties(blehound_pcap_decrypt PROPERTIES FOLDER "Tests")
 
-# Command-line USB DFU (the same libblehound SMP code the GUI uses), for scripted tests.
-# It talks to the serial port with termios/poll, so POSIX only; the GUI's DFU works everywhere.
-if(NOT WIN32)
-	add_executable(blehound_dfu tests/dfu_cli.c)
-	target_link_libraries(blehound_dfu blehound)
-	set_target_properties(blehound_dfu PROPERTIES FOLDER "Tests")
+# Command-line USB DFU (the same libblehound SMP code the GUI uses): scripted updates
+# without nrfutil. Serial port and USB enumeration are native per platform
+# (Win32 + SetupAPI, Linux sysfs, macOS IOKit).
+add_executable(blehound_dfu tests/dfu_cli.c)
+target_link_libraries(blehound_dfu blehound)
+if(WIN32)
+	target_link_libraries(blehound_dfu setupapi)
+elseif(APPLE)
+	target_link_libraries(blehound_dfu "-framework IOKit" "-framework CoreFoundation")
 endif()
+set_target_properties(blehound_dfu PROPERTIES FOLDER "Tests")
